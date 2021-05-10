@@ -118,7 +118,7 @@ header-includes:
           
 ```
 
-We validate the treatment effect contrast for sex and nail dystrophy. We relevel the factors, center continuous vars and refit the regression model and show that the treatment effects by this independent method agree.
+xxxxxxxxxxxxxxxx
 
 
 ```{r directories, echo=FALSE, cache=FALSE}
