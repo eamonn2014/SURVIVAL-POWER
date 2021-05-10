@@ -1,0 +1,267 @@
+---
+title: "survival power exploration"
+author: "Eamonn O'Brien"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+knit: (function(inputFile, encoding) { 
+              out_dir <- '~/Survival-power';   
+          rmarkdown::render(inputFile,
+                        encoding=encoding, 
+      output_file=file.path(out_dir,'survival power exploration.html')) })
+output:  
+  html_document: 
+    code_folding: hide
+    toc: true
+    use_bookdown: yes
+    fig.caption: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: united
+    highlight: tango
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 8
+    number_sections: yes
+  word_document: 
+header-includes:
+- \usepackage{eso-pic,graphicx,transparent}
+- \usepackage{graphicx}
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \setlength\headheight{22pt}
+- \fancyfoot[RO]{Novartis xxxx xxxxx}
+- \usepackage{lastpage}
+- \cfoot{Page \thepage\ of \pageref{LastPage}}
+---
+
+
+\AddToShipoutPictureFG{
+  \AtPageCenter{% or \AtTextCenter
+    \makebox[0pt]{\rotatebox[origin=c]{45}{%
+      \scalebox{5}{\texttransparent{0.3}{ }}%
+    }}
+  }
+}
+
+
+```{r set-options, echo=FALSE, cache=FALSE, warning = FALSE}
+
+#/***************************************************************************#
+#Filename           :      xxxxxxxxxxxxxxxxxxxxx
+#Author             :      obrieea1
+#Date               :      xx-May-2021
+#R                  :      xxxxxxxxxxxxx
+#Platform           :      xxxxxxxxxxxxx 
+#Project/Study      :      xxxxxxxxxxxxx
+#Description        :      xxxxxxxxxxxxx   
+#Assumptions:   
+#Input              :       
+#Output             :      An .R, .Rmd and .html file is output to xxx
+#                          An .R file is output to the dir where original .Rmd file is located
+#Macros used        :      none
+#---------------------------------------------------------------------------
+#MODIFICATION HISTORY: 
+#    <DD-MON-YYYY>,
+#    <Description> 
+#    
+#***************************************************************************/
+
+        rm(list=ls())
+
+        set.seed(123)
+        startTime<-proc.time()
+        library(knitr)
+        knit_hooks$set(purl = hook_purl)  #new line
+        options(width=120)
+        options(width = 999)
+        opts_chunk$set(comment = "", warning = FALSE, message = FALSE,
+                       echo = FALSE, tidy = FALSE, size="tiny",  cache=FALSE,
+                       progress=TRUE,
+                         fig.width=7, fig.height=3.5,
+                       cache.path = 'program_Cache/',
+                       fig.path='figure/')
+         
+        knitr::knit_hooks$set(inline = function(x) {
+          knitr:::format_sci(x, 'md')
+        })
+         
+        
+        options(scipen=999)  # remove scientific notation
+        
+      
+        # create an R file of the code!
+        # https://stackoverflow.com/questions/26048722/knitr-and-tangle-code-without-execution
+        
+         # knit_hooks$set(purl = function(before, options) {
+         #   if (before) return()
+         #   input  = current_input()  # filename of input document
+         #   output = paste(tools::file_path_sans_ext(input), 'R', sep = '.')
+         #   if (knitr:::isFALSE(knitr:::.knitEnv$tangle.start)) {
+         #   assign('tangle.start', TRUE, knitr:::.knitEnv)
+         #   unlink(output)
+         # }
+         #   cat(options$code, file = output, sep = '\n', append = TRUE)
+         # })
+
+          # function to calculate the mode     
+          getmode <- function(v) {
+               uniqv <- unique(v)
+               uniqv[which.max(tabulate(match(v, uniqv)))]
+          }
+  
+          
+        # https://stackoverflow.com/questions/36868287/purl-within-knit-duplicate-label-error
+          
+          options(knitr.duplicate.label = 'allow') # to help with purl
+ 
+          
+```
+
+We validate the treatment effect contrast for sex and nail dystrophy. We relevel the factors, center continuous vars and refit the regression model and show that the treatment effects by this independent method agree.
+
+
+```{r directories, echo=FALSE, cache=FALSE}
+
+ 
+      
+      gps1 <-  paste0('~/Survival-power')
+      gps2 <-  paste0('~/Survival-power')
+      
+      path.script <- paste0(gps1, '')        # code to go here
+      path.import <- paste0(gps2, '')  # data is here
+      path.export <- paste0(gps1, '') 
+      
+      wd <- Rhome <- paste0('~/Survival-power')
+      wd.code <- paste0(Rhome,'')                 
+      wd.data <- paste0(Rhome,'')
+ 
+      
+      
+      # rounding functions
+      p2 <- function(x) {formatC(x, format="f", digits=2)}
+      p3 <- function(x) {formatC(x, format="f", digits=3)}
+      p4 <- function(x) {formatC(x, format="f", digits=4)}
+ 
+      
+```
+
+
+```{r parameters, results='hide', eval=TRUE}    
+      
+    # functions  to get means and SDs, not used
+    mymean <- function(x) {mean(x, na.rm=T)}
+    mysd <- function(x) {sd(x, na.rm=T)}
+    
+     
+```
+
+  
+```{r user libraries ,results='hide', eval=TRUE , echo=TRUE} 
+ 
+     library(rms) # for modelling
+    library(tidyverse)
+   
+``` 
+
+```{r read in data, results='hide',eval=FALSE , echo=TRUE}
+      
+  x <- list.files(path.import,".")   # get the names of all files in this dir.
+  
+  f <- x[grep("\\.sas7bdat\\b",x)]  # get the names that include sas7bdat
+  
+  f <- c("zzzzz.sas7bdat","yyyy.sas7bdat","xxxx.sas7bdat")
+  
+  # assign names to objects and call the object the actual name
+  for (i in 1:length(f)) assign(f[i], haven::read_sas(paste0(path.import,f[i])))
+
+     
+``` 
+
+#  manage the data
+
+```{r manage, results='hide',eval=TRUE , echo=TRUE}  
+ 
+
+  
+```
+
+\clearpage
+
+## COMPUTING ENVIRONMENT
+
+```{r computing envirnoment, echo=FALSE}
+
+      options(width=70)
+     # opts_knit$set(root.dir = wd.code)   ##THIS SETS YOUR WORKING DIRECTORY
+      sessionInfo()
+      print(getwd())
+      stopTime<-proc.time()
+
+```
+
+This took `r (stopTime-startTime)[1][[1]]` seconds to execute.
+
+    
+```{r knitr purl code, results='hide'}
+
+    # move stangle R file to a folder in GPS
+    # put this at bottom and give it the same name as the RMD file , replace any blanks with underscore
+    # https://amywhiteheadresearch.wordpress.com/2014/11/12/copying-files-with-r/
+
+    # https://stackoverflow.com/questions/21101573/need-the-filename-of-the-rmd-when-knitr-runs
+    x <- knitr::current_input() 
+    x
+    rcode <-  gsub(' ','_', trimws(x))                       # replace blank with underscore, this is needed
+    file.copy(rcode, path.script,  overwrite=TRUE)           # make a copy of the rcode in a folder of choice
+    
+    
+    # saving the html to GPS!
+    # https://stackoverflow.com/questions/28894515/rmarkdown-directing-output-file-into-a-directory
+    # x1 <- gsub('\\.Rmd','\\.html', trimws(x)) 
+    # rcode <-  gsub(' ','_', trimws(x1))   
+    # knit: (function(inputFile, encoding) { 
+    #   out_dir <- path.script;
+    #   rmarkdown::render(inputFile,
+    #                     encoding=encoding, 
+    #                     output_file=file.path(dirname(x), out_dir, rcode)) })
+    # 
+    
+    #http://felixfan.github.io/extract-r-code/
+    #https://www.rdocumentation.org/packages/knitr/versions/1.19/topics/knit
+    #y <- knitr::current_input()
+    #knitr::purl(y, output = "test.R", documentation = 2)
+ 
+    input  = knitr::current_input()  # filename of input document
+    cat("checking purl..")
+    input
+    output = paste(tools::file_path_sans_ext(input), 'R', sep = '.')
+    output
+    #tools::file_path_sans_ext(input)
+    knitr::purl(input,paste0(path.script,output),documentation=1,quiet=T)  ##where do we wish to save R code?
+    getwd()
+    
+```     
+ 
+
+```{r chunk output code,echo=FALSE, results='hide', eval=FALSE}
+
+# https://stackoverflow.com/questions/25800604/how-to-purl-each-chunks-in-rmd-file-to-multiple-r-files-using-knitr
+
+    library("knitr")
+    # p <- purl("test.Rmd")
+    p <-purl(knitr::current_input())
+    read_chunk(p)
+    chunks <- knitr:::knit_code$get()
+    
+    invisible(mapply(function(chunk, name) {
+        writeLines(c(paste0("## ----",name,"----"), chunk), paste0(path.script,"",name,".R"))
+    }, chunks, names(chunks)))
+    unlink(p)                   # delete the original purl script
+    knitr:::knit_code$restore() # remove chunks from current knitr session
+
+ 
+ setwd(wd.code)  
+ 
+# file.rename(from = file.path(wd.code, output), to = file.path(path.script, output))
+ 
