@@ -204,11 +204,13 @@ We first show how to calculate at a specified time, changes in mortality % and h
   A  <-runif(1,1,3)              # random, this will be a constant hazard rate
   B  <-runif(1,1,3)              # random, second curve rate
   
-  lambda   <- min(A,B)           # best  survival
+  lambda  <- min(A,B)           # best  survival
   lambda2 <- max(A,B)            # worst survival blue curve
 
+  # for plotting 
   end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
   s <- seq(0,end, length.out = end+1)          # reasonable x axis
+  
   p <- runif(1)                                # random survival prop
   ms <- -log(1-p)/lambda                       # survival time  for survival prop p
 
@@ -233,12 +235,19 @@ We first show how to calculate at a specified time, changes in mortality % and h
                      ylab='Survival probability', xlab='', col="blue", 
                      sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" ,  cex.sub=.8)
 
-  abline(v=ms )   
+ # abline(v=ms )   
   abline(h=1-p , col='blue' , lty=2)
+  abline(h=mort1 , col='red' , lty=2)     
+  
+  lines(c(ms ,ms), c(0 , 1-p) , col='black')
+   
+  
+  
+  
   #~~~~~~~~~~~~~~~~~~
   curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
         ylab='Survival probability', xlab='Time', col="red", add=TRUE)
-  abline(h=mort1 , col='red' , lty=2)      
+ 
   #~~~~~~~~~~~~~~~~~~
   text(x = end*.6, y = .95,  
        paste0("HR = log(Survival)[blue] / log(Survival)[red] = log("
@@ -258,11 +267,11 @@ We first show how to calculate at a specified time, changes in mortality % and h
              cex = .8)
   #~~~~~~~~~~~~~~~~~~
      # ratio of two survivals
-     A <- -log(1-p)/lambda2
-     B <- -log(1-p)/lambda
-      
-     A/B
-     lambda/lambda2
+     # A <- -log(1-p)/lambda2
+     # B <- -log(1-p)/lambda
+     #  
+     # A/B
+     # lambda/lambda2
 
 ``` 
 
@@ -295,7 +304,7 @@ We first show how to calculate at a specified time, changes in mortality % and h
           col="blue",
           sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
  
-   text(x = end*.6, y = .95,  
+   text(x = end*.5, y = .95,  
        paste0("HR at survival quantile ",formatz4(p),", ratio of survival times: red / blue = "
               ,formatz2(ref.time),             " / ",
               formatz2(trt.time),              " = ", 
@@ -312,10 +321,10 @@ We first show how to calculate at a specified time, changes in mortality % and h
        col = "black",
              cex = .8)
   #~~~~~~~~~~~~~~~~~~~
- abline(v= -log(p)/lambda, col='blue')  
  abline(h=p , col='black' , lty=2)
- abline(v= -log(p)/lambda2 , col='red')   
- 
+ lines(c(-log(p)/lambda2 , -log(p)/lambda2), c(0 , p) , col='red')
+ lines(c(-log(p)/lambda  , -log(p)/lambda),  c(0 , p) , col='blue')
+
  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,  
        ylab='Survival probability', xlab='Time', col="red", add=TRUE)
   
