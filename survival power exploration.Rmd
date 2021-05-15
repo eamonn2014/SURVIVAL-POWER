@@ -201,7 +201,7 @@ We first show how to calculate at a specified time, changes in mortality % and h
   A  <-runif(1,1,3)              # random, this will be a constant hazard rate
   B  <-runif(1,1,3)              # random, second curve rate
   
-  lambda  <- min(A,B)           # best  survival
+  lambda  <- min(A,B)            # best  survival
   lambda2 <- max(A,B)            # worst survival blue curve
   hr <- lambda/lambda2
   
