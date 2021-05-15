@@ -249,7 +249,7 @@ We first show how to calculate at a specified time, changes in mortality % and h
                      ylab='Survival probability', xlab='', col="red", 
                      sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" ,  cex.sub=.8)
 
-  abline(v=ms )  
+  abline(v=ms )   
   abline(h=1-p , col='red' , lty=2)
   #~~~~~~~~~~~~~~~~~~
   curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,    # main=paste0("S(t), rate = ",lambda2,""),
