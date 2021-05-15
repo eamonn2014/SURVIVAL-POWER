@@ -197,40 +197,24 @@ We first show how to calculate at a specified time, changes in mortality % and h
 
 ```{r exp, results='hide',eval=TRUE , echo=TRUE}
       
-  # x <- list.files(path.import,".")   # get the names of all files in this dir.
-  # #
-  # f <- x[grep("\\.sas7bdat\\b",x)]  # get the names that include sas7bdat
-  # 
-  # f <- c("zzzzz.sas7bdat","yyyy.sas7bdat","xxxx.sas7bdat")
-  # 
-  # # assign names to objects and call the object the actual name
-  # for (i in 1:length(f)) assign(f[i], haven::read_sas(paste0(path.import,f[i])))
+  # tereneau book p62
+  # In the case of exponential distributions, the reciprocal of the ratio of
+  # medians (or any other quantile) gives e(b). For example, if we want to
+  # detect a 50% increase in median survival time, we would set e(Beta) = 2/3. 
+  A  <-runif(1,1,3)              # random, this will be a constant hazard rate
+  B  <-runif(1,1,3)              # random, second curve rate
+  
+  lambda   <- min(A,B)           # best  survival
+  lambda2 <- max(A,B)            # worst survival blue curve
 
-  lambda  <-runif(1,1,3)                       # random, this will be a constant hazard rate
-  lambda2 <-runif(1,1,3)                       # random, second curve rate
-  
-  #new
-  A  <-runif(1,1,3)                       # random, this will be a constant hazard rate
-  B  <-runif(1,1,3)                       # random, second curve rate
-  lamda   <- min(A,B)           # best survival
-  lambda2 <- max(A,B)           # worst surivial red curve
-  #end new
-  
   end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
   s <- seq(0,end, length.out = end+1)          # reasonable x axis
-  #p <- 0.5                                    # choose survival prop
   p <- runif(1)                                # random survival prop
   ms <- -log(1-p)/lambda                       # survival time  for survival prop p
 
   (time1 <- ms )
   (mort1 <-  exp(-lambda2*  ms  ) ) # e^-lambda*t
-  
-  # tereneau book p62
-  # In the case of exponential distributions, the reciprocal of the ratio of
-  # medians (or any other quantile) gives e(b). For example, if we want to
-  # detect a 50% increase in median survival time, we would set e(Beta) = 2/3. 
-  (log(1-p)/log(mort1))
-  lambda/lambda2
+ 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Survival function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   zp <- function(x, shape, scale)
@@ -238,34 +222,34 @@ We first show how to calculate at a specified time, changes in mortality % and h
   
   #~~~~~~~~~~~~~~~~~~
   curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
-         main=paste0("A change in survival probability at fixed time:\n S(t) for exponential rates ",
-                     formatz2(lambda),         " (red) and ",
-                     formatz2(lambda2),        " (blue): HR= ",
-                     formatz2(lambda/lambda2), "\nMortalities at time ",
+         main=paste0("A change in survival probability at fixed time\n Exponential rates ",
+                     formatz2(lambda),         " (blue) and ",
+                     formatz2(lambda2),        " (red): HR= ",
+                     formatz2(lambda/lambda2), " (blue/red) \nMortalities (1-S(t)) at time ",
                      formatz4(ms),             ": ",
-                     formatz2(p*100),          "% (red) and ", 
-                     formatz2((1-mort1)*100 ), "% (blue)" ), 
+                     formatz2(p*100),          "% (blue) and ", 
+                     formatz2((1-mort1)*100 ), "% (red)" ), 
                      cex.main = .8,
-                     ylab='Survival probability', xlab='', col="red", 
+                     ylab='Survival probability', xlab='', col="blue", 
                      sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" ,  cex.sub=.8)
 
   abline(v=ms )   
-  abline(h=1-p , col='red' , lty=2)
+  abline(h=1-p , col='blue' , lty=2)
   #~~~~~~~~~~~~~~~~~~
-  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,    # main=paste0("S(t), rate = ",lambda2,""),
-        ylab='Survival probability', xlab='Time', col="blue", add=TRUE)
-  abline(h=mort1 , col='blue' , lty=2)                      # think of exp(-lambda*t) where t is the define line above
+  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
+        ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+  abline(h=mort1 , col='red' , lty=2)      
   #~~~~~~~~~~~~~~~~~~
-  text(x = end*.6, y = .95, #(1-p)*1.1, #.7,                # Text with different color & size
-       paste0("HR = log(Survival)[red] / log(Survival)[blue] = log("
+  text(x = end*.6, y = .95,  
+       paste0("HR = log(Survival)[blue] / log(Survival)[red] = log("
               ,formatz2(1-p),                  ") / log(",
               formatz2(mort1),                 ") = ", 
               formatz2( log(1-p)/log(mort1) ), ""),
        col = "black",#1b98e0",
        cex = .8)
   #~~~~~~~~~~~~~~~~~~
-  text(x = end*.537, y = .875, #mort1*.9, #.5,                # Text with different color & size
-       paste0(expression("HR = hazard rate[red] / hazard rate[blue] = "),
+  text(x = end*.537, y = .875,  
+       paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
               formatz2(lambda),         " / ",
               formatz2(lambda2),        " = ",
               formatz2(lambda/lambda2), ""
@@ -287,48 +271,32 @@ We first show how to calculate at a specified time, changes in mortality % and h
 ```{r exp2, results='hide',eval=TRUE , echo=TRUE}
       
  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ## instead of survival mortality lets postulated change in the time for survival  
- #a 50% increase in median survival time, we would set e(3 =
- 
-
-
-# temp code these out
-# fact. <-     runif(1) # random % increase in time for survival of this means
-# lambda2  <-  lambda/(1+fact.)  # use lambda from previous chunk
-# hr    <-     lambda2/lambda
- 
- 
- # ref.time <- -log(p)/lambda
- # trt.time <- -log(p)/lambda2
  
  # new
- p <- mort1   # copy the blue 
- ref.time <- s1 <- -log(1-p)/lambda
- trt.time <- s2 <- -log(1-p)/lambda2 
- fact. <- perc.chg <- (1+(s1/s2-1))
- 
- s2
- s1
- s2*(1+(s1/s2-1))
- hr    <-     lambda/lambda2
- # end new
+ p          <- mort1  
+ ref.time   <- s1 <- ms 
+ trt.time   <- s2 <- -log(p)/lambda
+ fact.      <- (-log(p)/lambda)  / (-log(p)/lambda2) -1
+ hr         <- lambda/lambda2
  
  
  curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
-       main=paste0(  "A change in survival time fixed survival probability:\n S(t) for exponential rates ",
-          formatz2(lambda),    " (blue) and ",
-          formatz2(lambda2),   " (red). HR= ",
-          formatz2(hr),        " (blue/red)\n A survival probability of ",
-          formatz4(p),         " for the reference has survival time ",
+       main=paste0(  "A change in survival time S(t) at fixed survival probability:\nA survival probability of ",
+          formatz4(p),         " for the red reference curve has survival time ",
           formatz2( ref.time), ". \nA ",
           formatz2(fact.*100) ,"% increase in the survival time results in a survival time of ",
-          formatz2(trt.time),  " (red)"),  cex.main = .8,
+          formatz2(trt.time),  " (red)\nExponential rates ",
+          formatz2(lambda),    " (blue) and ",
+          formatz2(lambda2),   " (red). HR= ",
+          formatz2(hr),        " (blue/red)"
+          ),  
+          cex.main = .8,
           ylab='Survival probability',xlab='', 
           col="blue",
           sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
  
-   text(x = end*.6, y = .95, #p*1.2,              # Text with different color & size
-       paste0("HR at survival quantile ",formatz4(p),", ratio of survivals blue / red = "
+   text(x = end*.6, y = .95,  
+       paste0("HR at survival quantile ",formatz4(p),", ratio of survival times: red / blue = "
               ,formatz2(ref.time),             " / ",
               formatz2(trt.time),              " = ", 
               formatz2( ref.time/trt.time ),   ""),
@@ -336,12 +304,12 @@ We first show how to calculate at a specified time, changes in mortality % and h
        cex = .8)
  
   #~~~~~~~~~~~~~~~~~~
-  text(x = end*.52, y = .875, #mort1*.9, #.5,                # Text with different color & size
-       paste0(expression("HR = hazard rate[red] / hazard rate[blue] = "),
-              formatz2(lambda2)," / ",formatz2(lambda)," = "
-              ,formatz2(lambda2/lambda),""
+  text(x = end*.52, y = .875,  
+       paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+              formatz2(lambda)," / ",formatz2(lambda2)," = "
+              ,formatz2(lambda/lambda2),""
               ),
-       col = "black",#1b98e0",
+       col = "black",
              cex = .8)
   #~~~~~~~~~~~~~~~~~~~
  abline(v= -log(p)/lambda, col='blue')  
