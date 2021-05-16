@@ -241,7 +241,7 @@ We first show how to calculate at a specified time, changes in mortality % and h
          ),
          col = "black", 
          cex = .8)
-  }
+   }
    SurvP2 <- function( lambda=0.07701635, lambda2=0.11552453,  p=.5) {
   
   # worst survival blue curve
@@ -298,8 +298,7 @@ We first show how to calculate at a specified time, changes in mortality % and h
   curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,  
         ylab='Survival probability', xlab='Time', col="red", add=TRUE)
 }
-  
-   survP()
+   survP( 0.07701635,0.11552453,0.5)
    SurvP2()
   
 ```
@@ -461,8 +460,9 @@ Reproduce Nquery example “Using an unstratified log-rank test at the one-sided
          noncomp.c = 0, noncomp.i = 0)
 
   
-  survP(0.07701635,0.11552453,.5) # intervention haz, ctrl hazard, Surv prob in ctrl
-  
+  survP(0.07701635,0.11552453,.5)  # intervention haz, ctrl hazard, Surv prob in ctrl
+  SurvP2(0.07701635,0.11552453,.5) # intervention haz, ctrl hazard, Surv prob in ctrl
+
 
  
 ``` 
@@ -483,7 +483,10 @@ cpower(tref=1, n=444, mc=d0, r= 100*(d0 - d1)/d0, tmin=1,
        accrual=1, alpha=.05, pr=TRUE,
        noncomp.c = 0, noncomp.i = 0)
   
-  
+    # the hazards come from cpower function
+    survP(1.2378744 ,   0.9162907 ,.29)  # intervention haz, ctrl hazard, Surv prob in ctrl
+SurvP2(1.2378744 ,   0.9162907 ,.29) # intervention haz, ctrl hazard, Surv prob in ctrl
+
   
 ```
 
