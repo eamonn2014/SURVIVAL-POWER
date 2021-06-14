@@ -447,7 +447,7 @@ survplot5 <- function( CSurvProp=.4, time1=1, AAR=50 ) {  #
 
 survplot5(  CSurvProp=.5, time1=6, AAR=3 ) # 
  
-
+  
 
 
 
