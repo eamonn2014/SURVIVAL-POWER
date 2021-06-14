@@ -177,7 +177,7 @@ survplot1(  CSurvProp=.5, time1=23, surv.perc.change.improvement= 15 )    # 15% 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # function 2 plot. ARR given  prob survival at fixed time
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# blue control, # red treatment
+# blue control, # red treatment  
 
 survplot2<- function( CSurvProp=.4, time1=1, ARR=5 ) {  #
   
