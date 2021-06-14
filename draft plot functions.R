@@ -1,4 +1,11 @@
 
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# A suite of functions to visualize two survival curves assuming exponential distributions
+# JUNE 2021
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
 rm(list=ls())
 # rounding functions
 p2 <- function(x) {formatC(x, format="f", digits=2)}
@@ -32,10 +39,57 @@ formatz4 <- function(x){
   sprintf(x, fmt = '%#.4f')  
 }
 
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+##THIS IS ADAPTED FROM  https://stattools.crab.org/R/Survival_Converter.html
+
+# Converts survival proportion and hazard rate to time t. 
+# Converts survival proportion at time t to a hazard rate.
+# Converts survival proportion at time t to a hazard rate.
+
+SF <- function(find, p_survival,  hazard_rate, time) {
+  
+  
+  if (find == "Surv time") {
+    
+    time = -(log(p_survival)) / hazard_rate
+    time = round(time, digits = 3)
+    
+    res<- paste0("Assuming an exponential distribution, a hazard rate of ",hazard_rate," and a a survival proportion of ",p_survival," dictates a survival time of ",time )
+    
+  } else if (find == "Survival probability") {
+    
+    survival = exp(-time * hazard_rate)
+    survival = round(survival, digits = 3)
+    
+    res <- paste0("Assuming an exponential distribution, a hazard rate of ",hazard_rate," at time ",time," dictates a survival probability of ",survival)
+    
+  } else if (find == "Hazard_Rate") { 
+    
+    hazard = -(log(p_survival)) / time
+    hazard = round(hazard, digits = 3)
+    
+    res <- paste0("Assuming an exponential distribution, a survival proportion of ",p_survival," at time ",time," dictates a hazard rate of ",hazard)
+  }
+  
+  return(res)
+} 
+
+
+# bullet 1 find time given survival probability and hazard
+SF(find="Surv time",             p_survival=.5,  hazard_rate=2) 
+
+# 4th, find survival prob given time and hazard
+SF(find="Survival probability",  hazard_rate=2, time=0.347) 
+
+# bullet 1 and 2 find hazard given survival probability and time
+SF(find="Hazard_Rate",           p_survival=.5,  time=0.347) 
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# function % change in survival 
+# function 1 to plot % change in survival 
+# you are given a percentile and time t, then you are given a % change in survival at time t
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@# 
-#you are given a percentile and time t, then you are given a % change in survival at time t
 
 # blue control
 # red treatment
@@ -121,7 +175,7 @@ SF(find="Hazard_Rate",           p_survival=.4,  time=10)
 survplot1(  CSurvProp=.5, time1=23, surv.perc.change.improvement= 15 )    # 15% better, red higher
      
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# function 2 ARR given  prob survival at fixed time
+# function 2 plot. ARR given  prob survival at fixed time
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # blue control, # red treatment
 
@@ -199,7 +253,7 @@ survplot2(  CSurvProp=.4, time1=10, ARR=-15 ) #
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# function 3 given survival percentile, time and HR 
+# function 3 plot. given survival percentile, time and HR 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # blue control, red treatment
 
@@ -269,16 +323,13 @@ survplot3<- function( CSurvProp=.4, time1=1, HR=2 ) {  #
 survplot3( CSurvProp=.4, time1=1, HR=2 )  
 survplot3( CSurvProp=.6, time1=9, HR=.8 )  
 survplot3( CSurvProp=.5, time1=6, HR=2/3 )  
+
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# function 4  
+# function 4  plot given surv. prob, time and % change in time
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # blue control, red treatment
 
-
-# % change in time
-
-# blue control
-# red treatment
 
 survplot4 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) {  #
   
@@ -368,9 +419,9 @@ survplot4(  CSurvProp=.4, time1=10, surv.perc.change.improvement=-50 ) #
 survplot4(  CSurvProp=.5, time1=6, surv.perc.change.improvement=50 ) 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# absolute change in time
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# function 5  plot given surv. prob, time and ansolute change in time
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # blue control
@@ -447,8 +498,8 @@ survplot5 <- function( CSurvProp=.4, time1=1, AAR=50 ) {  #
 
 survplot5(  CSurvProp=.5, time1=6, AAR=3 ) # 
  
-
-
+  
+#@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 
