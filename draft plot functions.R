@@ -1,5 +1,5 @@
 
-
+ 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # A suite of functions to visualize two survival curves assuming exponential distributions
 # JUNE 2021
@@ -247,9 +247,9 @@ survplot2<- function( CSurvProp=.4, time1=1, ARR=5 ) {  #
   
 }
 
-survplot2(  CSurvProp=.4, time1=10, ARR=1 ) #
+survplot2(  CSurvProp=.4, time1=1, ARR=1 ) #
 
-survplot2(  CSurvProp=.4, time1=10, ARR=-15 ) #
+survplot2(  CSurvProp=.4, time1=1, ARR=-15 ) #
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -370,7 +370,7 @@ survplot4 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) 
         sub= "Time\n*In the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   abline(h=p , col='blue' , lty=2)                 # line showing survival percentile in ctrl
-  pp <- ifelse(p<p2,p2,p)                          # v line extends to higher curve
+ # pp <- ifelse(p<p2,p2,p)                          # v line extends to higher curve
   lines(c(time1 ,time1), c(0 , p) , col='blue', lty=2)  # vertical line
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
@@ -400,8 +400,8 @@ survplot4 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) 
 }
 
 
-survplot4(  CSurvProp=.4, time1=10, surv.perc.change.improvement=50 ) # 
-survplot4(  CSurvProp=.4, time1=10, surv.perc.change.improvement=-50 ) #  
+survplot4(  CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) # 
+survplot4(  CSurvProp=.4, time1=1, surv.perc.change.improvement=-50 ) #  
  
 
 # Reproduce Nquery example 
@@ -466,7 +466,7 @@ survplot5 <- function( CSurvProp=.4, time1=1, AAR=50 ) {  #
         sub= "Time\n*In the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   abline(h=p , col='blue' , lty=2)                 # line showing survival percentile in ctrl
-  pp <- ifelse(p<p2,p2,p)                          # v line extends to higher curve
+  #pp <- ifelse(p<p2,p2,p)                          # v line extends to higher curve
   lines(c(time1 ,time1), c(0 , p) , col='blue', lty=2)  # vertical line
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
@@ -508,105 +508,108 @@ survplot5(  CSurvProp=.5, time1=6, AAR=3 ) #
 
 
 
-set.seed(333)
-simfunf <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ) { # , seed=NULL ) {
-  
-  # p=1
-  # hr=2/3
-  # n=352/2
-  # acc=74/4
-  # fup=39/4
-  # lambdaC= -log(.5)/6
-  # alpha=0.05
-  
-  #
-  #if (!is.null(seed)) set.seed(seed)
-  
-  At <- T1 <- T2 <- D1 <- D2 <- T1a <- T2a <- time1 <- time2 <- l <- NULL
-  
-  At= acc + fup
-  
-  h  <- lambdaC #                    # hazard for exponential using med surv, remeber -log(0.5) is the same 
-  ms <- 1/h*(-log(0.5))^(1)          # lets show we know how to recreate median survival
-  T1 <- 1/h*(-log(runif(n)))^(p)     # weibull times, p=1 so exp, lambda=h
-  
-  ms2<- ms*hr                        # use the HR to get hazard in other group
-  h2 <- -log(0.5)/ms2
-  T2 <- 1/h2*(-log(runif(n)))^(p)    # create n weibull times, p=1 so exp, lambda=h2
-  
-  # lambdaC hazard of censoring
-  C1 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
-  C2 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
-  
-  a1 <- runif(n,0,acc) # use these for random uniform accrual times
-  a2 <- runif(n,0,acc)
-  
-  D1 = T1+a1   # add rand uniform to weibull events
-  D2 = T2+a2
-  
-  T1a <- ifelse(D1>At, At,  T1 )  # make sure no time + accrual entry exceeds accrual + follow up
-  T2a <- ifelse(D2>At, At,  T2 )  # and replace [rand uniform to weibull events] with original time to event time
-  
-  
-  # by pass censoring, so no censoring!
-  C1 = rep(100000,n)    # censoring time, basically no censoring
-  C2 = rep(100000,n)    # censoring time  basically no censoring
-  
-  time1 = pmin(T1a,C1)  # observed time is min of censored and true grp0
-  time2 = pmin(T2a,C2)  # observed time is min of censored and true grp1
-  
-  event1 = time1==T1a   
-  event2 = time2==T2a   
-  
-  
-  event = c(event1,event2)
-  Ti = c(time1,time2)
-  
-  event <- ifelse(Ti >= At, 0, event)
-  Ti <-     ifelse(Ti >= At, At, Ti)
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  dd <- data.frame(T= Ti, 
-                   x = c(rep(1,n), rep(0,n)), 
-                   event = event )
-  
-  l = coxph(Surv(T, event) ~ x, dd)
-  
-  o <- anova(l)$`Pr(>|Chi|)`[2] # P-value from likelihood ratio test
-  
-  pow <- o<=alpha
-  
-  u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority
-  
-  n <- 100*(l$nevent)/l$n  
-  
-  p <- exp(l$coefficients[[1]])
-  
-  ev <- l$nevent  # no of events
-  
-  L <- summary(l)
-  sd. <- L$coefficients[,"se(coef)"]
-  
-  h1=h
-  h2=h2
-  
-  c(h1,h2,ev,n,p,u,o, sd. , pow)
-}
-
-require(kableExtra)
-simres<- NULL
-set.seed(6987)
-simres <- plyr::raply(9999,simfunf(p=1, hr=3/2, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ))
-simres <- as.data.frame(simres)
-names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events", "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value","SD log HR","Power")
-#options(digits=3)
-r <- (apply(simres,2, mean))
-#r<-as.data.frame(r)
-#print(kable(t(r)))
-#print((t(r)))
-#options(digits=7)
-
-
-print(r, digits=6)
+# set.seed(333)
+# simfunf <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ) { # , seed=NULL ) {
+#   
+#   # p=1
+#   # hr=2/3
+#   # n=352/2
+#   # acc=74/4
+#   # fup=39/4
+#   # lambdaC= -log(.5)/6
+#   # alpha=0.05
+#   
+#   #
+#   #if (!is.null(seed)) set.seed(seed)
+#   
+#   At <- T1 <- T2 <- D1 <- D2 <- T1a <- T2a <- time1 <- time2 <- l <- NULL
+#   
+#   At= acc + fup
+#   
+#   h  <- lambdaC #                    # hazard for exponential using med surv, remeber -log(0.5) is the same 
+#   ms <- 1/h*(-log(0.5))^(1)          # lets show we know how to recreate median survival
+#   T1 <- 1/h*(-log(runif(n)))^(p)     # weibull times, p=1 so exp, lambda=h
+#   mean(T1)
+#   
+#   ms2<- ms*hr                        # use the HR to get hazard in other group
+#   h2 <- -log(0.5)/ms2
+#   T2 <- 1/h2*(-log(runif(n)))^(p)    # create n weibull times, p=1 so exp, lambda=h2
+#   
+#   mean(T2)
+#   
+#   # lambdaC hazard of censoring
+#   C1 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+#   C2 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+#   
+#   a1 <- runif(n,0,acc) # use these for random uniform accrual times
+#   a2 <- runif(n,0,acc)
+#   
+#   D1 = T1+a1   # add rand uniform to weibull events
+#   D2 = T2+a2
+#   
+#   T1a <- ifelse(D1>At, At,  T1 )  # make sure no time + accrual entry exceeds accrual + follow up
+#   T2a <- ifelse(D2>At, At,  T2 )  # and replace [rand uniform to weibull events] with original time to event time
+#   
+#   
+#   # by pass censoring, so no censoring!
+#   C1 = rep(100000,n)    # censoring time, basically no censoring
+#   C2 = rep(100000,n)    # censoring time  basically no censoring
+#   
+#   time1 = pmin(T1a,C1)  # observed time is min of censored and true grp0
+#   time2 = pmin(T2a,C2)  # observed time is min of censored and true grp1
+#   
+#   event1 = time1==T1a   
+#   event2 = time2==T2a   
+#   
+#   
+#   event = c(event1,event2)
+#   Ti = c(time1,time2)
+#   
+#   event <- ifelse(Ti >= At, 0, event)
+#   Ti <-     ifelse(Ti >= At, At, Ti)
+#   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   dd <- data.frame(T= Ti, 
+#                    x = c(rep(1,n), rep(0,n)), 
+#                    event = event )
+#   
+#   l = coxph(Surv(T, event) ~ x, dd)
+#   
+#   o <- anova(l)$`Pr(>|Chi|)`[2] # P-value from likelihood ratio test
+#   
+#   pow <- o<=alpha
+#   
+#   u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority
+#   
+#   n <- 100*(l$nevent)/l$n  
+#   
+#   p <- exp(l$coefficients[[1]])
+#   
+#   ev <- l$nevent  # no of events
+#   
+#   L <- summary(l)
+#   sd. <- L$coefficients[,"se(coef)"]
+#   
+#   h1=h
+#   h2=h2
+#   
+#   c(h1,h2,ev,n,p,u,o, sd. , pow)
+# }
+# 
+# require(kableExtra)
+# simres<- NULL
+# set.seed(6987)
+# simres <- plyr::raply(9999,simfunf(p=1, hr=3/2, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ))
+# simres <- as.data.frame(simres)
+# names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events", "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value","SD log HR","Power")
+# #options(digits=3)
+# r <- (apply(simres,2, mean))
+# #r<-as.data.frame(r)
+# #print(kable(t(r)))
+# #print((t(r)))
+# #options(digits=7)
+# 
+# 
+# print(r, digits=6)
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -636,5 +639,203 @@ print(r, digits=6)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  # try and strealine the funaction
 
+  set.seed(14072021)
+  simfunfx <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ) { # , seed=NULL ) {
+    
+    # p=1
+    # hr=2/3
+    # n=352/2
+    # acc=74/4
+    # fup=39/4
+    # lambdaC= -log(.5)/6
+    # alpha=0.05
 
+    #
+    #if (!is.null(seed)) set.seed(seed)
+    
+    At <- T1 <- T2 <- D1 <- D2 <- T1a <- T2a <- time1 <- time2 <- l <- NULL
+    
+    At= acc + fup
+    
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    h  <- lambdaC #                    # hazard for exponential using med surv, remeber -log(0.5) is the same 
+    ms <- 1/h*(-log(0.5))^(p)          # lets show we know how to recreate median survival
+    T1 <- 1/h*(-log(runif(n)))^(p)     # weibull times, p=1 so exp, lambda=h
+    #T1 <- ((-log(runif(n)))/h)^(1/p) 
+    #~~~~~~~~~~~check
+    mean(T1) # 1/h
+    1/h
+    median(T1)  #expect 6
+     
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ms2<- ms/hr                        # use the HR to get hazard in other group
+    h2 <- -log(0.5)/ms2
+    T2 <- 1/h2*(-log(runif(n)))^(p)    # create n weibull times, p=1 so exp, lambda=h2
+    #~~~~~~check
+    mean(T2)
+    1/h2
+    median(T2)  # expect 9
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    # lambdaC hazard of censoring
+    C1 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+    C2 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+    
+    a1 <- runif(n,0,acc) # use these for random uniform accrual times
+    a2 <- runif(n,0,acc)
+    
+    D1 = T1+a1   # add rand uniform to weibull events
+    D2 = T2+a2
+    
+    T1a <- ifelse(D1>At, At,  T1 )  # make sure no time + accrual entry exceeds accrual + follow up
+    T2a <- ifelse(D2>At, At,  T2 )  # and replace [rand uniform to weibull events] with original time to event time
+    
+    
+    # by pass censoring, so no censoring!
+    C1 = rep(100000,n)    # censoring time, basically no censoring
+    C2 = rep(100000,n)    # censoring time  basically no censoring
+    
+    time1 = pmin(T1a,C1)  # observed time is min of censored and true grp0
+    time2 = pmin(T2a,C2)  # observed time is min of censored and true grp1
+    
+    event1 = time1==T1a   # ctrl
+    event2 = time2==T2a   # trt
+    
+    
+    event = c(event1,event2)  # ctrl, trt
+    Ti =     c(time1,time2)
+    
+    # equal to means we have censored, dont really need > , = will do
+    event <- ifelse(Ti >= At, 0, event) # if time >= total study time, censor event
+    Ti <-     ifelse(Ti >= At, At, Ti)  # if time > total study time, set time to total study time
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    dd <- data.frame(T= Ti, 
+                     x = c(rep(0,n), rep(1,n)),  # change so ctrl=0 we are comparing trt/ctrl
+                     event = event )
+    
+    l = coxph(Surv(T, event) ~ x, dd)
+    
+    # log rank p value
+    #ll = survdiff(formula = Surv(T, event) ~ x,dd)
+    #broom::glance(ll)$p.value
+    
+    # get score pvalue same as log rank pvalue
+    summcph <- summary(l)
+    o  <- summcph$sctest["pvalue"][[1]]
+    
+    #o <- anova(l)$`Pr(>|Chi|)`[2] # P-value from likelihood ratio test
+    
+    pow <- o<=alpha
+    
+    u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority
+    
+    n <- 100*(l$nevent)/l$n  
+    
+    p <- exp(l$coefficients[[1]])
+    
+    ev <- l$nevent  # no of events
+    
+    L <- summary(l)
+    sd. <- L$coefficients[,"se(coef)"]
+    
+    h1=h
+    h2=h2
+    
+    c(h1,h2,ev,n,p,u,o, sd. , pow)
+  }
+  
+  require(kableExtra)
+  simres<- NULL
+  #set.seed(6987)
+  simres <- plyr::raply(19999,simfunfx(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ))
+  simres <- as.data.frame(simres)
+  names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events", "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value","SD log HR","Power")
+  #options(digits=3)
+  r <- (apply(simres,2, mean))
+  #r<-as.data.frame(r)
+  #print(kable(t(r)))
+  #print((t(r)))
+  #options(digits=7)
+  
+  
+  print(r, digits=6)
+  
+# STATISTICS IN MEDICINE
+  # Statist. Med. 2005; 24:1713–1723
+  # Published online 22 February 2005 in Wiley InterScience (www.interscience.wiley.com). DOI: 10.1002/sim.2059
+  # Generating survival times to simulate Cox proportional hazards models
+  # Ralf Bender
+  
+  
+  #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  
+  
+  
+  # Example 7 Stata survival manual, p353 include accrual and follow up in our simulation
+  # stpower exponential 0.03, hratio(0.6) power(0.9) aperiod(20) fperiod(15)
+  
+  simres <- plyr::raply(1000,simfunfx(p=1, hr=.6, n=190,  lambdaC=.03, acc=20, fup=15, alpha=.05))
+  simres <- as.data.frame(simres)
+   names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events", "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value","SD log HR","Power")
+  #options(digits=3)
+  r <- (apply(simres,2, mean))
+  #r<-as.data.frame(r)
+  #print(kable(t(r)))
+  #print((t(r)))
+  #options(digits=7)
+  
+  
+  print(r, digits=6)
+  
+ # Example 7 Stata survival manual, p353 repeat with cpower function
+  
+  hr=.6
+  h  <- .03  
+  time <- 1/h*(-log(1-0.5))^(1) 
+  d0=.5
+  
+  d1 <- morti(d0=d0, hr= hr, time=time)
+  
+  cpower(tref=time, n=190*2, mc=d0, r=100*(d0 - d1)/d0, accrual=20, tmin=15, 
+         noncomp.c=0, noncomp.i=0) #?
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
