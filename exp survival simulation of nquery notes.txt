@@ -1,0 +1,14 @@
+0 activate parameters to step through simulation code
+1 duration of study 28.25 months
+2 use the ctrl hazard to simulate survival times (show them T1)
+3 check we are on the right track, sampling variation of course
+4 do the same for the intervention group
+5 censoring (we will ignore as it is assumed non informative and so the same in both groups)
+6 random uniform accrual time 0 and 18.5
+7 add accrual to our random uniform to weibull events
+8 make sure we censor if event is beyond study duration
+9 make censoring time extremely large so they have no impact
+10 observed time is min of censored and event (no effect here)
+11 If event occurs >= duration time give 0 other wise 1
+12 censoring variable
+13 put into data frame...analyse
