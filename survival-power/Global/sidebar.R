@@ -15,7 +15,7 @@ dashboardSidebar(
              menuSubItem("xxx", tabName="xxx")),
     
     menuItem("test2",
-             menuSubItem("yyy", tabName="yyy"))
+             menuSubItem("yyy", tabName="yyy")) 
     
   )
 )
