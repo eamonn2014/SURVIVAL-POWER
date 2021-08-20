@@ -1,0 +1,1 @@
+header <- dashboardHeader(title ="Survival Power Examples", titleWidth=400)
