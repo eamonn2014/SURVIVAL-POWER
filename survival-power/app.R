@@ -27,7 +27,7 @@ body <- dashboardBody(
         
     mod_barplot_ui("barplot_1"),
     
-    )   
+    )    
 )
 
 #IU~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
