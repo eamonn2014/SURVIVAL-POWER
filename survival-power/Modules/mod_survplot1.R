@@ -67,7 +67,7 @@ tabItem("survplot1",
     
     conditionalPanel(condition="input.PBox == 'A'",
                      ns=ns, column(width=12,
-                                   plotlyOutput(ns("survplot1")))),
+                                   plotOutput(ns("survplot1")))),
   ),
   
   #~~~~~~~~~~~~~~~~
@@ -87,13 +87,9 @@ mod_survplot1_server <- function(input, output, session){
   
   ns <- session$ns
   
-  output$survplot1 <- renderPlotly({
+  output$survplot1 <- renderPlot({
 
-      pp <- ggplot(xx, aes(x = percentP , y = density, fill = status)) +
-        geom_boxplot() +
-        facet_wrap(~percentP, scales = "free_x") 
-      
-     ggplotly(pp)
+    survplot1(  CSurvProp=.4, time1=10, surv.perc.change.improvement=-15 ) # %15 worse, red low
   
   
     })

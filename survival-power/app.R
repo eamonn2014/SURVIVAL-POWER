@@ -19,7 +19,7 @@
 
 # import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources here:
 
-    source("~/Survival-power/survival-power/Modules/mod_boxplot.R")  # do something here
+    source("~/Survival-power/survival-power/Modules/mod_boxplot.R")    # do something here
     source("~/Survival-power/survival-power/Modules/mod_survplot1.R")  # do something here
 
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
