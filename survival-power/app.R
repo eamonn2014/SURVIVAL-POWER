@@ -20,14 +20,15 @@
 # import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources here:
 
     source("~/Survival-power/survival-power/Modules/mod_boxplot.R")  # do something here
-
+    source("~/Survival-power/survival-power/Modules/mod_survplot1.R")  # do something here
 
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     body <- dashboardBody(
         
         tabItems(
             
-        mod_boxplot_ui("boxplot_1")
+        mod_boxplot_ui("boxplot_1"),
+        mod_survplot1_ui("survplot_1")
         
         )    
     )
@@ -39,6 +40,7 @@
     server <- function(input, output, session) {
         
         callModule(mod_boxplot_server, "boxplot_1")
+        callModule(mod_survplot1_server, "survplot_1")
         
     }
  

@@ -17,6 +17,9 @@ dashboardSidebar(
     menuItem("charts",
              menuSubItem("Boxplot", tabName="Boxplot")),  # must match
     
+    menuItem("Survival plots",
+             menuSubItem("Survival plot 1", tabName="survplot1")),  # must match
+    
     
     menuItem("test2",
              menuSubItem("yyy", tabName="yyy")) 
