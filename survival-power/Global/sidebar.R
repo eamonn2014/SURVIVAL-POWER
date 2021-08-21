@@ -15,7 +15,7 @@ dashboardSidebar(
              menuSubItem("xxx", tabName="xxx")),
     
     menuItem("charts",
-             menuSubItem("Boxplot", tabName="Boxplot")),
+             menuSubItem("Boxplot", tabName="Boxplot")),  # must match
     
     
     menuItem("test2",
