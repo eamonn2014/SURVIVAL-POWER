@@ -14,6 +14,10 @@ dashboardSidebar(
     menuItem("test",
              menuSubItem("xxx", tabName="xxx")),
     
+    menuItem("charts",
+             menuSubItem("Boxplot", tabName="Boxplot")),
+    
+    
     menuItem("test2",
              menuSubItem("yyy", tabName="yyy")) 
     
