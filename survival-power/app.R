@@ -1,31 +1,32 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
 # This is a top level file
 # load packages~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-source("    libraries.R")
+ 
+source("~/Survival-power/survival-power/Global/libraries.R")
 
 # run global file , mostly R code~~~~~~~~~~~~~~~~~~~
 
-source("    GlobalR.R")
+source("~/Survival-power/survival-power/Global/global.R")  # generate data here
  
 # set header~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-header <- source("   header.R")$value
+header <- source("~/Survival-power/survival-power/Global/header.R")$value
 
 # set sidebar~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-sidebar <- source("   sidebar.R")$value
+sidebar <- source("~/Survival-power/survival-power/Global/sidebar.R")$value
 
-# import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources here:
 
-source("    mod_barplot.R")
+source("~/Survival-power/survival-power/Modules/mod_boxplot.R")  # do something here
+
 
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 body <- dashboardBody(
     
     tabItems(
         
-    mod_barplot_ui("barplot_1"),
+    mod_boxplot_ui("boxplot_1")
     
     )    
 )
@@ -35,7 +36,7 @@ ui <- dashboardPage(header, sidebar, body)
 
 # define server logic~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 server <- function(input, output, session) {
-    callModule(mod_barplot_server, "barplot_1")
+    callModule(mod_boxplot_server, "boxplot_1")
 }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
