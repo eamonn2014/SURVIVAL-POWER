@@ -43,7 +43,7 @@
         
         callModule(mod_boxplot_server, "boxplot_1")   # no commas required here
         callModule(mod_survplot1_server, "survplot_1")
-        callModule(mod_survplot1_server, "survplot_2")
+        callModule(mod_survplot2_server, "survplot_2")
     }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -25,9 +25,9 @@ tabItem("survplot2",
         column(width=3,
                
                # changed lables from h5("Postulated percentage change in survival probability")
-               numericInput(inputId=ns("CSurvProp_input"),                    label = c("Control survival probability"),                         value = 0.40, min=0.05,max=.95, step=.01),
-               numericInput(inputId=ns("Time_input"),                         label = c("Time at which we fix control survival probability"),         value = 10, step=1),
-               numericInput(inputId=ns("surv.perc.change.improvement_input"), label = c("Postulated percentage change in survival probability"), value = -15, min=-200,max=200, step=1),
+               numericInput(inputId=ns("CSurvProp_input"),                    label = c("Control survival probability"),                       value = 0.40, min=0.05,max=.95, step=.01),
+               numericInput(inputId=ns("Time_input"),                         label = c("Time at which we fix control survival probability"),  value = 1, step=1),
+               numericInput(inputId=ns("abs.surv.change_input"),              label = c("Postulated absolute change in survival probability"), value = 10, min=-100,max=100, step=1),
        
         ),
         ##~~~~~~~~~~~~~
@@ -63,8 +63,7 @@ mod_survplot2_server <- function(input, output, session){
     # this function id in the global.R file
     survplot2(  CSurvProp=input$CSurvProp_input, 
                 time1=input$Time_input, 
-                surv.perc.change.improvement=input$surv.perc.change.improvement_input )  
-  
+                ARR=input$abs.surv.change_input )
   
     }, height=700, width=1000)
 
