@@ -1,6 +1,15 @@
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
 # This is a top level file
+
+# steps to building app
+# 1 copy survplotx function to global.R
+# 2 update app.R modules/body/server
+# 3 create a new mod_????.R
+# 4 amend the new mod_????.R  function names output names
+# 5 update sidebar.R 
+
+
 # load packages~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
     source("~/Survival-power/survival-power/Global/libraries.R")

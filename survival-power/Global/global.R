@@ -1,6 +1,10 @@
 
 # Here we have coded up functions that we call in the mod_???.R files
 
+# git hub authentication, see accepted answer!
+# https://stackoverflow.com/questions/66065099/how-to-update-github-authentification-token-on-rstudio-to-match-the-new-policy
+
+
 # generate data, load in data etc
 
 
