@@ -1,6 +1,6 @@
 dashboardSidebar(
   
-  width=250,
+  width=350,  #250
   
   sidebarMenu(
     
@@ -17,8 +17,9 @@ dashboardSidebar(
     menuItem("charts",
              menuSubItem("Boxplot", tabName="Boxplot")),  # must match
     
+    # wrap the text
     menuItem("Survival plots",
-             menuSubItem("Survival plot 1", tabName="survplot1")),  # must match
+             menuSubItem(h4(HTML("A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1")),  # must match
     
     
     menuItem("test2",
@@ -26,3 +27,5 @@ dashboardSidebar(
     
   )
 )
+
+ 

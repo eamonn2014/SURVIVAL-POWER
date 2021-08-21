@@ -29,6 +29,39 @@ xx <-
     )
   )
 
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# formatting functions
+# https://stackoverflow.com/questions/3245862/format-numbers-to-significant-figures-nicely-in-r
+formatz <- function(x){
+  
+  if (!is.na(x)  ) {
+    
+    formatC(signif(x,digits=5), digits=5,format="fg", flag="#",big.mark=",")
+    
+  }
+  
+}
+
+formatz0 <- function(x){
+  sprintf(x, fmt = '%s')  
+}
+formatz1 <- function(x){
+  sprintf(x, fmt = '%#.1f')  
+}
+formatz2 <- function(x){
+  sprintf(x, fmt = '%#.2f')  
+}
+formatz00 <- function(x){
+  round(x,0) 
+}
+formatz4 <- function(x){
+  sprintf(x, fmt = '%#.4f')  
+}
+
+
+#~@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # function 1 to plot % change in survival 
 # you are given a percentile and time t, then you are given a % change in survival at time t
@@ -73,9 +106,15 @@ survplot1 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=5 ) {
                     formatz2(time1),             ": ",
                     formatz2(p*100),          "% (blue) and ", 
                     formatz2((p2)*100 ), "% (red) a ",surv.perc.change.improvement, "% change from control (blue)"), 
-        cex.main = .8,
-        ylab='Survival probability', xlab='', col="blue", 
-        sub= "Time" ,  cex.sub=.8)
+        cex.main = 1.4,  xlab="", ylab="" # 0.8
+       # ylab='Survival probability', xlab='', 
+       , col="blue", 
+      #  sub= "Time" ,  cex.sub=1.4
+      )  #.8
+  
+  mtext("Time", side=1, line=3, col="black", cex=1.5)
+  mtext("Survival probability", side=2, line=3, col="black", cex=1.5)
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   abline(h=p , col='blue' , lty=2)                 # line showing survival percentile in ctrl
   pp <- ifelse(p<p2,p2,p)                          # v line extends to higher curve
@@ -91,7 +130,7 @@ survplot1 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=5 ) {
               formatz4(p),                 ") = ", 
               formatz4( log(p2)/log(p) ), ""),   # treat/ctrl
        col = "black", 
-       cex = .8)
+       cex = 1.4)  #.8
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   text(x = end*.537, y = .875,  
        paste0(expression("HR = hazard rate[red] / hazard rate[blue] = "),  # treat / ctrl
@@ -100,7 +139,7 @@ survplot1 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=5 ) {
               formatz4(hr), ""
        ),
        col = "black", 
-       cex = .8)
+       cex = 1.4)
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
 }

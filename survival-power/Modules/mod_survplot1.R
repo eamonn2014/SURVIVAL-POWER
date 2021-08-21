@@ -24,45 +24,11 @@ tabItem("survplot1",
         ##~~~~~~~~~~~~~~
         column(width=3,
                
-               numericInput(ns("CSurvProp_input"), label = h5("Control survival probability"), value = 0.40),
-               numericInput(ns("Time_input"), label = h5("Time at which we assess survival probability"), value = 10),
-               numericInput(ns("surv.perc.change.improvement_input"), label = h5("Postulated percentage change in survival probability"), value = -15),
-               
-               selectInput(
-               inputId=ns("PBox"),
-               label="treatment xxx:",
-               choices=c("A","B"),
-               selected="A"),
-              
-         #~~~~~~~~~~~~~~~~~~~
-         conditionalPanel(
-        
-               condition="inputPBox == 'A'",
-              
-               ns=ns,
-              
-          column(width=12),
-          
-               radioButtons(
-                 inputId = ns("Example"),
-                 label="Dateset:",
-                 choices=c("X","Y"),
-                 selected="X")),
-              
-        #~~~~~~~~~~~~~~~~~~~
-         # conditionalPanel(
-         #        
-         #        condition="inputPBox == 'B'",
-         #        
-         #        ns=ns,
-         #        
-         #        column(width=12),
-         #        radioButtons(
-         #          inputId = ns("Example"),
-         #          label="Dateset:",
-         #          choices=c("X","Y"),
-         #          selected="X")),
-         #~~~~~~~~~~~~~~~~~~~
+               # changed lables from h5("Postulated percentage change in survival probability")
+               numericInput(inputId=ns("CSurvProp_input"),                    label = c("Control survival probability"),                         value = 0.40, min=0.05,max=.95, step=.01),
+               numericInput(inputId=ns("Time_input"),                         label = c("Time at which we assess survival probability"),         value = 10, step=1),
+               numericInput(inputId=ns("surv.perc.change.improvement_input"), label = c("Postulated percentage change in survival probability"), value = -15, min=-200,max=200, step=1),
+       
         ),
         ##~~~~~~~~~~~~~
 
@@ -94,12 +60,13 @@ mod_survplot1_server <- function(input, output, session){
   
   output$survplot1 <- renderPlot({
 
+    # this function id in the global.R file
     survplot1(  CSurvProp=input$CSurvProp_input, 
                 time1=input$Time_input, 
-                surv.perc.change.improvement=input$surv.perc.change.improvement_input ) # %15 worse, red low
+                surv.perc.change.improvement=input$surv.perc.change.improvement_input )  
   
   
-    })
+    }, height=700, width=1000)
 
 }
 
