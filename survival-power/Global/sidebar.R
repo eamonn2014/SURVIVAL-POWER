@@ -1,6 +1,6 @@
 dashboardSidebar(
   
-  width=350,  #250
+  width=400,  #250
   
   sidebarMenu(
     
@@ -19,8 +19,12 @@ dashboardSidebar(
     
     # wrap the text
     menuItem("Survival plots",
-             menuSubItem(h4(HTML("A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1")),  # must match
-    
+             menuSubItem(h4(HTML("A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1"),
+             menuSubItem(h4(HTML("xxxxxxxxxxxxxxxxxxxxxx<br/>xxxxxxxxxxxxxxxxxxxxxxxx")), tabName="survplot2")
+             
+             ),  # must match
+             #menuSubItem(h4(HTML("xxxxxxxxxxxxxxxxxxxxxx<br/>xxxxxxxxxxxxxxxxxxxxxxxx")), tabName="survplot2")),  # must match
+  
     
     menuItem("test2",
              menuSubItem("yyy", tabName="yyy")) 

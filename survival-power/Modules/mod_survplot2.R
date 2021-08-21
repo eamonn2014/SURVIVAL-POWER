@@ -15,12 +15,12 @@
 #' @importFrom shiny NS
 
 
-mod_survplot1_ui <- function(id){
+mod_survplot2_ui <- function(id){
   
   ns <- NS(id)
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tabItem("survplot1",
+tabItem("survplot2",
         ##~~~~~~~~~~~~~~
         column(width=3,
                
@@ -38,7 +38,7 @@ tabItem("survplot1",
     
     conditionalPanel(condition="input.PBox == 'A'",
                      ns=ns, column(width=12,
-                                   plotOutput(ns("survplot1")))),
+                                   plotOutput(ns("survplot2")))),
   ),
   
   #~~~~~~~~~~~~~~~~
@@ -54,14 +54,14 @@ tabItem("survplot1",
 #' @export
 #' @keywords internal
 #' 
-mod_survplot1_server <- function(input, output, session){
+mod_survplot2_server <- function(input, output, session){
   
   ns <- session$ns
   
-  output$survplot1 <- renderPlot({
+  output$survplot2 <- renderPlot({
 
     # this function id in the global.R file
-    survplot1(  CSurvProp=input$CSurvProp_input, 
+    survplot2(  CSurvProp=input$CSurvProp_input, 
                 time1=input$Time_input, 
                 surv.perc.change.improvement=input$surv.perc.change.improvement_input )  
   

@@ -30,32 +30,32 @@ xx <-
   )
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# formatting functions
+# numercial formatting functions
 # https://stackoverflow.com/questions/3245862/format-numbers-to-significant-figures-nicely-in-r
-formatz <- function(x){
-  
-  if (!is.na(x)  ) {
+    formatz <- function(x){
+      
+      if (!is.na(x)  ) {
+        
+        formatC(signif(x,digits=5), digits=5,format="fg", flag="#",big.mark=",")
+        
+      }
+      
+    }
     
-    formatC(signif(x,digits=5), digits=5,format="fg", flag="#",big.mark=",")
-    
-  }
-  
-}
-
-formatz0 <- function(x){
-  sprintf(x, fmt = '%s')  
-}
-formatz1 <- function(x){
-  sprintf(x, fmt = '%#.1f')  
-}
-formatz2 <- function(x){
-  sprintf(x, fmt = '%#.2f')  
-}
-formatz00 <- function(x){
-  round(x,0) 
-}
-formatz4 <- function(x){
-  sprintf(x, fmt = '%#.4f')  
+    formatz0 <- function(x){
+      sprintf(x, fmt = '%s')  
+    }
+    formatz1 <- function(x){
+      sprintf(x, fmt = '%#.1f')  
+    }
+    formatz2 <- function(x){
+      sprintf(x, fmt = '%#.2f')  
+    }
+    formatz00 <- function(x){
+      round(x,0) 
+    }
+    formatz4 <- function(x){
+      sprintf(x, fmt = '%#.4f')  
 }
 
 
@@ -99,7 +99,7 @@ survplot1 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=5 ) {
   end <- ceiling(-(log(1-.999)/ lambda))               # for plotting out to 999th percentile
   
   curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
-        main=paste0("A % change in survival probability at fixed time (control in blue) is postulated \n Exponential rates ",
+        main=paste0("A percentage change in survival probability at a fixed time (control in blue) is postulated \n Exponential rates ",
                     formatz4(lambda),         " (blue) and ",
                     formatz4(lambda2),        " (red): Hazard Ratio = ",
                     formatz4(hr), " (red/blue) \nSurvival S(t) at time ",
