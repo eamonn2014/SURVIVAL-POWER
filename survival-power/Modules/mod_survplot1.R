@@ -23,13 +23,17 @@ mod_survplot1_ui <- function(id){
 tabItem("survplot1",
         ##~~~~~~~~~~~~~~
         column(width=3,
+               
+               numericInput(ns("CSurvProp_input"), label = h5("Control survival probability"), value = 0.40),
+               numericInput(ns("Time_input"), label = h5("Time at which we assess survival probability"), value = 0.40),
+               numericInput(ns("surv.perc.change.improvement_input"), label = h5("Postulated percentage change in survival probability"), value = -15),
+               
                selectInput(
                inputId=ns("PBox"),
                label="treatment xxx:",
                choices=c("A","B"),
                selected="A"),
               
-         
          #~~~~~~~~~~~~~~~~~~~
          conditionalPanel(
         
@@ -38,6 +42,7 @@ tabItem("survplot1",
                ns=ns,
               
           column(width=12),
+          
                radioButtons(
                  inputId = ns("Example"),
                  label="Dateset:",
@@ -89,7 +94,9 @@ mod_survplot1_server <- function(input, output, session){
   
   output$survplot1 <- renderPlot({
 
-    survplot1(  CSurvProp=.4, time1=10, surv.perc.change.improvement=-15 ) # %15 worse, red low
+    survplot1(  CSurvProp=input$CSurvProp_input, 
+                time1=10, 
+                surv.perc.change.improvement=-15 ) # %15 worse, red low
   
   
     })
