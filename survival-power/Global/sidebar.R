@@ -20,7 +20,8 @@ dashboardSidebar(
     # wrap the text
     menuItem("Survival plots",
              menuSubItem(h4(HTML("A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1"),
-             menuSubItem(h4(HTML("An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2")
+             menuSubItem(h4(HTML("An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2"),
+             menuSubItem(h4(HTML("A hazard ratio is postulated")), tabName="survplot3")
              
              ),  # must match
              #menuSubItem(h4(HTML("xxxxxxxxxxxxxxxxxxxxxx<br/>xxxxxxxxxxxxxxxxxxxxxxxx")), tabName="survplot2")),  # must match
