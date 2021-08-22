@@ -27,7 +27,7 @@ tabItem("survplot1",
                # changed lables from h5("Postulated percentage change in survival probability")
                numericInput(inputId=ns("CSurvProp_input"),                    label = c("Control survival probability"),                         value = 0.40, min=0.05,max=.95, step=.01),
                numericInput(inputId=ns("Time_input"),                         label = c("Time at which we fix control survival probability"),         value = 10, step=1),
-               numericInput(inputId=ns("surv.perc.change.improvement_input"), label = c("Postulated percentage change in survival probability"), value = -15, min=-200,max=200, step=1),
+               numericInput(inputId=ns("surv.perc.change.improvement_input"), label = c("Postulated percentage change in survival probability"), value = -60, min=-200,max=200, step=1),
        
         ),
         ##~~~~~~~~~~~~~

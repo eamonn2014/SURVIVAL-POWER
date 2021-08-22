@@ -12,26 +12,26 @@
 
 # load packages~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
-    source("~/Survival-power/survival-power/Global/libraries.R")
-
+    source("global/libraries.R")  # /Survival-power/survival-power/
+    
 # run global file, mostly R code~~~~~~~~~~~~~~~~~~~
 
-    source("~/Survival-power/survival-power/Global/global.R")  # generate data here
+    source("global/global.R")  # generate data here
  
 # set header~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    header <- source("~/Survival-power/survival-power/Global/header.R")$value
+    header <- source("global/header.R")$value
 
 # set sidebar~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    sidebar <- source("~/Survival-power/survival-power/Global/sidebar.R")$value
+    sidebar <- source("global/sidebar.R")$value
 
 # import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources here:
 
-    source("~/Survival-power/survival-power/Modules/mod_boxplot.R")    # do something here
-    source("~/Survival-power/survival-power/Modules/mod_survplot1.R")  # do something here
-    source("~/Survival-power/survival-power/Modules/mod_survplot2.R")  # do something here
-    source("~/Survival-power/survival-power/Modules/mod_survplot3.R")  # do something here
+    source("modules/mod_boxplot.R")    # do something here
+    source("modules/mod_survplot1.R")  # do something here
+    source("modules/mod_survplot2.R")  # do something here
+    source("modules/mod_survplot3.R")  # do something here
    # source("~/Survival-power/survival-power/Modules/mod_wiki.R")  # do something here
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     body <- dashboardBody(
