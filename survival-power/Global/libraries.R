@@ -4,7 +4,7 @@
   # 
   # lapply(my_packages, library, character.only = TRUE)    # Load multiple packages
   
-  
+  # cannot use above when deploying
   library(shiny)
   library(tidyverse)
   library(plotly)

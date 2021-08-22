@@ -7,7 +7,9 @@ dashboardSidebar(
     # Setting id makes input$tabs give the tabName of currently-selected tab
     id="tabs",
     
-    menuItem("Wiki", tabname ="wiki"),
+    menuItem(text="Wiki", 
+             menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")),
+              
     
     menuItem("Summary Statistics", tabname ="sumstats"),
     
@@ -33,3 +35,9 @@ dashboardSidebar(
   )
 )
  
+
+# menuItem(tabName = 'homepage', text = 'Homepage',icon = icon('home')),
+# menuItem(tabName = 'setup', text = 'Setup', icon = icon('cog')),
+# menuItem(tabName = 'patient_search', text = 'Patient Search', icon = icon('users')),
+# menuItem(tabName = 'chart_review', text ='Chart Review', icon = icon('table'))
+# )
