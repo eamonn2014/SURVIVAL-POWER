@@ -1,1 +1,1 @@
-header <- dashboardHeader(title ="Survival Power Examples", titleWidth=400) 
+header <- dashboardHeader(title ="Exponential Survival Distributions", titleWidth=400) 

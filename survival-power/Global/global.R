@@ -1,38 +1,7 @@
 
 # Here we have coded up functions that we call in the mod_???.R files
 
-# git hub authentication, see accepted answer!
-# https://stackoverflow.com/questions/66065099/how-to-update-github-authentification-token-on-rstudio-to-match-the-new-policy
-
-
-# generate data, load in data etc
-
-
-xx <-
-  data.frame(
-    stringsAsFactors = FALSE,
-    percentP = c(
-      "1%", "1%", "1%", "1%", "1%", "1%", "1%", "1%", "1%", "1%",
-      "1%", "1%", "1%", "1%", "1%", "1%", "1%", "1%", "1%", "1%",
-      "2%", "2%", "2%", "2%", "2%", "2%", "2%", "2%", "2%", "2%", "2%",
-      "2%"
-    ),
-    density = c(
-      0.008577154, 0.008661514, 0.008661514, 0.008764242,
-      0.008764242, 0.008877907, 0.008877907, 0.008968337,
-      0.008968337, 0.008918499, 0.008918499, 0.008955224, 0.008955224,
-      0.009093437, 0.009093437, 0.009235578, 0.009235578, 0.009362444,
-      0.009362444, 0.009522395, 0.009522395, 0.009719645, 0.009719645,
-      0.010011171, 0.010011171, 0.010173328, 0.010173328, 0.009743716,
-      0.009743716, 0.010035448, 0.010035448, 0.010049866
-    ),
-    status = c(
-      "pre", "post", "pre", "post", "pre", "post", "pre", "post",
-      "pre", "post", "pre", "post", "pre", "post", "pre", "post",
-      "pre", "post", "pre", "post", "pre", "post", "pre", "post", "pre",
-      "post", "pre", "post", "pre", "post", "pre", "post"
-    )
-  )
+ 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # numerical formatting functions

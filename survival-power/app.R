@@ -1,14 +1,19 @@
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
 # This is a top level file
+# deployment is case sensitive, so not .r but R
+# use library explicitly for loading packages
 
 # steps to building app
-# 1 copy survplotx R code function to global.R
+# 1 copy function survplot?.R to global.R
 # 2 update app.R modules/body/server
 # 3 create a new mod_????.R
 # 4 amend the new mod_????.R  function names, output names
 # 5 update sidebar.R 
 
+
+# git hub authentication, see accepted answer!
+# https://stackoverflow.com/questions/66065099/how-to-update-github-authentification-token-on-rstudio-to-match-the-new-policy
 
 # load packages~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
@@ -28,7 +33,6 @@
 
 # import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources here:
 
-   # source("modules/mod_boxplot.R")    # do something here
     source("modules/mod_survplot1.R")  # do something here
     source("modules/mod_survplot2.R")  # do something here
     source("modules/mod_survplot3.R")  # do something here
@@ -40,7 +44,6 @@
         tabItems(
             
           mod_wiki_ui("wiki_1"),  
-       # mod_boxplot_ui("boxplot_1"),     # commas required here
         mod_survplot1_ui("survplot_1"),
         mod_survplot2_ui("survplot_2"),
         mod_survplot3_ui("survplot_3")
@@ -56,7 +59,6 @@
     server <- function(input, output, session) {
         
         callModule(mod_wiki_server, "wiki_1")
-       # callModule(mod_boxplot_server, "boxplot_1")   # no commas required here
         callModule(mod_survplot1_server, "survplot_1")
         callModule(mod_survplot2_server, "survplot_2")
         callModule(mod_survplot3_server, "survplot_3")

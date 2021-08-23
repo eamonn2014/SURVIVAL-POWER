@@ -31,15 +31,7 @@ tabItem("survplot2",
                )
         ),
         ##~~~~~~~~~~~~~
-
-
-  #~~~~~~~~~~~~~~~~~      
-  # mainPanel(
-  #   
-  #   conditionalPanel(condition="input.PBox == 'A'",
-  #                    ns=ns, column(width=12,
-  #                                  plotOutput(ns("survplot2")))),
-  # ),
+ 
   
   mainPanel(
     
