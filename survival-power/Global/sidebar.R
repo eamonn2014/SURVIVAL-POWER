@@ -11,13 +11,13 @@ dashboardSidebar(
              menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")),
               
     
-    menuItem("Summary Statistics", tabname ="sumstats"),
+  #  menuItem("Summary Statistics", tabname ="sumstats"),
     
-    menuItem("test",
-             menuSubItem("xxx", tabName="xxx")),
+  #  menuItem("test",
+  #           menuSubItem("xxx", tabName="xxx")),
     
-    menuItem("charts",
-             menuSubItem("Boxplot", tabName="Boxplot")),  # must match
+   # menuItem("charts",
+   #          menuSubItem("Boxplot", tabName="Boxplot")),  # must match
     
     # wrap the text
     menuItem("Survival plots",
@@ -25,12 +25,10 @@ dashboardSidebar(
              menuSubItem(h4(HTML("An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2"),
              menuSubItem(h4(HTML("A hazard ratio is postulated")), tabName="survplot3")
              
-             ),  # must match
-             #menuSubItem(h4(HTML("xxxxxxxxxxxxxxxxxxxxxx<br/>xxxxxxxxxxxxxxxxxxxxxxxx")), tabName="survplot2")),  # must match
-  
+             ) #, 
     
-    menuItem("test2",
-             menuSubItem("yyy", tabName="yyy")) 
+   # menuItem("test2",
+          #   menuSubItem("yyy", tabName="yyy")) 
     
   )
 )
