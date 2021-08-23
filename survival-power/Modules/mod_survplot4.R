@@ -20,7 +20,7 @@ mod_survplot4_ui <- function(id){
   ns <- NS(id)
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tabItem("survplot4",
+tabItem("survplot4", 
         ##~~~~~~~~~~~~~~
         column(width=3,
                tagList(

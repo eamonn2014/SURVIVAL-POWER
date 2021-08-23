@@ -305,7 +305,7 @@ survplot4 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) 
   
   hr <- lambda2/lambda                                 # hazard ratio, treat / ctrl
   
-  surv2 <- 1 - exp(-lambda* time1* hr )                # e^-lambda*t, not used!
+  surv2 <- 1 - exp(-lambda* time1* hr )                # e^-lambda*t, not used! 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # plotting 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
