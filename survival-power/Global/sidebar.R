@@ -20,12 +20,17 @@ dashboardSidebar(
    #          menuSubItem("Boxplot", tabName="Boxplot")),  # must match
     
     # wrap the text
-    menuItem("Survival plots",
+    menuItem("Exponential survival plots, fixed survival time",
              menuSubItem(h4(HTML("A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1"),
              menuSubItem(h4(HTML("An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2"),
              menuSubItem(h4(HTML("A hazard ratio is postulated")), tabName="survplot3")
              
-             ) #, 
+             ), #, 
+  menuItem("Exponential survival plots, fixed survival probability",
+           menuSubItem(h4(HTML("A percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4")
+           
+           
+  ) #, 
     
    # menuItem("test2",
           #   menuSubItem("yyy", tabName="yyy")) 
