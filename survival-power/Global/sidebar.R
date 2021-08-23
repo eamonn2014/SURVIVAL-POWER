@@ -8,7 +8,7 @@ dashboardSidebar(
     id="tabs",
     
     menuItem(text="Wiki", 
-             menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")), 
+             menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")),
               
     
   #  menuItem("Summary Statistics", tabname ="sumstats"),

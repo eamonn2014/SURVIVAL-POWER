@@ -15,7 +15,7 @@
 # git hub authentication, see accepted answer!
 # https://stackoverflow.com/questions/66065099/how-to-update-github-authentification-token-on-rstudio-to-match-the-new-policy
 
-# load packages~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+# load packages~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
  
     source("global/libraries.R")  # /Survival-power/survival-power/
     
