@@ -18,7 +18,7 @@
     ns <- NS(id)
 
     tabItem("wiki",
-     span(textOutput(ns("warning")), style="color:red"),
+     span(textOutput(ns("warning")), style="color:blue"),
      br(),
 
      uiOutput(ns("text1"))
@@ -37,7 +37,7 @@
     ns <- session$ns
 
       output$warning <- renderText({
-        paste("In this month days")
+        paste("The exponential distribution is the simplest parametric distribution used to describe survival distributions. There is a simpler relationship between survival probability, time and hazard with the exponential distribution. We show this relationship")
       })
 
       output$text1 <- renderUI({

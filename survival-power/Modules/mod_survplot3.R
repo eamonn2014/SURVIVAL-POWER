@@ -23,24 +23,28 @@ mod_survplot3_ui <- function(id){
 tabItem("survplot3",
         ##~~~~~~~~~~~~~~
         column(width=3,
-               
+               tagList(
                # changed lables from h5("Postulated percentage change in survival probability")
                numericInput(inputId=ns("CSurvProp_input"),                    label = c("Control survival probability"),                         value = 0.40, min=0.05,max=.95, step=.01),
                numericInput(inputId=ns("Time_input"),                         label = c("Time at which we fix control survival probability"),         value = 10, step=1),
                numericInput(inputId=ns("hr_input"), label = c("Postulated hazard ratio"), value = 2, min=.01,max=20, step=.01),
-       
+               )
         ),
         ##~~~~~~~~~~~~~
 
 
   #~~~~~~~~~~~~~~~~~      
-  mainPanel(
-    
-    conditionalPanel(condition="input.PBox == 'A'",
-                     ns=ns, column(width=12,
-                                   plotOutput(ns("survplot3")))),
-  ),
+  # mainPanel(
+  #   
+  #   conditionalPanel(condition="input.PBox == 'A'",
+  #                    ns=ns, column(width=12,
+  #                                  plotOutput(ns("survplot3")))),
+  # ),
   
+  mainPanel(
+   
+     plotOutput(ns("survplot3"))
+  ),
   #~~~~~~~~~~~~~~~~
   
   tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))
