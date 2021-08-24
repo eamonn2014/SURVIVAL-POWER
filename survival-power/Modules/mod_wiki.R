@@ -20,7 +20,10 @@
     tabItem("wiki",
             
      # we can type directly here!        
-     h4(paste("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.")),       
+     h4(paste("In this app we show how to use the exponential distribution to help understand survival and 
+              hypothesised changes due to an intervention. Much like the survival converter linked to below we show how to convert
+              hazard rates to any survival probability at time t, or alternatively, convert survival probability at time t to a hazard rate. 
+              Though here we also plot the survival distibutions.")),       
             
      # div(h4("References:")),  
      # tags$a(href = "https://pubmed.ncbi.nlm.nih.gov/15724232/", tags$span(style="color:blue", h4("[1] Generating survival times to simulate Cox proportional hazards models")),),   
@@ -63,7 +66,7 @@
      div(p(" ")),
      tags$a(href = "https://stattools.crab.org/R/Survival_Converter.html", tags$span(style="color:blue", h5("[3] Survival converter")),),   
      div(p(" ")),
-     tags$a(href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function", tags$span(style="color:blue", h4("[4] How to simulate survival times using true base line hazard function")),),   
+     tags$a(href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function", tags$span(style="color:blue", h5("[4] How to simulate survival times using true base line hazard function")),),   
      div(p(" ")),
      tags$a(href = "https://www.youtube.com/watch?v=inMjG32nzcw&ab_channel=Statsols%28ProviderofnQuery%29", tags$span(style="color:blue", h5("[5] Sample Size For Survival Analysis - A guide to planning successful clinical trials - we duplicate this example")),),   
      div(p(" ")),
@@ -88,9 +91,9 @@
 
       #@@@@@@@@@@@@@@@@ 1
       output$warning <- renderText({
-       (paste("The exponential distribution is the simplest parametric distribution for describing survival distributions. 
+       paste("The exponential distribution is the simplest parametric distribution for describing survival distributions. 
               There is a simple relationship between survival probability, time and hazard with the exponential distribution. Knowing 2 of the 3 parameter completely 
-              determines the remaining parameter."))
+              determines the remaining parameter.")
       })
 
       #@@@@@@@@@@@@@@@@ 2

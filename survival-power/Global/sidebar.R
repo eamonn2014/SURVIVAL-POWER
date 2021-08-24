@@ -28,8 +28,8 @@ dashboardSidebar(
              ), #, 
   menuItem("B. Exponential survival plots, fixed survival probability",
            menuSubItem(h5(HTML("4. A percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4"),
-           menuSubItem(h5(HTML("5. An absolute change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot5")
-           
+           menuSubItem(h5(HTML("5. An absolute change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot5"),
+           menuSubItem(h5(HTML("6. A hazard ratio is postulated")), tabName="survplot6")
   ) #, 
     
    # menuItem("test2",
