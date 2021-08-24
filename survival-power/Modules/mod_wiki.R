@@ -20,11 +20,25 @@
     tabItem("wiki",
             
      # we can type directly here!        
-     h4(paste("Plugging in alpha, the population variance and the number of replicates (n) into equation [1] we calculate the specification.")),       
+     h4(paste("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.")),       
             
-     div(h4("Reference:")),  
-     tags$a(href = "https://en.wikipedia.org/wiki/Chi-squared_distribution#Gamma,_exponential,_and_related_distributions", tags$span(style="color:blue", h4("[3] Chi-squared distribution")),),   
+     div(h4("References:")),  
+     tags$a(href = "https://pubmed.ncbi.nlm.nih.gov/15724232/", tags$span(style="color:blue", h4("[1] Generating survival times to simulate Cox proportional hazards models")),),   
      div(p(" ")),
+     tags$a(href = "https://github.com/eamonn2014/Survival-power/tree/master/survival-power", tags$span(style="color:blue", h4("[2] Shiny code")),),   
+     div(p(" ")),
+     tags$a(href = "https://stattools.crab.org/R/Survival_Converter.html", tags$span(style="color:blue", h4("[3] Survival converter")),),   
+     div(p(" ")),
+     tags$a(href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function", tags$span(style="color:blue", h4("[4] How to simulate survival times using true base line hazard function")),),   
+     div(p(" ")),
+     tags$a(href = "https://www.youtube.com/watch?v=inMjG32nzcw&ab_channel=Statsols%28ProviderofnQuery%29", tags$span(style="color:blue", h4("[5] Sample Size For Survival Analysis - A guide to planning successful clinical trials")),),   
+     div(p(" ")),
+     tags$a(href = "https://sas-and-r.blogspot.com/2010/03/example-730-simulate-censored-survival.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+SASandR+%28SAS+and+R%29", tags$span(style="color:blue", h4("[6] Simulate censored survival data")),),   
+     div(p(" ")),
+     
+     
+     
+     
      
      tags$hr(),
      
