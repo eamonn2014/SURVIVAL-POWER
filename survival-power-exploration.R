@@ -1,0 +1,981 @@
+## ----set-options, echo=FALSE, cache=FALSE, warning = FALSE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#/***************************************************************************#
+#Filename           :      xxxxxxxxxxxxxxxxxxxxx
+#Author             :      obrieea1
+#Date               :      xx-May-2021
+#R                  :      xxxxxxxxxxxxx
+#Platform           :      xxxxxxxxxxxxx 
+#Project/Study      :      xxxxxxxxxxxxx
+#Description        :      xxxxxxxxxxxxx   
+#Assumptions:   
+#Input              :       
+#Output             :      An .R, .Rmd and .html file is output to xxx
+#                          An .R file is output to the dir where original .Rmd file is located
+#Macros used        :      none
+#---------------------------------------------------------------------------
+#MODIFICATION HISTORY: 
+#    <DD-MON-YYYY>,
+#    <Description> 
+#    
+#***************************************************************************/
+
+# knit: (function(inputFile, encoding) { 
+#               out_dir <- '~/Survival-power';   
+#           rmarkdown::render(inputFile,
+#                         encoding=encoding, 
+#       output_file=file.path(out_dir,'survival power exploration.html')) })
+
+        rm(list=ls())
+
+        set.seed(123)
+        startTime<-proc.time()
+        library(knitr)
+        knit_hooks$set(purl = hook_purl)  #new line
+        options(width=120)
+        options(width = 999)
+        opts_chunk$set(comment = "", warning = FALSE, message = FALSE,
+                       echo = FALSE, tidy = FALSE, size="tiny",  cache=FALSE,
+                       progress=TRUE,
+                         fig.width=7, fig.height=3.5,
+                       cache.path = 'program_Cache/',
+                       fig.path='figure/')
+         
+        knitr::knit_hooks$set(inline = function(x) {
+          knitr:::format_sci(x, 'md')
+        })
+         
+        
+        options(scipen=999)  # remove scientific notation
+        
+      
+        # create an R file of the code!
+        # https://stackoverflow.com/questions/26048722/knitr-and-tangle-code-without-execution
+        
+         # knit_hooks$set(purl = function(before, options) {
+         #   if (before) return()
+         #   input  = current_input()  # filename of input document
+         #   output = paste(tools::file_path_sans_ext(input), 'R', sep = '.')
+         #   if (knitr:::isFALSE(knitr:::.knitEnv$tangle.start)) {
+         #   assign('tangle.start', TRUE, knitr:::.knitEnv)
+         #   unlink(output)
+         # }
+         #   cat(options$code, file = output, sep = '\n', append = TRUE)
+         # })
+
+          # function to calculate the mode     
+          getmode <- function(v) {
+               uniqv <- unique(v)
+               uniqv[which.max(tabulate(match(v, uniqv)))]
+          }
+  
+          
+        # https://stackoverflow.com/questions/36868287/purl-within-knit-duplicate-label-error
+          
+          options(knitr.duplicate.label = 'allow') # to help with purl
+ 
+          
+
+## ----directories, echo=FALSE, cache=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 
+      
+      gps1 <-  paste0('~/Survival-power')
+      gps2 <-  paste0('~/Survival-power')
+      
+      path.script <- paste0(gps1, '')        # code to go here
+      path.import <- paste0(gps2, '')  # data is here
+      path.export <- paste0(gps1, '') 
+      
+      wd <- Rhome <- paste0('~/Survival-power')
+      wd.code <- paste0(Rhome,'')                 
+      wd.data <- paste0(Rhome,'')
+ 
+      
+      
+      # rounding functions
+      p2 <- function(x) {formatC(x, format="f", digits=2)}
+      p3 <- function(x) {formatC(x, format="f", digits=3)}
+      p4 <- function(x) {formatC(x, format="f", digits=4)}
+      
+       # https://stackoverflow.com/questions/3245862/format-numbers-to-significant-figures-nicely-in-r
+      formatz <- function(x){
+        
+        if (!is.na(x)  ) {
+          
+          formatC(signif(x,digits=5), digits=5,format="fg", flag="#",big.mark=",")
+          
+        }
+        
+      }
+      
+      formatz0 <- function(x){
+        sprintf(x, fmt = '%s')  
+      }
+      formatz1 <- function(x){
+        sprintf(x, fmt = '%#.1f')  
+      }
+      formatz2 <- function(x){
+        sprintf(x, fmt = '%#.2f')  
+      }
+      formatz00 <- function(x){
+        round(x,0) 
+      }
+      formatz4 <- function(x){
+        sprintf(x, fmt = '%#.4f')  
+      }
+ 
+      
+
+## ----parameters, results='hide', eval=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      
+    # functions  to get means and SDs, not used
+    mymean <- function(x) {mean(x, na.rm=T)}
+    mysd <- function(x) {sd(x, na.rm=T)}
+    
+     zp <- function(x, shape, scale)
+    pweibull(x, shape=shape, scale=scale,lower.tail=F)
+     
+  # draw curves using hazards and surv prop of control
+  # I wrote the code in lower chunks but
+   survP <- function(Ihaz= runif(1,1,1.5), Chaz=runif(1,2,2.5), CSurvProp=runif(1) ) {
+    
+    lambda  <- Ihaz            # best  survival
+    lambda2 <- Chaz            # worst survival blue curve
+    hr <- lambda/lambda2
+    
+    # for plotting 
+    end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
+    s <- seq(0,end, length.out = end+1)          # reasonable x axis
+    
+    p <- CSurvProp                                # random survival prop
+    time <-ms <- -log(1-p)/lambda                # survival time  for survival prop p
+    
+    # (time1 <- ms )
+    mort1 <-  exp(-lambda2* time )  # e^-lambda*t
+    
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Survival function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    zp <- function(x, shape, scale)
+      pweibull(x, shape=shape, scale=scale,lower.tail=F)
+    #~~~~~~~~~~~~~~~~~~
+    curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+          main=paste0("A change in survival probability at fixed time\n Exponential rates ",
+                      formatz2(lambda),         " (blue) and ",
+                      formatz2(lambda2),        " (red): HR= ",
+                      formatz2(hr), " (blue/red) \nMortalities (1-S(t)) at time ",
+                      formatz4(time),             ": ",
+                      formatz2(p*100),          "% (blue) and ", 
+                      formatz2((1-mort1)*100 ), "% (red)" ), 
+          cex.main = .8,
+          ylab='Survival probability', xlab='', col="blue", 
+          sub= "Time" ,  cex.sub=.8)
+    #~~~~~~~~~~~~~~~~~~
+    abline(h=1-p , col='blue' , lty=2)
+    abline(h=mort1 , col='red' , lty=2)     
+    lines(c(time ,time), c(0 , 1-p) , col='black')
+    #~~~~~~~~~~~~~~~~~~
+    curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
+          ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+    #~~~~~~~~~~~~~~~~~~
+    text(x = end*.6, y = .95,  
+         paste0("HR = log(Survival)[blue] / log(Survival)[red] = log(",
+                formatz2(1-p),                   ") / log(",
+                formatz2(mort1),                 ") = ", 
+                formatz2( log(1-p)/log(mort1) ), ""),
+         col = "black", 
+         cex = .8)
+    #~~~~~~~~~~~~~~~~~~
+    text(x = end*.537, y = .875,  
+         paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+                formatz2(lambda),         " / ",
+                formatz2(lambda2),        " = ",
+                formatz2(hr), ""
+         ),
+         col = "black", 
+         cex = .8)
+   }
+   SurvP2 <- function( lambda=0.07701635, lambda2=0.11552453,  p=.5) {
+  
+  # worst survival blue curve
+  hr <- lambda/lambda2
+  
+  # for plotting 
+  end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
+  s <- seq(0,end, length.out = end+1)          # reasonable x axis
+  
+  time <-ms <- -log(1-p)/lambda                # survival time  for survival prop p
+  mort1 <-  exp(-lambda2* time )               # e^-lambda*t
+  
+  p          <- mort1  
+  ref.time   <- time 
+  trt.time   <- -log(p)/lambda
+  fact.      <- (-log(p)/lambda)  / (-log(p)/lambda2) -1
+  #~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+        main=paste0(  "A change in survival time S(t) at fixed survival probability:\nA survival probability of ",
+                      formatz4(p),         " for the red reference curve has survival time ",
+                      formatz2( ref.time), ". \nA ",
+                      formatz2(fact.*100), "% increase in the survival time results in a survival time of ",
+                      formatz2(trt.time),  " (red)\nExponential rates ",
+                      formatz2(lambda),    " (blue) and ",
+                      formatz2(lambda2),   " (red). HR= ",
+                      formatz2(hr),        " (blue/red)"
+        ),  
+        cex.main = .8,
+        ylab='Survival probability',xlab='', 
+        col="blue",
+        sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.5, y = .95,  
+       paste0("HR at survival quantile ",
+              formatz4(p),                     ", ratio of survival times: red / blue = ",
+              formatz2(ref.time),              " / ",
+              formatz2(trt.time),              " = ", 
+              formatz2( ref.time/trt.time ),   ""),
+       col = "black",
+       cex = .8)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.52, y = .875,  
+       paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+              formatz2(lambda)," / ",formatz2(lambda2)," = ",
+              formatz2(lambda/lambda2),""
+       ),
+       col = "black",
+       cex = .8)
+  #~~~~~~~~~~~~~~~~~~~
+  abline(h=p , col='black' , lty=2)
+  lines(c(-log(p)/lambda2 , -log(p)/lambda2), c(0 , p) , col='red')
+  lines(c(-log(p)/lambda  , -log(p)/lambda),  c(0 , p) , col='blue')
+  #~~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,  
+        ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+}
+   survP( 0.07701635,0.11552453,0.5)
+   SurvP2()
+  
+
+## ----user libraries ,results='hide', eval=TRUE , echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+    library(survival)
+    library(rms) # for modelling
+    library(tidyverse)
+   
+
+## ----exp, results='asis',eval=TRUE , echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      
+  # tereneau book p62
+  A  <-runif(1,1,3)              # random, this will be a constant hazard rate
+  B  <-runif(1,1,3)              # random, second curve rate
+  
+  lambda  <- min(A,B)            # best  survival
+  lambda2 <- max(A,B)            # worst survival blue curve
+  hr <- lambda/lambda2
+  
+  # for plotting 
+  end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
+  s <- seq(0,end, length.out = end+1)          # reasonable x axis
+  
+  p <- runif(1)                                # random survival prop
+  time <-ms <- -log(1-p)/lambda                # survival time  for survival prop p
+
+ # (time1 <- ms )
+  mort1 <-  exp(-lambda2* time )  # e^-lambda*t
+ 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Survival function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  zp <- function(x, shape, scale)
+    pweibull(x, shape=shape, scale=scale,lower.tail=F)
+  #~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+         main=paste0("A change in survival probability at fixed time\n Exponential rates ",
+                     formatz2(lambda),         " (blue) and ",
+                     formatz2(lambda2),        " (red): HR= ",
+                     formatz2(hr), " (blue/red) \nMortalities (1-S(t)) at time ",
+                     formatz4(time),             ": ",
+                     formatz2(p*100),          "% (blue) and ", 
+                     formatz2((1-mort1)*100 ), "% (red)" ), 
+                     cex.main = .8,
+                     ylab='Survival probability', xlab='', col="blue", 
+                     sub= "Time" ,  cex.sub=.8)
+  #~~~~~~~~~~~~~~~~~~
+  abline(h=1-p , col='blue' , lty=2)
+  abline(h=mort1 , col='red' , lty=2)     
+  lines(c(time ,time), c(0 , 1-p) , col='black')
+  #~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
+        ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.6, y = .95,  
+       paste0("HR = log(Survival)[blue] / log(Survival)[red] = log(",
+              formatz2(1-p),                   ") / log(",
+              formatz2(mort1),                 ") = ", 
+              formatz2( log(1-p)/log(mort1) ), ""),
+       col = "black", 
+       cex = .8)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.537, y = .875,  
+       paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+              formatz2(lambda),         " / ",
+              formatz2(lambda2),        " = ",
+              formatz2(hr), ""
+              ),
+       col = "black", 
+             cex = .8)
+  
+   cat("Example (not the above plot): 5 and 10 year survival rates of woman receiving trt X are around 70% and 50% for 5 and 10 yrs respectively. We want to have a good chance of detectecting a 20% increase in the hazard. What does a 20% increase imply for 5 and 10 yr survival rates in the intervention? Si(t) = S0(t)exp(Bxi), 0.7^1.2 = 62.5% and 0.5^1.2 = 43.5%. Alternatively, as shown in above plot, log(z)/log(0.7) = 1.2, so log(z) = 1.2 x log(0.7), then exponeniate the answer to find z.")
+
+
+## ----exp2, results='hide',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ p          <- mort1  
+ ref.time   <- time 
+ trt.time   <- -log(p)/lambda
+ fact.      <- (-log(p)/lambda)  / (-log(p)/lambda2) -1
+#~~~~~~~~~~~~~~~~~~
+ curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+       main=paste0(  "A change in survival time S(t) at fixed survival probability:\nA survival probability of ",
+          formatz4(p),         " for the red reference curve has survival time ",
+          formatz2( ref.time), ". \nA ",
+          formatz2(fact.*100), "% increase in the survival time results in a survival time of ",
+          formatz2(trt.time),  " (red)\nExponential rates ",
+          formatz2(lambda),    " (blue) and ",
+          formatz2(lambda2),   " (red). HR= ",
+          formatz2(hr),        " (blue/red)"
+          ),  
+          cex.main = .8,
+          ylab='Survival probability',xlab='', 
+          col="blue",
+          sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
+   #~~~~~~~~~~~~~~~~~~
+   text(x = end*.5, y = .95,  
+       paste0("HR at survival quantile ",
+              formatz4(p),                     ", ratio of survival times: red / blue = ",
+              formatz2(ref.time),              " / ",
+              formatz2(trt.time),              " = ", 
+              formatz2( ref.time/trt.time ),   ""),
+       col = "black",
+       cex = .8)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.52, y = .875,  
+       paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+              formatz2(lambda)," / ",formatz2(lambda2)," = ",
+              formatz2(lambda/lambda2),""
+              ),
+       col = "black",
+             cex = .8)
+ #~~~~~~~~~~~~~~~~~~~
+ abline(h=p , col='black' , lty=2)
+ lines(c(-log(p)/lambda2 , -log(p)/lambda2), c(0 , p) , col='red')
+ lines(c(-log(p)/lambda  , -log(p)/lambda),  c(0 , p) , col='blue')
+ #~~~~~~~~~~~~~~~~~~~
+ curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,  
+       ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+ #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ 
+
+## ----nquery0, results='asis',eval=TRUE , echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     
+
+## ----nquery1, results='asis',eval=TRUE , echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+# This function is useful for creating d1 an input to Hmisc cpower to find the intervention mortality at same time
+
+  morti <- function ( d0=.5, hr=2/3, time=6){
+    
+      lambda = -log(1-d0)/time     # hazard rate 
+      m = 1 - exp(-lambda*time*hr) # mortality hence subtracting from 1
+      return(m)
+  } 
+  
+ 
+  d0 <- 0.5      # control mortality at 6 months
+  d1 <- morti()  # interv. mortality at 6 months
+  # r is the % reduction ctrl to intervention
+  
+  cpower(tref=6, n=352, mc=d0, r= 100*(d0 - d1)/d0, tmin=39/4,  #mc is  tref-year mortality, control
+         accrual=74/4, alpha=.05, pr=TRUE,
+         noncomp.c = 0, noncomp.i = 0)
+
+  
+  survP(0.07701635,0.11552453,.5)  # intervention haz, ctrl hazard, Surv prob in ctrl
+  SurvP2(0.07701635,0.11552453,.5) # intervention haz, ctrl hazard, Surv prob in ctrl
+
+cat("Plots just to gain understanding and do not examine accrual not follow up times.")
+ 
+
+## ----pub0, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## ----pub1, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+d0 <- 1-.29
+d1 <- 1-.4
+cpower(tref=1, n=444, mc=d0, r= 100*(d0 - d1)/d0, tmin=1, 
+       accrual=1, alpha=.05, pr=TRUE,
+       noncomp.c = 0, noncomp.i = 0)
+  
+    # the hazards come from cpower function
+    survP(1.2378744 ,   0.9162907 ,.29)  # intervention haz, ctrl hazard, Surv prob in ctrl
+    SurvP2(1.2378744 ,   0.9162907 ,.29) # intervention haz, ctrl hazard, Surv prob in ctrl
+cat("Plots just to gain understanding and do not examine accrual not follow up times.")
+
+  
+
+## ----hmisc, results='asis',eval=TRUE , echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     
+
+## ----hmisc2, results='asis',eval=TRUE , echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+     
+
+cpower(tref=2, n=1000, mc=.2, r=25, accrual=2, tmin=1, 
+       noncomp.c=10, noncomp.i=17.5)
+
+# repeating using my function, only difference due to rounding
+
+  d0= .2
+  time=2
+  hr=0.7283
+  d1 <- morti(d0=d0, hr= hr, time=time)
+  
+  cpower(tref=time, n=1000, mc=d0, r=100*(d0 - d1)/d0, accrual=2, tmin=1, 
+         noncomp.c=10, noncomp.i=17.5)
+ 
+
+## ----collett, results='asis',eval=TRUE , echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  
+  d0= .6
+  time=5
+  d1=.41
+  
+  cpower(tref=time, n=400, mc=d0, r=100*(d0 - d1)/d0, accrual=1.5, tmin=2,    # p478 and p482
+         noncomp.c=0, noncomp.i=0)
+  
+  cpower(tref=time, n=400, mc=d0, r=100*(d0 - d1)/d0, accrual=2.0,  tmin=2,    # p483
+         noncomp.c=0, noncomp.i=0)
+  
+  cpower(tref=time, n=903, mc=d0, r=100*(d0 - d1)/d0, accrual=20/24, tmin=0,  # p483 no this does not match <-!!
+         noncomp.c=0, noncomp.i=0) 
+
+
+
+## ----stata, results='asis',eval=TRUE , echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Stata survival book p353/354, we duplicate with cpower
+# stpower exponential 0.03, hratio(0.6) power(0.9) aperiod(20) fperiod(15)
+
+    hr   <- 0.6
+    h    <- 0.03  
+    time <- 1/h*(-log(1-0.5))^(1)  #Weibull
+    d0   <- 0.5
+    d1   <- morti(d0=d0, hr= hr, time=time)  # my function
+  
+  cpower(tref=time, n=190*2, mc=d0, r=100*(d0 - d1)/d0, accrual=20, tmin=15, 
+         noncomp.c=0, noncomp.i=0) #
+
+
+## ----stata2, results='asis',eval=TRUE , echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 
+# stpower exponential 0.03, hratio(0.6) power(0.9) fperiod(35) loghazard detail
+
+simfunx <- function(p=1, hr=.6, n=30, At=20, lambdaC=.018, alpha=0.05, seed=NULL ) {
+  
+      if (!is.null(seed)) set.seed(seed)
+      
+      h  <- lambdaC #                    # hazard for exponential using med surv, remeber -log(0.5) is the same 
+      ms <- 1/h*(-log(1-0.5))^(p)        # lets show we know how to recreate median survival
+      T1 <- 1/h*(-log(runif(n)))^(p)     # weibull times, p=1 so exp, lambda=h
+      
+      ms2<- ms*hr                        # use the HR to get hazard in other group
+      h2 <- log(2)/ms2
+      T2 <- 1/h2*(-log(runif(n)))^(p)    # create n weibull times, p=1 so exp, lambda=h2
+      
+      # lambdaC hazard of censoring
+      C1 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+      C2 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+      
+      C1 = rep(100000,n)    # censoring time, basically no censoring due to large time I use here
+      C2 = rep(100000,n)    # censoring time  basically no censoring due to large time I use here
+      
+      time1 = pmin(T1,C1)  # observed time is min of censored and true grp0
+      time2 = pmin(T2,C2)  # observed time is min of censored and true grp1
+      
+      event1 = time1==T1   
+      event2 = time2==T2   
+      
+      event = c(event1,event2)
+      Ti = c(time1,time2)
+      
+      event <- ifelse(Ti >= At, 0, event)
+      Ti <-     ifelse(Ti >= At, At, Ti)
+      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      dd <- data.frame(T= Ti, 
+                       x = c(rep(1,n), rep(0,n)), 
+                       event = event )
+      
+      l = coxph(Surv(T, event) ~ x, dd)
+      
+      o <- anova(l)$`Pr(>|Chi|)`[2] # P-value from likelihood ratio test
+      
+      pow <- o<=alpha
+      
+      u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority
+      
+      n <- (l$n-l$nevent)/l$n  
+      
+      p <- exp(l$coefficients[[1]])
+      
+      ev <- l$nevent  # no of events
+      
+      h1=h
+      h2=h2
+      
+      c( (h1), (h2), (ev),  (n), (p), (u), (o),  (pow))
+}
+
+
+  simres <- plyr::raply(1000,simfunx(p=1, hr=1/.6, n=294/2, At=35, lambdaC=.03))
+  simres <- as.data.frame(simres)
+  names(simres) <- c("h1","h2","No of events", "Proportion of events","HR", "HR Upper 90CI","Mean P-value","Power")
+  options(digits=3)
+  r <- (apply(simres,2, mean))
+  r<-as.data.frame(r)
+  print(kable(t(r)))
+  options(digits=7)
+
+
+
+## ----stata3, results='asis',eval=TRUE , echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+## ----stata4, results='asis',eval=TRUE , echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+simfunf <- function(p=1, hr=.6, n=30, acc=20, fup=5, lambdaC=.018, alpha=0.05, seed=NULL ) {
+  
+  if (!is.null(seed)) set.seed(seed)
+  
+  At <- T1 <- T2 <- D1 <- D2 <- T1a <- T2a <- time1 <- time2 <- l <- NULL
+  
+  At= acc + fup
+  
+  h  <- lambdaC #                    # hazard for exponential using med surv, remeber -log(0.5) is the same 
+  ms <- 1/h*(-log(1-0.5))^(p)        # lets show we know how to recreate median survival
+  T1 <- 1/h*(-log(runif(n)))^(p)     # weibull times, p=1 so exp, lambda=h
+  
+  ms2<- ms*hr                        # use the HR to get hazard in other group
+  h2 <- log(2)/ms2
+  T2 <- 1/h2*(-log(runif(n)))^(p)    # create n weibull times, p=1 so exp, lambda=h2
+  
+  # lambdaC hazard of censoring
+  C1 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+  C2 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+  
+  a1 <- runif(n,0,acc) # use these for random uniform accrual times
+  a2 <- runif(n,0,acc)
+  
+  D1 = T1+a1   # add rand uniform to weibull events
+  D2 = T2+a2
+  
+  T1a <- ifelse(D1>At, At,  T1 )  # make sure no time + accrual entry exceeds accrual + follow up
+  T2a <- ifelse(D2>At, At,  T2 )  # and replace [rand uniform to weibull events] with original time to event time
+
+  # by pass censoring, so no censoring!
+  C1 = rep(100000,n)    # censoring time, basically no censoring
+  C2 = rep(100000,n)    # censoring time  basically no censoring
+  
+  time1 = pmin(T1a,C1)  # observed time is min of censored and true grp0
+  time2 = pmin(T2a,C2)  # observed time is min of censored and true grp1
+  
+  event1 = time1==T1a   
+  event2 = time2==T2a   
+  
+  
+  event = c(event1,event2)
+  Ti = c(time1,time2)
+  
+  event <- ifelse(Ti >= At, 0, event)
+  Ti <-     ifelse(Ti >= At, At, Ti)
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  dd <- data.frame(T= Ti, 
+                   x = c(rep(1,n), rep(0,n)), 
+                   event = event )
+  
+  l = coxph(Surv(T, event) ~ x, dd)
+  
+  o <- anova(l)$`Pr(>|Chi|)`[2] # P-value from likelihood ratio test
+  
+  pow <- o<=alpha
+  
+  u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority
+  
+  n <- (l$n-l$nevent)/l$n  
+  
+  p <- exp(l$coefficients[[1]])
+  
+  ev <- l$nevent  # no of events
+  
+  h1=h
+  h2=h2
+  
+  c(h1,h2,ev,n,p,u,o, pow)
+}
+
+# my god it works!!!
+  simres <- plyr::raply(1000,simfunf(p=1, hr=.6, n=190,  lambdaC=.018, acc=20, fup=15))
+  simres <- as.data.frame(simres)
+  names(simres) <- c("h1","h2","No of events", "Proportion of events","HR", "HR Upper 90CI","Mean P-value","Power")
+  options(digits=3)
+  r <- (apply(simres,2, mean))
+  r<-as.data.frame(r)
+  print(kable(t(r)))
+  options(digits=7)
+
+
+
+## ----stata5, results='asis',eval=TRUE , echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+  
+  hr=.6
+  h  <- .03  
+  time <- 1/h*(-log(1-0.5))^(1) 
+  d0=.5
+  
+  d1 <- morti(d0=d0, hr= hr, time=time)
+  
+  cpower(tref=time, n=190*2, mc=d0, r=100*(d0 - d1)/d0, accrual=20, tmin=15, 
+         noncomp.c=0, noncomp.i=0) #?
+
+
+
+## ----ex8a, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+  weibSurv <- function(x, shape, scale)
+      pweibull(x, shape=shape, scale=scale,lower.tail=F)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# instead of survival mortality lets postulated change in the time for survival  
+# visualize the question
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # inputs
+  n     <- 100                             # no of patients per group
+  ms1   <- 4                               # median survival null
+  ms2   <- 7                               # median survival alternative
+  p     <- 0.50                            # time for survival probability
+  fact. <- (ms2-ms1)/ms1                   # % increase in time for survival of this means
+  h     <- lambda   <-  log(2)/ms1         # baseline hazard (reference)
+  h2    <- lambda2  <-  lambda/(1+fact.)   # alternate hazard
+  hr    <- lambda/lambda2                  # hr compares to alternate/longer survival
+
+
+## ----ex8b, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# visualize the question
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  end <- ceiling(-(log(1-.999)/ lambda))       # for plotting the range of x axis, calc. 99th percentile
+  s   <- seq(0,end, length.out = end+1)    
+  
+  curve(weibSurv(x, shape=1, scale=1/lambda), from=0, to=end, 
+        main=paste0("S(t) for exponential rates ",formatz2(lambda)," (red) and ",formatz2(lambda2), " (blue). HR= ",formatz2(hr),".\n A survival probability of ",formatz4(p)," for the reference has survival time ",
+                    formatz2(-log(p)/lambda),". \nA ",formatz2(fact.*100) ,"% increase in the survival time results in a survival time of ",formatz2(-log(p)/lambda2)," (blue)"),  cex.main = .8,
+        ylab='Survival probability', xlab='Time', col="red")
+  
+  abline(v= -log(p)/lambda, col='darkgreen')  
+  abline(h=p , col='red' , lty=2)
+  abline(v= -log(p)/lambda2 , col='blue')   
+  
+  curve(weibSurv(x, shape=1, scale=1/lambda2), from=0, to=end,  
+        ylab='Survival probability', xlab='Time', col="blue", add=TRUE)
+
+
+## ----ex8c, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plot many studies
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  T1 <- 1/h* (-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
+  T2 <- 1/h2*(-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
+  
+  survfit1 <- survfit(Surv(T1) ~ 1)
+  plot(survfit1, ylab="Survival probability", xlab="Time",col="green", conf.int=FALSE, 
+       main=paste0("Plotting ",n," studies, ",n," subjects per group, exponential rate  1 = ",formatz4(h),", rate 2 = ",formatz4(h2), "\nHR = ",formatz4(h/h2),
+                   " Median survivals ",formatz4(log(2)/lambda)," and ",formatz4(log(2)/lambda2)), xlim=c(0,end), cex.main = .8)
+  
+  survfit2 <- survfit(Surv(T2) ~ 1)
+  lines(survfit2, lwd=2, col='blue', conf.int = FALSE)  
+  
+  # draw 100 studies!
+  for ( i in 1:n) {
+    
+    T1 <- 1/h* (-log(runif(n)))^(1)   # 1 in brackets dictates exponential dist
+    T2 <- 1/h2*(-log(runif(n)))^(1)   # 1 in brackets dictates exponential dist
+    
+    survfit1 <- survfit(Surv(T1) ~ 1)
+    lines(survfit1, lwd=2, col='green', conf.int = FALSE)  
+    
+    survfit2 <- survfit(Surv(T2) ~ 1)
+    lines(survfit2, lwd=2, col='blue', conf.int = FALSE)  
+    
+  }
+  
+  # plot true survival curve, constant hazard h
+  curve(weibSurv(x, shape=1, scale=1/h), from=0, to=end, n=length(T1), 
+        col='black', lwd=2, lty=2,
+        ylim=c(0,1), add=TRUE)
+  
+  # plot true survival curve, constant hazard h2
+  curve(weibSurv(x, shape=1, scale=1/h2), from=0, to=end, n=length(T1), 
+        col='black', lwd=2, lty=2,
+        ylim=c(0,1), add=TRUE)
+
+
+
+## ----ex8d, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# power simulation
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  sim = function(h,h2,n) {
+    
+    # Simulate some time to event data
+    T1 <- 1/h* (-log(runif(n)))^(1)   
+    T2 <- 1/h2*(-log(runif(n)))^(1) 
+    
+    # data
+    ti = c(T1, T2)
+    gr = c(rep(1, n), rep(0, n))
+    
+    l = coxph(Surv(ti) ~ gr)    # Fit Cox model
+    anova(l)$`Pr(>|Chi|)`[2]   # P-value 
+  }
+  
+  #set.seed(123) # Reproducible pseudorandom numbers
+  pv <-  replicate(1000, sim(n = 200/2, h = h, h2=h2)) 
+  mean(pv <= 0.05)  
+
+  
+
+## ----ex8e, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# let's use Frank Harrell Hmisc cpower function
+# the perspective here is change in mortality at initial time of interest rather 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  morti <- function ( d0=.5, hr=2/3, time=6){
+    
+    lambda = -log(1-d0)/time     # hazard rate 
+    m = 1 - exp(-lambda*time*hr) # mortality hence subtracting from 1
+    return(m)
+  } 
+  
+  time <- ms1
+  d0   <- p
+  hr   <- 1/hr
+  
+  d1 <- morti(d0=d0, hr= hr, time=time)
+  
+  # looking at graph above just made me choose accrual time 100 with no further follow up
+  Hmisc::cpower(tref=time, n=100*2, mc=d0, r=100*(d0 - d1)/d0, accrual=100, tmin=0, 
+         noncomp.c=0, noncomp.i=0) 
+  
+    Hmisc::cpower(tref=time, n=152, mc=d0, r=100*(d0 - d1)/d0, accrual=100, tmin=0, 
+         noncomp.c=0, noncomp.i=0) 
+  
+
+
+## ----ex8f, results='asis',eval=TRUE , echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ w.sim2 <- function(p=1, hr=1.75, n=100, At=30, ms=5.5, lambdaC=.04) { 
+
+      h  <- log(2)/ms                    # hazard for exponential
+      ms <- 1/h*(-log(1-0.5))^(p)        # median survival
+      T1 <- 1/h*(-log(runif(n)))^(p)     # weibull times, p=1 so exp, lambda=h
+      
+      ms2<- ms*hr                        # use the HR to get hazard in other group
+      h2 <- log(2)/ms2
+      T2 <- 1/h2*(-log(runif(n)))^(p)    # weibull times, p=1 so exp, lambda=h2
+      
+      # lambdaC hazard of censoring
+      C1 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+      C2 = rweibull(n, shape=1, scale=1/lambdaC)   # censoring time
+      
+      time1 = pmin(T1,C1)  # observed time is min of censored and true grp0
+      time2 = pmin(T2,C2)  # observed time is min of censored and true grp1
+      
+      event1 = time1==T1   
+      event2 = time2==T2   
+      
+      event = c(event1,event2)
+      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      dat <- data.frame(T = c(time1,time2), 
+                        x = c(rep(1,n), rep(0,n)), 
+                        event = c(event1,event2) )
+
+      l = coxph(Surv(T, event) ~ x, dat)
+      
+      pv <- anova(l)$`Pr(>|Chi|)`[2] # P-value from likelihood ratio test
+      
+      # collect
+      o <- pv
+      
+      n <- (l$n-l$nevent)/l$n
+      
+      p <- exp(l$coefficients[[1]])
+      
+      ev <- l$nevent
+      
+   #   pow <- o <=.05
+      
+      output <- list(o,n,p,ev )
+      
+      return(output)
+
+    }
+
+ 
+  fact.    <-   (7-4)/4  # % increase in time for survival of this means
+  lambda   <-  log(2)/4 # baseline hazard (reference)
+  lambda2  <-  lambda/(1+fact.)
+  hr       <-  lambda/lambda2
+   
+   
+  # need to double check inputs are correct here??
+  require(survival)
+  phr = replicate(1000, w.sim2(p=1, hr=hr, n=200/2, At=30000, ms=7, lambdaC=0.00006)) # # censoring and admin censoring times are so big they have no effect
+  phr <- t(phr)
+  mean(phr[,1] <= 0.05) 
+
+
+
+## ----noninf, results='asis',eval=TRUE , echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# non inf power simulation - under construction
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # inputs
+  n     <- 100                             # no of patients per group
+  ms1   <- 4                               # median survival null
+  ms2   <- 7                               # median survival alternative
+  p     <- 0.50                            # time for survival probability
+  fact. <- (ms2-ms1)/ms1                   # % increase in time for survival of this means
+  h     <- lambda   <-  log(2)/ms1         # baseline hazard (reference)
+  h2    <- lambda2  <-  lambda/(1+fact.)   # alternate hazard
+  hr    <- lambda/lambda2                  # hr compare
+  
+  
+  simi = function(h,h2,n) {
+    
+    # Simulate some time to event data
+    T1 <- 1/h* (-log(runif(n)))^(1)   
+    T2 <- 1/h2*(-log(runif(n)))^(1) 
+    
+    # data
+    ti = c(T1, T2)
+    gr = c(rep(1, n), rep(0, n))
+    
+    l = coxph(Surv(ti) ~ gr)    # Fit Cox model
+    #anova(l)$`Pr(>|Chi|)`[2]   # P-value 
+    exp(confint(l, level = .9))  [1][[1]]  # use for lower CI
+    
+  }
+  
+  #set.seed(123) # Reproducible pseudorandom numbers
+  # try less samples
+  pv <-  replicate(1000, simi(n = 50/2, h = h, h2=h2)) 
+  mean(pv >  0.80)
+  mean(pv >  0.85) 
+  mean(pv >  0.90)
+  mean(pv >  0.95)  
+ # mean(pv > 1.0)
+#  mean(pv > 1.1)  
+#  mean(pv > 1.2)
+  
+
+
+
+
+
+
+
+
+
+## ----computing envirnoment, echo=FALSE------------------------------
+
+      options(width=70)
+     # opts_knit$set(root.dir = wd.code)   ##THIS SETS YOUR WORKING DIRECTORY
+      sessionInfo()
+      print(getwd())
+      stopTime<-proc.time()
+
+
+
+## ----knitr purl code, results='hide'--------------------------------
+
+    # move stangle R file to a folder in GPS
+    # put this at bottom and give it the same name as the RMD file , replace any blanks with underscore
+    # https://amywhiteheadresearch.wordpress.com/2014/11/12/copying-files-with-r/
+
+    # https://stackoverflow.com/questions/21101573/need-the-filename-of-the-rmd-when-knitr-runs
+    x <- knitr::current_input() 
+    x
+    rcode <-  gsub(' ','_', trimws(x))                       # replace blank with underscore, this is needed
+    file.copy(rcode, path.script,  overwrite=TRUE)           # make a copy of the rcode in a folder of choice
+    
+    
+    # saving the html to GPS!
+    # https://stackoverflow.com/questions/28894515/rmarkdown-directing-output-file-into-a-directory
+    # x1 <- gsub('\\.Rmd','\\.html', trimws(x)) 
+    # rcode <-  gsub(' ','_', trimws(x1))   
+    # knit: (function(inputFile, encoding) { 
+    #   out_dir <- path.script;
+    #   rmarkdown::render(inputFile,
+    #                     encoding=encoding, 
+    #                     output_file=file.path(dirname(x), out_dir, rcode)) })
+    # 
+    
+    #http://felixfan.github.io/extract-r-code/
+    #https://www.rdocumentation.org/packages/knitr/versions/1.19/topics/knit
+    #y <- knitr::current_input()
+    #knitr::purl(y, output = "test.R", documentation = 2)
+ 
+    input  = knitr::current_input()  # filename of input document
+    cat("checking purl..")
+    input
+    output = paste(tools::file_path_sans_ext(input), 'R', sep = '.')
+    output
+    #tools::file_path_sans_ext(input)
+    knitr::purl(input,paste0(path.script,output),documentation=1,quiet=T)  ##where do we wish to save R code?
+    getwd()
+    
+
+## ----chunk output code,echo=FALSE, results='hide', eval=FALSE-------
+#  
+#  # https://stackoverflow.com/questions/25800604/how-to-purl-each-chunks-in-rmd-file-to-multiple-r-files-using-knitr
+#  
+#      library("knitr")
+#      # p <- purl("test.Rmd")
+#      p <-purl(knitr::current_input())
+#      read_chunk(p)
+#      chunks <- knitr:::knit_code$get()
+#  
+#      invisible(mapply(function(chunk, name) {
+#          writeLines(c(paste0("## ----",name,"----"), chunk), paste0(path.script,"",name,".R"))
+#      }, chunks, names(chunks)))
+#      unlink(p)                   # delete the original purl script
+#      knitr:::knit_code$restore() # remove chunks from current knitr session
+#  
+#  
+#   setwd(wd.code)
+#  
+#  # file.rename(from = file.path(wd.code, output), to = file.path(path.script, output))
+#  
+

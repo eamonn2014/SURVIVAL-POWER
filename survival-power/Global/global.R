@@ -360,6 +360,129 @@ survplot4 <- function( CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) 
 
 #survplot4(  CSurvProp=.4, time1=1, surv.perc.change.improvement=50 ) # 
 #survplot4(  CSurvProp=.4, time1=1, surv.perc.change.improvement=-50 ) #  
+
+# Reproduce Nquery example 
+# “Using an unstratified log-rank test at the one-sided 2.5% significance level, a 
+# total of 282 events would allow 92.6% power to demonstrate a 33% risk reduction
+# (hazard ratio for RAD/placebo of about 0.67, as calculated from an anticipated 
+#   50% increase in median PFS, from 6 months in placebo arm to 9 months in the RAD001 arm).
+# With a uniform accrual of approximately 23 patients per month over 74 weeks and a minimum 
+# follow up of 39 weeks, a total of 352 patients would be required to obtain 282 PFS events,
+# assuming an exponential progression-free survival distribution with a median of 6 months 
+# in the Placebo arm and of 9 months in RAD001 arm. With an estimated 10% lost to follow up patients, 
+# a total sample size of 392 patients should be randomized.”
+
+
+#survplot4(  CSurvProp=.5, time1=6, surv.perc.change.improvement=50 ) 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # end function 4
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# function 5  plot given surv. prob, time and absolute change in time
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# blue control
+# red treatment
+
+survplot5 <- function( CSurvProp=.4, time1=1, AAR=50 ) {  #
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # function to plot weibull distribution, shape will always be 1 for exponential
+  zp <- function(x, shape, scale)
+    pweibull(x, shape=shape, scale=scale, lower.tail=F)
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # control group
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  p <-  CSurvProp                                      # percentile survival
+  lambda <- -(log(p))/time1                            # constant hazard in control group
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # now the treated group
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  #  i <- 1 + surv.perc.change.improvement/100           # hyp time
+  time2 <- (time1+AAR)                                 # apply factor, hypothesized % survival change in treatment
+  lambda2 <- -log(p)/time2                             # constant hazard in treatment grp
+  
+  hr <- lambda2/lambda                                 # hazard ratio, treat / ctrl
+  
+  surv2 <- 1 - exp(-lambda* time1* hr )                # e^-lambda*t, not used!
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # plotting 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  end <- ceiling(-(log(1-.999)/ lambda))               # for plotting out to 999th percentile
+  
+  curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+        main=paste0("An absolute change in survival at fixed survival probability (control in blue)\n Exponential rates ",
+                    formatz4(lambda),         " (blue) and ",
+                    formatz4(lambda2),        " (red): Hazard Ratio = ",
+                    formatz4(hr), " (red/blue). Time at survival quantile ",
+                    formatz2(p*100),             "%:\n ",
+                    formatz2(time1),          " (blue) and ", 
+                    formatz2(time2 ), " (red) a ",AAR, " unit absolute change in survival time with reference to control (blue)"), 
+        cex.main = 1.4,
+        # ylab='Survival probability', xlab='', 
+        col="blue", 
+        xlab="", ylab="",
+        sub= "*Note for exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). For example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
+  mtext("Time",                 side=1, line=3, col="black", cex=1.5)
+  mtext("Survival probability", side=2, line=3, col="black", cex=1.5)
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  abline(h=p , col='blue' , lty=2)                 # line showing survival percentile in ctrl
+  #pp <- ifelse(p<p2,p2,p)                          # v line extends to higher curve
+  lines(c(time1 ,time1), c(0 , p) , col='blue', lty=2)  # vertical line
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
+        ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+  #abline(h=p2 , col='red' , lty=2)                 #  line showing survival percentile in treat
+  lines(c(time2 ,time2), c(0 , p) , col='red', lty=2)
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  text(x = end*.575, y = .95,  
+       paste0("*HR = (Survival)[blue] / (Survival)[red] = ",
+              formatz4(time1),                   " / ",
+              formatz4(time2),                 " = ", 
+              formatz4( (time1)/(time2) ), ""),   # treat/ctrl
+       col = "black", 
+       cex = 1.4)
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  text(x = end*.584, y = .875,  
+       paste0(expression("HR = hazard rate[red] / hazard rate[blue] = "),  # treat / ctrl
+              formatz4(lambda2),         " / ",
+              formatz4(lambda),        " = ",
+              formatz4(hr), ""
+       ),
+       col = "black", 
+       cex = 1.4)
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+}
+
+
+#survplot5(  CSurvProp=.5, time1=6, AAR=3 ) # 
+
+#@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
