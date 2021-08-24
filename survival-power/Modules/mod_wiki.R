@@ -53,7 +53,7 @@
      
      uiOutput(ns("text2")),
      
-   #  uiOutput(ns("text3")),
+     uiOutput(ns("text3")),
      br(),
       )
     
@@ -94,8 +94,16 @@
                       ' $$ {  {\\it{s}^2} =  \\frac{     {(\\sigma^2)}   {(\\chi^2}_{(n - 1), (1-\\alpha)}) }  {(n-1)}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$')))
        })  
       #@@@@@@@@@@@@@@@@ 
-
-
+      output$text3 <- renderUI({ 
+        
+        withMathJax(
+          helpText(
+            tags$span(style="color:black",
+                      ' $$ {  {\\lambda} =  \\frac{        {-\\ln} {(S(t) }) }  {t}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$')))
+      })  
+ 
+      
+      #[ \lambda = \frac{-ln(S(t))}{t} \]
       
       # output$text3 <- renderUI({ 
       # 
