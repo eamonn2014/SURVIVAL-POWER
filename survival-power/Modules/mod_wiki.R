@@ -19,33 +19,27 @@
 
     tabItem("wiki",
             
-     # we can type directly here!        
-     h4(paste("In this app we show how to use the exponential distribution to help understand survival and 
+     # we can type directly here!   
+     h4(paste("This app helps plan time to event studies assuming exponentially distributed events:")),       
+     h4(paste("Using the exponential distribution we present survival curves and 
               hypothesised changes due to an intervention. Much like the survival converter linked to below we show how to convert
               hazard rates to any survival probability at time t, or alternatively, convert survival probability at time t to a hazard rate. 
-              Though here we also plot the survival distibutions.")),       
-            
-     # div(h4("References:")),  
-     # tags$a(href = "https://pubmed.ncbi.nlm.nih.gov/15724232/", tags$span(style="color:blue", h4("[1] Generating survival times to simulate Cox proportional hazards models")),),   
-     # div(p(" ")),
-     # tags$a(href = "https://github.com/eamonn2014/Survival-power/tree/master/survival-power", tags$span(style="color:blue", h4("[2] Shiny code")),),   
-     # div(p(" ")),
-     # tags$a(href = "https://stattools.crab.org/R/Survival_Converter.html", tags$span(style="color:blue", h4("[3] Survival converter")),),   
-     # div(p(" ")),
-     # tags$a(href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function", tags$span(style="color:blue", h4("[4] How to simulate survival times using true base line hazard function")),),   
-     # div(p(" ")),
-     # tags$a(href = "https://www.youtube.com/watch?v=inMjG32nzcw&ab_channel=Statsols%28ProviderofnQuery%29", tags$span(style="color:blue", h4("[5] Sample Size For Survival Analysis - A guide to planning successful clinical trials")),),   
-     # div(p(" ")),
-     # tags$a(href = "https://sas-and-r.blogspot.com/2010/03/example-730-simulate-censored-survival.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+SASandR+%28SAS+and+R%29", tags$span(style="color:blue", h4("[6] Simulate censored survival data")),),   
-     # div(p(" ")),
-     # 
-     
-     
-     
+              Here though we also plot the survival distibutions.")),     
+     h4(paste("We look at the effect of an intervention from two perspectives: A) Changing survival probability, and B) Changing survival time.")),      
+     h4(paste("Clicking on the menu option starting 'A' there are 3 options each holding the desired survival time constant. 
+              The first option allows the user to specify a relative change in terms of a percentage change in survival/mortality.        
+     The second option allows the user to specify an absolute change in terms of a percentage point change in survival/mortality. 
+        The third option allows the user to specify a hazard ratio and seeing the effect on survival probability.       
+              
+              ")),
+     h4(paste("Clicking on the menu option starting 'B' there are 3 options each holding the desired survival probability constant. 
+              The first option allows the user to specify a relative change in terms of a percentage change in survival/mortality time.        
+     The second option allows the user to specify an absolute change in terms of a percentage point change in survival/mortality time. 
+        The third option allows the user to specify a hazard ratio in survival/mortlaity and seeing the effect on the survival/mortality time.
+              
+              ")),
      
      tags$hr(),
-     
-     
      
      
      # or create objects in the server and output here:        
@@ -110,7 +104,7 @@
  
         withMathJax(
           helpText(
-            tags$span(style="color:black",
+            tags$span(style="color:black", 
                       ' $$ {  {\\it{s}^2} =  \\frac{     {(\\sigma^2)}   {(\\chi^2}_{(n - 1), (1-\\alpha)}) }  {(n-1)}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$')))
        })  
       #@@@@@@@@@@@@@@@@ 
@@ -118,22 +112,12 @@
         
         withMathJax(
           helpText(
-            tags$span(style="color:black",
-                      ' $$ {  {\\lambda} =  \\frac{        {-\\ln} {(S(t) }) }  {t}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$')))
+            tags$span(style="color:black", h3(
+                      ' $$ {  {\\lambda} =  \\frac{        {-\\ln} {(S(t) }) }  {t}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$'))) )
       })  
  
       
-      #[ \lambda = \frac{-ln(S(t))}{t} \]
-      
-      # output$text3 <- renderUI({ 
-      # 
-      # h4("Reference:") 
-      # tags$a(href = "https://en.wikipedia.org/wiki/Chi-squared_distribution#Gamma,_exponential,_and_related_distributions", tags$span(style="color:blue", "[3] Chi-squared distribution"),)  
-      # p(" ")
-      # 
-      # tags$hr()
-      
-      #})  
+    
       #@@@@@@@@@@@@@@@@
       
       

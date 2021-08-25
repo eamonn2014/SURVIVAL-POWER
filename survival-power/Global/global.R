@@ -554,14 +554,87 @@ survplot6 <- function( CSurvProp=.4, time1=1, HR=2 ) {  #
 #@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+# plot many studies 
+weibSurv <- function(x, shape, scale)
+  pweibull(x, shape=shape, scale=scale,lower.tail=F)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# https://www.magesblog.com/post/2013-04-30-how-to-change-alpha-value-of-colours-in/
+## Add an alpha value to a colour
+add.alpha <- function(col, alpha=1){
+  if(missing(col))
+    stop("Please provide a vector of colours.")
+  apply(sapply(col, col2rgb)/255, 2, 
+        function(x) 
+          rgb(x[1], x[2], x[3], alpha=alpha))  
+}
+myColours <- c("green","blue")
+myColoursAlpha <- add.alpha(myColours, alpha=0.2)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+survplot7 <- function( nsim   =  100 ,
+                       npergroup=100,
+                       tSurvNULL=4,
+                       tSurvALT =7,
+                       SurvProp =0.5 ) {  #
+ 
+  ms2 <-tSurvALT
+  ms1 <-tSurvNULL
+  fact. <- (ms2-ms1)/ms1                   # % increase in time for survival of this means
+  h     <- lambda   <-  -log(1-SurvProp)/ms1         # baseline hazard (reference)
+  h2    <- lambda2  <-  lambda/(1+fact.)   # alternate hazard
+  hr    <- lambda/lambda2                  # hr compares to alternate/longer survival
+  n <- npergroup
+  N <- nsim
+  
+  end <- ceiling(-(log(1-.999)/ lambda))       # for plotting the range of x axis, calc. 99th percentile
+ # s   <- seq(0,end, length.out = end+1)    
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Plot many studies
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+T1 <- 1/h* (-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
+T2 <- 1/h2*(-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
+
+survfit1 <- survfit(Surv(T1) ~ 1)
+plot(survfit1, ylab="Survival probability", xlab="Time",col="green", conf.int=FALSE, 
+     main=paste0("Plotting ",N," studies, ",n," subjects per group, exponential rate 1 = ",formatz4(h),", rate 2 = ",formatz4(h2), "\nHR = ",formatz4(h/h2),
+                 " Median survival ",formatz4(log(2)/lambda)," and ",formatz4(log(2)/lambda2)), xlim=c(0,end), cex.main = .8)
+
+survfit2 <- survfit(Surv(T2) ~ 1)
+lines(survfit2, lwd=2, col='blue', conf.int = FALSE)  
+
+# draw 100 studies!
+for ( i in 1:N) {
+  
+  T1 <- 1/h* (-log(runif(n)))^(1)   # 1 in brackets dictates exponential dist
+  T2 <- 1/h2*(-log(runif(n)))^(1)   # 1 in brackets dictates exponential dist
+  
+  survfit1 <- survfit(Surv(T1) ~ 1)
+  lines(survfit1, lwd=.5, col=myColoursAlpha[1], conf.int = FALSE, )  
+  
+  survfit2 <- survfit(Surv(T2) ~ 1)
+  lines(survfit2, lwd=2, col=myColoursAlpha[2], conf.int = FALSE)  
+  
+}
+
+# plot true survival curve, constant hazard h
+curve(weibSurv(x, shape=1, scale=1/h), from=0, to=end, n=length(T1), 
+      col='black', lwd=2, lty=2,
+      ylim=c(0,1), add=TRUE)
+
+# plot true survival curve, constant hazard h2
+curve(weibSurv(x, shape=1, scale=1/h2), from=0, to=end, n=length(T1), 
+      col='black', lwd=2, lty=2,
+      ylim=c(0,1), add=TRUE)
 
 
+}
 
-
-
-
+survplot7()
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@end
 
 
 

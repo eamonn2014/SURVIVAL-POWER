@@ -39,6 +39,7 @@
     source("modules/mod_survplot4.R")  # do something here
     source("modules/mod_survplot5.R")  # do something here
     source("modules/mod_survplot6.R")  # do something here
+    source("modules/mod_survplot7.R")  # do something here
     source("modules/mod_wiki.R")       # do something here
     
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,7 +53,8 @@
         mod_survplot3_ui("survplot_3"),
         mod_survplot4_ui("survplot_4"),
         mod_survplot5_ui("survplot_5"),
-        mod_survplot6_ui("survplot_6")
+        mod_survplot6_ui("survplot_6"),
+        mod_survplot7_ui("survplot_7")
         )    
     )
 
@@ -69,6 +71,7 @@
         callModule(mod_survplot4_server, "survplot_4")
         callModule(mod_survplot5_server, "survplot_5")
         callModule(mod_survplot6_server, "survplot_6")
+        callModule(mod_survplot7_server, "survplot_7")
     }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

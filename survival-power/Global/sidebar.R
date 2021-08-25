@@ -21,17 +21,20 @@ dashboardSidebar(
     
     # wrap the text
     menuItem("A. Exponential survival plots, fixed survival time",
-             menuSubItem(h5(HTML("1. A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1"),
-             menuSubItem(h5(HTML("2. An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2"),
+             menuSubItem(h5(HTML("1. Relative risk change: A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1"),
+             menuSubItem(h5(HTML("2. Absolute risk change: An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2"),
              menuSubItem(h5(HTML("3. A hazard ratio is postulated")), tabName="survplot3")
              
              ), #, 
   menuItem("B. Exponential survival plots, fixed survival probability",
-           menuSubItem(h5(HTML("4. A percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4"),
+           menuSubItem(h5(HTML("4. A (relative) percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4"),
            menuSubItem(h5(HTML("5. An absolute change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot5"),
            menuSubItem(h5(HTML("6. A hazard ratio is postulated")), tabName="survplot6")
-  ) #, 
+  ), #, 
     
+  
+  menuItem("B. xxxxxxxxxxxxxxxxx", tabName="survplot7")
+  
    # menuItem("test2",
           #   menuSubItem("yyy", tabName="yyy")) 
     
