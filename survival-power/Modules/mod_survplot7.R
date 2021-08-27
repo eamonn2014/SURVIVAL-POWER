@@ -36,11 +36,13 @@ tabItem("survplot7",
         
         column(width=3,
                tagList(
-               numericInput(inputId=ns("nsim_input"),                    label = c("no of simulated studies"),                         value = 100, min=10,  max=1000, step=10),
+               numericInput(inputId=ns("nsim_input"),                    label = c("no of simulated studies"),                         value = 30, min=1,  max=1000, step=5),
                numericInput(inputId=ns("npergrp_input"),                 label = c("no of patients per group"),                        value = 100, min=10,  max=1000, step=1),
-               numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control survival time"),                           value = 4,   min=1,   max=100,  step=1),
-               numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention survival time"),                      value = 7,   min=1,   max=100,  step=1),
                numericInput(inputId=ns("SurvProp_input"),                label = c("Survival probability"),                            value = 0.5, min=0.01,max=.95,  step=.01),
+               numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control survival time (green)"),                           value = 4,   min=1,   max=100,  step=1),
+               numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention survival time (blue)"),                      value = 7,   min=1,   max=100,  step=1),
+               br(),
+               actionButton("goButton", "Go!")
                           )
         ),
         ##~~~~~~~~~~~~~
@@ -66,19 +68,47 @@ mod_survplot7_server <- function(input, output, session){
   
   ns <- session$ns
   
-  output$survplot7 <- renderPlot({
+  # values <- reactiveValues(
+  #   nsim_input = 31,
+  #   npergrp_input = 100,
+  #   SurvProp_input = .5,
+  #   tSurvNULL_input =4,
+  #   tSurvALT_input =7
+ # )
+  
+  # observeEvent(input$goButton, {
+    
+    # values$nsim_input      <- input$nsim_input
+    # values$npergrp_input   <- input$npergrp_input
+    # values$tSurvNULL_input <- input$tSurvNULL_input
+    # values$tSurvALT_input  <- input$tSurvALT_input
+    # values$SurvProp_input  <- input$SurvProp_input
 
-    # this function id in the global.R file
+# })
+  
+# go button not working
+  
+  
+  
+  observeEvent(
+    list(input$goButton,
+         input$nsim_input,input$npergrp_input, input$tSurvNULL_input,input$tSurvALT_input,input$SurvProp_input),{
+  
+           
+           
+           
+  output$survplot7 <- renderPlot(
+    
     survplot7(  nsim     =input$nsim_input, 
                 npergroup=input$npergrp_input,
                 tSurvNULL=input$tSurvNULL_input,
                 tSurvALT =input$tSurvALT_input,
                 SurvProp =input$SurvProp_input )  
-   }, height=700, width=1000)
-
-   
-}
-
+    
+   , height=700, width=1000)
+ 
+  
+  })
     #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   
-        
+}
          
