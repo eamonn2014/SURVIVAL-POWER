@@ -33,7 +33,7 @@ dashboardSidebar(
   ), #, 
     
   
-  menuItem("B. xxxxxxxxxxxxxxxxx", tabName="survplot7")
+  menuItem("C. Plot simulations of simple study", tabName="survplot7")
   
    # menuItem("test2",
           #   menuSubItem("yyy", tabName="yyy")) 

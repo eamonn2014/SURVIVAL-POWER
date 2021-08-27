@@ -42,7 +42,7 @@ tabItem("survplot7",
                numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control survival time (green)"),                           value = 4,   min=1,   max=100,  step=1),
                numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention survival time (blue)"),                      value = 7,   min=1,   max=100,  step=1),
                br(),
-               actionButton(ns("resample"),label=" Hit to sample another data set", icon = icon("th"),  width =250  )
+               actionButton(ns("resample"),label=" Hit to run a simulation", icon = icon("th"),  width =250  )
                           )
         ),
         ##~~~~~~~~~~~~~
@@ -64,34 +64,12 @@ tabItem("survplot7",
 #' @export
 #' @keywords internal
 #' 
-# mod_survplot7_server <- function(input, output, session){
-#   
-#   ns <- session$ns
-#  
-#   
-#   observeEvent(input$resample, {
-#     refresh()
-#   })
-#         
-#         output$survplot7 <- renderPlot({
-#        
-#           
-#           survplot7(  nsim     =input$nsim_input, 
-#                       npergroup=input$npergrp_input,
-#                       tSurvNULL=input$tSurvNULL_input,
-#                       tSurvALT =input$tSurvALT_input,
-#                       SurvProp =input$SurvProp_input )   
-#           
-#           
-#           }, height=700, width=1000)  
-#    
-#     
-#   }
 
  
 mod_survplot7_server <- function(input, output, session){
   
-  ns <- session$ns
+     #~~~~~~~~~~~~~~~~~~~
+     ns <- session$ns
   
      v1<-reactive(input$nsim_input)
      v2<-reactive(input$npergrp_input)
@@ -99,6 +77,7 @@ mod_survplot7_server <- function(input, output, session){
      v4<-reactive(input$tSurvALT_input)
      v5<-reactive(input$SurvProp_input)
    
+     #~~~~~~~~~~~~~~~~~~~
      randi <-  eventReactive(input$resample,{
            
         survplot7(  
@@ -108,10 +87,11 @@ mod_survplot7_server <- function(input, output, session){
                 tSurvALT =v4(),
                 SurvProp =v5())
     })
-       
- 
-     output$survplot7 <- renderPlot(randi())
+     #~~~~~~~~~~~~~~~~~~~
      
-     
+     output$survplot7 <- renderPlot({
+       randi()
+     }, height=700, width=1000)
+     #~~~~~~~~~~~~~~~~~~~
      
 }

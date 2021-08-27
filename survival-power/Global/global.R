@@ -599,15 +599,18 @@ T1 <- 1/h* (-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
 T2 <- 1/h2*(-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
 
 survfit1 <- survfit(Surv(T1) ~ 1)
-plot(survfit1, ylab="Survival probability", xlab="Time",col="green", conf.int=FALSE, 
-     main=paste0("Plotting ",N," studies, ",n," subjects per group, exponential rate 1 = ",formatz4(h),", rate 2 = ",formatz4(h2), "\nHR = ",formatz4(h/h2),
-                 " Median survival ",formatz4(log(2)/lambda)," and ",formatz4(log(2)/lambda2)), xlim=c(0,end), cex.main = .8)
+plot(survfit1, ylab="Survival probability", xlab="Time", col='white', conf.int=FALSE,  # white so invisible
+     main=paste0("Plotting ",N," studies, ",n," subjects per group, exponential rate ctrl (green) = ",formatz4(h),", rate intervention (blue) = ",formatz4(h2), "\nHR = ",formatz2(h/h2),
+                 ", ",100*SurvProp, " percentile survival ",formatz2(log(2)/lambda)," control in green and ",formatz2(log(2)/lambda2)," intervention in blue"), 
+     xlim=c(0,end), cex.main = 1.4)
 
 survfit2 <- survfit(Surv(T2) ~ 1)
-lines(survfit2, lwd=2, col='blue', conf.int = FALSE)  
+#lines(survfit2, lwd=2, col=myColoursAlpha[2], conf.int = FALSE)  # no line
 
-# draw 100 studies!
-for ( i in 1:N) {
+abline(h=SurvProp , col='purple' , lty=2)  
+
+# draw N extra studies!
+for ( i in 1:(N)) {
   
   T1 <- 1/h* (-log(runif(n)))^(1)   # 1 in brackets dictates exponential dist
   T2 <- 1/h2*(-log(runif(n)))^(1)   # 1 in brackets dictates exponential dist
