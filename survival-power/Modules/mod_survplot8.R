@@ -41,7 +41,7 @@ tabItem("survplot8",
                numericInput(inputId=ns("noncomp.c"), label = c("Non compliance control"),             value = 0, min=0,max=1, step=.1),
                numericInput(inputId=ns("noncomp.i"), label = c("Non compliance intervention"),        value = 0, min=0,max=1, step=.1),
                br(),
-               numericInput(inputId=ns("sims"), label = c("Simulations"),        value = 100, min=10,max=100000, step=1)
+               numericInput(inputId=ns("sims"), label = c("Simulations (not needed in cpower function)"),        value = 100, min=10,max=100000, step=1)
                
                )
         ),
@@ -49,7 +49,9 @@ tabItem("survplot8",
  
   mainPanel(
    
+    h4(paste("Hmisc::cpower")),
     verbatimTextOutput(ns("survplot8")),
+    h4(paste("My simulation to match cpower (although does not accomodate non compliance).")),
     verbatimTextOutput(ns("survplot8a"))
   ),
   #~~~~~~~~~~~~~~~~
@@ -86,7 +88,7 @@ mod_survplot8_server <- function(input, output, session){
   output$survplot8a <- renderPrint({
     
     simres<- NULL
-    # p is to stipulate exponential
+    # p=1 is to stipulate shape =1 so exponential
     
     simres <- plyr::raply(input$sims ,simfunfx(p=1, hr=input$hr, n=input$n/2, acc=input$accrual, fup=input$tmin,
                                         lambdaC= -log(input$mc )/input$tref , alpha=0.05 ))
