@@ -98,7 +98,8 @@ mod_survplot7_server <- function(input, output, session){
   # https://stackoverflow.com/questions/29496921/how-to-make-shiny-button-re-call-function-for-plot-with-no-input?rq=1
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   observe({   
-    if(input$resample > 0) {
+    
+    if(input$resample > -1) {   # if 0 plot only appears after first button hit! 
       
       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
       survplot7(  nsim     =plotSettings$A, 
