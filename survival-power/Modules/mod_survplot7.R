@@ -36,14 +36,22 @@ tabItem("survplot7",
         
         column(width=3,
                tagList(
-               numericInput(inputId=ns("nsim_input"),                    label = c("no of simulated studies"),                         value = 30, min=1,  max=1000, step=5),
-               numericInput(inputId=ns("npergrp_input"),                 label = c("no of patients per group"),                        value = 100, min=10,  max=1000, step=1),
+                 h4(paste("This tab shows what can be exepected if a study is run over and over again. This is a very simple scenario. 
+                          The inputs below define the number of simulations, sample size (1:1 randomisation) and population parameters:")),
+                 br(),
+               numericInput(inputId=ns("nsim_input"),                    label = c("No. of simulated studies"),                         value = 30, min=1,  max=1000, step=5),
+               numericInput(inputId=ns("npergrp_input"),                 label = c("No. of patients per group"),                        value = 100, min=10,  max=1000, step=1),
                numericInput(inputId=ns("SurvProp_input"),                label = c("Survival probability"),                            value = 0.5, min=0.01,max=.95,  step=.01),
                numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control survival time (green)"),                           value = 4,   min=1,   max=100,  step=1),
                numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention survival time (blue)"),                      value = 7,   min=1,   max=100,  step=1),
                br(),
-               actionButton(ns("resample"),label=" Hit to run a simulation", icon = icon("th"),  width =250  )
+               h4(paste("The button below refreshes and repeats the simulation. There is no practical need for this but is
+                        just an exercise in programming whereby the plot is updated by either the inputs or the button. 
+                        See the module mod_survplot7.R code which has some references that were helpful.")),
+               br(),
+               actionButton(ns("resample"),label=" Hit to run another simulation", icon = icon("th"),  width =300  )
                           )
+              
         ),
         ##~~~~~~~~~~~~~
  

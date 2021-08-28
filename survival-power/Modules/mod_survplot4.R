@@ -21,6 +21,8 @@ mod_survplot4_ui <- function(id){
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tabItem("survplot4",
+        
+       
         ##~~~~~~~~~~~~~~
         column(width=3,
                tagList(
