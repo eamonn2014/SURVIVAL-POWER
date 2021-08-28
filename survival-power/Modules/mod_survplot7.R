@@ -118,7 +118,7 @@ mod_survplot7_server <- function(input, output, session){
                     tSurvALT =plotSettings$D,
                     SurvProp =plotSettings$E) 
    
-      })
+      }, height=700, width=1000)
       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
       
     }
@@ -130,5 +130,5 @@ mod_survplot7_server <- function(input, output, session){
 }
 
 
-
+ 
 
