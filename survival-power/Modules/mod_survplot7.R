@@ -234,6 +234,7 @@ tabItem("survplot7",
 
 #https://stackoverflow.com/questions/52898292/r-shiny-refreshing-plot-when-entering-input-or-pressing-an-action-button
 
+
 mod_survplot7_server <- function(input, output, session){
   ns <- session$ns
   
@@ -244,29 +245,41 @@ mod_survplot7_server <- function(input, output, session){
                  input$tSurvNULL_input, input$tSurvALT_input,
                  input$SurvProp_input  ), {
                    
-    plotSettings$A <- input$nsim_input
-    plotSettings$B <- input$npergrp_input
-    plotSettings$C <- input$tSurvNULL_input
-    plotSettings$D <- input$tSurvALT_input
-    plotSettings$E <- input$SurvProp_input 
-    
-  }, ignoreNULL = FALSE)
+                   plotSettings$A <- input$nsim_input
+                   plotSettings$B <- input$npergrp_input
+                   plotSettings$C <- input$tSurvNULL_input
+                   plotSettings$D <- input$tSurvALT_input
+                   plotSettings$E <- input$SurvProp_input 
+                   
+                 }, ignoreNULL = FALSE)
   
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# https://stackoverflow.com/questions/29496921/how-to-make-shiny-button-re-call-function-for-plot-with-no-input?rq=1
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  
+  
+  
+  # output$survplot7 <- renderPlot({
+  #   
+  #   survplot7(  nsim     =plotSettings$A, 
+  #                                npergroup=plotSettings$B,
+  #                                tSurvNULL=plotSettings$C,
+  #                                tSurvALT =plotSettings$D,
+  #                                SurvProp =plotSettings$E)  
+  #                  }, height=700, width=1000)
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   observe({   
-    
     if(input$resample > 0) {
       
-      ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      
       survplot7(  nsim     =plotSettings$A, 
                   npergroup=plotSettings$B,
                   tSurvNULL=plotSettings$C,
                   tSurvALT =plotSettings$D,
                   SurvProp =plotSettings$E) 
-      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      
+      
       output$survplot7 <- renderPlot({
+        
         
         survplot7(  nsim     =plotSettings$A, 
                     npergroup=plotSettings$B,
@@ -274,29 +287,18 @@ mod_survplot7_server <- function(input, output, session){
                     tSurvALT =plotSettings$D,
                     SurvProp =plotSettings$E) 
         
-    })
-      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        
+      })
+      
       
     }
     
     
   })
- #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
- #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
