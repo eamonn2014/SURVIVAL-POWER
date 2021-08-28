@@ -64,34 +64,240 @@ tabItem("survplot7",
 #' @export
 #' @keywords internal
 #' 
-
+#https://community.rstudio.com/t/run-code-just-when-actionbutton-is-pressed/53183/2
  
+# mod_survplot7_server <- function(input, output, session){
+#   
+#      #~~~~~~~~~~~~~~~~~~~
+#      ns <- session$ns
+#   
+#      v1<-reactive(input$nsim_input)
+#      v2<-reactive(input$npergrp_input)
+#      v3<-reactive(input$tSurvNULL_input)
+#      v4<-reactive(input$tSurvALT_input)
+#      v5<-reactive(input$SurvProp_input)
+#    
+#      #~~~~~~~~~~~~~~~~~~~
+#      randi <-  eventReactive(input$resample,{
+#            
+#         survplot7(  
+#                 nsim=v1(),
+#                 npergroup=v2(),
+#                 tSurvNULL=v3(),
+#                 tSurvALT =v4(),
+#                 SurvProp =v5())
+#     })
+#      #~~~~~~~~~~~~~~~~~~~
+#      
+#      output$survplot7 <- renderPlot({
+#        randi()
+#      }, height=700, width=1000)
+#      #~~~~~~~~~~~~~~~~~~~
+#      
+# }
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# mod_survplot7_server <- function(input, output, session){
+# 
+#         #~~~~~~~~~~~~~~~~~~~
+#         ns <- session$ns
+# 
+#         values <- reactiveValues(
+#           nsim_input   =100,
+#           npergrp_input = 30,
+#           tSurvNULL_input=4,
+#           tSurvALT_input=7,
+#           SurvProp_input=0.5
+#         )
+# 
+#         #~~~~~~~~~~~~~~~~~~~
+#         observeEvent(input$resample,{
+# 
+#           values$nsim_input   =  input$nsim_input
+#           values$npergrp_input = input$npergrp_input
+#           values$tSurvNULL_input=input$tSurvNULL_input
+#           values$tSurvALT_input= input$tSurvALT_input
+#           values$SurvProp_input= input$SurvProp_input
+#         })
+#         #~~~~~~~~~~~~~~~~~~~
+# 
+#         output$survplot7 <- renderPlot({
+#           survplot7(
+#             nsim= values$nsim_input,
+#             npergroup= values$npergrp_input ,
+#             tSurvNULL=values$tSurvNULL_input,
+#             tSurvALT =values$tSurvALT_input,
+#             SurvProp =values$SurvProp_input)
+#         }, height=700, width=1000)
+#         #~~~~~~~~~~~~~~~~~~~
+# 
+# }
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# observeEvent(
+#   list(input$resample,
+#        input$nsim_input,input$npergrp_input, input$tSurvNULL_input,input$tSurvALT_input,input$SurvProp_input),{
+#          
+#          output$survplot7 <- renderPlot(
+#            
+#            survplot7(  nsim     =input$nsim_input,
+#                        npergroup=input$npergrp_input,
+#                        tSurvNULL=input$tSurvNULL_input,
+#                        tSurvALT =input$tSurvALT_input,
+#                        SurvProp =input$SurvProp_input )
+#            
+#            , height=700, width=1000)
+#          
+#          
+#        })
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# observeEvent(
+#   list(input$resample),{
+#          
+#          output$survplot7 <- renderPlot(
+#            
+#            survplot7(  nsim     =input$nsim_input,
+#                        npergroup=input$npergrp_input,
+#                        tSurvNULL=input$tSurvNULL_input,
+#                        tSurvALT =input$tSurvALT_input,
+#                        SurvProp =input$SurvProp_input )
+#            
+#            , height=700, width=1000)
+#          
+#          
+#        })
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# https://www.rdataguy.com/2019/11/lesson-9-random-number-generator-part-2.html
+# https://stackoverflow.com/questions/31548092/shiny-generate-random-values-every-time-press-button
+# https://www.rdataguy.com/2019/11/lesson-9-random-number-generator-part-2.html
+# https://stackoverflow.com/questions/61324097/how-to-apply-the-actionbutton-to-update-my-ggplot-in-shiny-in-r
+# mod_survplot7_server <- function(input, output, session){
+#   
+# rand <- eventReactive(input$resample,{
+#   
+#   #ns <- session$ns
+#     # nsim     =input$nsim_input
+#     # npergrp=input$npergrp_input
+#     # tSurvNULL=input$tSurvNULL_input
+#     # tSurvALT =input$tSurvALT_input
+#     # SurvProp =input$SurvProp_input
+#     
+#     survplot7(                     nsim      =input$nsim_input,
+#                                        npergroup=input$npergrp_input,
+#                                         tSurvNULL=input$tSurvNULL_input,
+#                                       tSurvALT =input$tSurvALT_input,
+#                                         SurvProp =input$SurvProp_input )
+#   
+#      return()
+# })
+# 
+# 
+#         output$survplot7 <- renderPlot({
+#           rand()
+#         }, height=700, width=1000)
+# 
+# }
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# https://github.com/eamonn2014/Survival-power/commit/7af349f0995469a62825f3780cecbd04f6af22b5#diff-4357afa46d6a52efbec7cca3112f59ebfdab78dddbb7fba72538ed332ba43f91
+# 
+# mod_survplot7_server <- function(input, output, session){
+#   
+#   ns <- session$ns
+#   
+#   output$survplot7 <- renderPlot({
+#     
+#     # this function id in the global.R file
+#     survplot7(  nsim     =input$nsim_input, 
+#                 npergroup=input$npergrp_input,
+#                 tSurvNULL=input$tSurvNULL_input,
+#                 tSurvALT =input$tSurvALT_input,
+#                 SurvProp =input$SurvProp_input )  
+#   }, height=700, width=1000)
+#   
+#   
+# }
+
+
+
+# check this?
+# https://stackoverflow.com/questions/29496921/how-to-make-shiny-button-re-call-function-for-plot-with-no-input?rq=1
+
+
+#https://stackoverflow.com/questions/52898292/r-shiny-refreshing-plot-when-entering-input-or-pressing-an-action-button
+
 mod_survplot7_server <- function(input, output, session){
+  ns <- session$ns
   
-     #~~~~~~~~~~~~~~~~~~~
-     ns <- session$ns
+  plotSettings <- reactiveValues()
   
-     v1<-reactive(input$nsim_input)
-     v2<-reactive(input$npergrp_input)
-     v3<-reactive(input$tSurvNULL_input)
-     v4<-reactive(input$tSurvALT_input)
-     v5<-reactive(input$SurvProp_input)
-   
-     #~~~~~~~~~~~~~~~~~~~
-     randi <-  eventReactive(input$resample,{
-           
-        survplot7(  
-                nsim=v1(),
-                npergroup=v2(),
-                tSurvNULL=v3(),
-                tSurvALT =v4(),
-                SurvProp =v5())
+  observeEvent(c(input$resample, 
+                 input$nsim_input, input$npergrp_input, 
+                 input$tSurvNULL_input, input$tSurvALT_input,
+                 input$SurvProp_input  ), {
+                   
+    plotSettings$A <- input$nsim_input
+    plotSettings$B <- input$npergrp_input
+    plotSettings$C <- input$tSurvNULL_input
+    plotSettings$D <- input$tSurvALT_input
+    plotSettings$E <- input$SurvProp_input 
+    
+  }, ignoreNULL = FALSE)
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# https://stackoverflow.com/questions/29496921/how-to-make-shiny-button-re-call-function-for-plot-with-no-input?rq=1
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  observe({   
+    
+    if(input$resample > 0) {
+      
+      ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      survplot7(  nsim     =plotSettings$A, 
+                  npergroup=plotSettings$B,
+                  tSurvNULL=plotSettings$C,
+                  tSurvALT =plotSettings$D,
+                  SurvProp =plotSettings$E) 
+      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      output$survplot7 <- renderPlot({
+        
+        survplot7(  nsim     =plotSettings$A, 
+                    npergroup=plotSettings$B,
+                    tSurvNULL=plotSettings$C,
+                    tSurvALT =plotSettings$D,
+                    SurvProp =plotSettings$E) 
+        
     })
-     #~~~~~~~~~~~~~~~~~~~
-     
-     output$survplot7 <- renderPlot({
-       randi()
-     }, height=700, width=1000)
-     #~~~~~~~~~~~~~~~~~~~
-     
+      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      
+    }
+    
+    
+  })
+ #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
