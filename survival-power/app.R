@@ -39,9 +39,9 @@
     source("modules/mod_survplot4.R")  # do something here
     source("modules/mod_survplot5.R")  # do something here
     source("modules/mod_survplot6.R")  # do something here
-    source("modules/mod_survplot7.R")  # do something here
-    source("modules/mod_survplot8.R")  # do something here
-    source("modules/mod_wiki.R")       # do something here
+    source("modules/mod_survplot7.R")  # simulate many studies
+    source("modules/mod_survplot8.R")  # power
+    source("modules/mod_wiki.R")       # introduction and landing page
     
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     body <- dashboardBody(
