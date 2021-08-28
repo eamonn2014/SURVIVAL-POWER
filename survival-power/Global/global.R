@@ -640,7 +640,19 @@ survplot7()
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@end
 
 
+# This function is useful for creating d1 an input to Hmisc cpower to find the intervention mortality at same time
 
+morti <- function ( d0=.5, hr=2/3, time=6){
+  
+  lambda = -log(1-d0)/time     # hazard rate 
+  m = 1 - exp(-lambda*time*hr) # mortality hence subtracting from 1
+  return(m)
+} 
+
+
+#d0 <- 0.5      # control mortality at 6 months
+#d1 <- morti()  # interv. mortality at 6 months
+# r is the % reduction ctrl to intervention
 
 
 
