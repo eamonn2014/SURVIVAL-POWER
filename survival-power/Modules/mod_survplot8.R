@@ -32,8 +32,8 @@ tabItem("survplot8",
                tagList(
                # changed labels from h5("Postulated percentage change in survival probability")
                numericInput(inputId=ns("tref"),  label = c("Reference time"),                         value = 6,  min=0.5,max=200, step=.5),
-               numericInput(inputId=ns("n"),     label = c("Sample size"),                            value = 352, step=1),
-               numericInput(inputId=ns("mc"), label = c("mortality control arm at reference time"),   value = .5, min=0,max=1, step=.05),
+               numericInput(inputId=ns("n"),     label = c("total sample size"),                            value = 352, step=1),
+               numericInput(inputId=ns("mc"), label = c("Mortality control arm at reference time"),   value = .5, min=0,max=1, step=.05),
                #numericInput(inputId=ns("r"), label = c("% reduction in mortality"), value = .5, min=0,max=1, step=.05),
                numericInput(inputId=ns("hr"), label = c("Hazard Ratio"),                              value = 2/3, min=0.01,max=10, step=.01),
                numericInput(inputId=ns("tmin"), label = c("Minimum follow up time"),                  value = 39/4, min=0,max=100, step=1),
@@ -41,7 +41,7 @@ tabItem("survplot8",
                numericInput(inputId=ns("noncomp.c"), label = c("Non compliance control"),             value = 0, min=0,max=1, step=.1),
                numericInput(inputId=ns("noncomp.i"), label = c("Non compliance intervention"),        value = 0, min=0,max=1, step=.1),
                br(),
-               numericInput(inputId=ns("sims"), label = c("Simulations (not needed in cpower function)"),        value = 100, min=10,max=100000, step=1)
+               numericInput(inputId=ns("sims"), label = c("Simulations (not needed in cpower function)"), value = 100, min=10,max=100000, step=1)
                
                )
         ),
@@ -51,9 +51,22 @@ tabItem("survplot8",
    
     h4(paste("Hmisc::cpower")),
     verbatimTextOutput(ns("survplot8")),
-    h4(paste("My simulation to match cpower (although does not accomodate non compliance).")),
-    verbatimTextOutput(ns("survplot8a"))
-  ),
+    h4(paste("My simulation to approximate cpower (although does not accommodate non compliance).")),
+    verbatimTextOutput(ns("survplot8a")),
+    
+    
+    h4(paste("The default inputs duplicate Nquery example 'Using an unstratified log-rank test at the one-sided 2.5% significance level, a total of 282 events would
+    allow 92.6% power to demonstrate a 33% risk reduction (hazard ratio for RAD/placebo of about 0.67, as calculated from an anticipated
+    50% increase in median PFS, from 6 months in placebo arm to 9 months in the RAD001 arm). With a uniform accrual of approximately 23 
+    patients per month over 74 weeks and a minimum follow up of 39 weeks, a total of 352 patients would be required to obtain 282 PFS events, 
+    assuming an exponential progression-free survival distribution with a median of 6 months in the Placebo arm and of 9 months in RAD001 arm. 
+    With an estimated 10% lost to follow up patients, a total sample size of 392 patients should be randomized. This example is linked to in the references.'")),
+    
+    br(),
+    h4(paste("STATA code for Nquery example@")),
+    h4(paste("stpower exponential 0.11552453 0.0770,  n(352) aperiod(18.5) fperiod(9.75)")),
+    h4(paste("stpower exponential 0.11552453, hratio(.6666667) n(352) aperiod(18.5) fperiod(9.75)")),
+   ),
   #~~~~~~~~~~~~~~~~
   
   tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))
@@ -73,42 +86,35 @@ mod_survplot8_server <- function(input, output, session){
   
   output$survplot8 <- renderPrint({
 
-    # get % reduction in mortality given hr and time
-    d1 <- morti(d0=input$mc, hr=input$hr, time=input$tref)  # see function in global.r
-    d0 <- input$mc
-    # this function is from HMisc package
-    cpower(tref=input$tref, n=input$n, mc=input$mc, r= 100*(d0 - d1)/d0, tmin=input$tmin,  #mc is  tref-year mortality, control
-           accrual=input$accrual, alpha=.05, pr=TRUE,
-           noncomp.c = input$noncomp.c, noncomp.i = input$noncomp.i)
-  
+        # get % reduction in mortality given hr and time
+        d1 <- morti(d0=input$mc, hr=input$hr, time=input$tref)  # see function in global.r
+        d0 <- input$mc
+        # this function is from HMisc package
+        cpower(tref=input$tref, n=input$n, mc=input$mc, r= 100*(d0 - d1)/d0, tmin=input$tmin,  #mc is  tref-year mortality, control
+               accrual=input$accrual, alpha=.05, pr=TRUE,
+               noncomp.c = input$noncomp.c, noncomp.i = input$noncomp.i)
   
     })
    
   
   output$survplot8a <- renderPrint({
     
-    simres<- NULL
-    # p=1 is to stipulate shape =1 so exponential
-    
-    simres <- plyr::raply(input$sims ,simfunfx(p=1, hr=input$hr, n=input$n/2, acc=input$accrual, fup=input$tmin,
-                                        lambdaC= -log(input$mc )/input$tref , alpha=0.05 ))
-    simres <- as.data.frame(simres)
-    names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events",
-                       "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value",
-                       "SD log HR","Power")
-    r <- apply(simres,2, mean)
-    print(r, digits=6)
+        simres<- NULL
+        # p=1 is to stipulate shape =1 so exponential
+        
+        simres <- plyr::raply(input$sims ,simfunfx(p=1, hr=input$hr, n=input$n/2, acc=input$accrual, fup=input$tmin,
+                                            lambdaC= -log(1-input$mc )/input$tref , alpha=0.05 ))    # check lambdaC??
+        simres <- as.data.frame(simres)
+        names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events",
+                           "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value",
+                           "SD log HR","Power")
+        
+        r <- apply(simres,2, mean)
+        print(r, digits=6)
   
   })
   
-  
-  
-  
-  
-  
-  
-  
-  
+ 
   
 }
 
