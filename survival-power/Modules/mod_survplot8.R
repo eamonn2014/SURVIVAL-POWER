@@ -41,7 +41,14 @@ tabItem("survplot8",
                numericInput(inputId=ns("noncomp.c"), label = c("Non compliance control"),             value = 0, min=0,max=1, step=.1),
                numericInput(inputId=ns("noncomp.i"), label = c("Non compliance intervention"),        value = 0, min=0,max=1, step=.1),
                br(),
-               numericInput(inputId=ns("sims"), label = c("Simulations (not needed in cpower function)"), value = 100, min=10,max=100000, step=1)
+               numericInput(inputId=ns("sims"), label = c("Simulations (not needed in cpower function)"), value = 100, min=10,max=100000, step=1),
+               
+               
+               br(),
+               actionButton(ns("resample"),label=" Hit to run another simulation", icon = icon("th"),  width =300  )
+               ,
+               
+               
                
                )
         ),
@@ -85,6 +92,7 @@ mod_survplot8_server <- function(input, output, session){
   
   ns <- session$ns
   
+  # Hmisc::cpower
   output$survplot8 <- renderPrint({
 
         # get % reduction in mortality given hr and time
@@ -98,13 +106,60 @@ mod_survplot8_server <- function(input, output, session){
     })
    
   
+  # do the same approach as module 7 add a button to simulate again
+  
+  plotSettings <- reactiveValues()
+  
+  observeEvent(c(input$hr, 
+                 input$n, input$accrual, 
+                 input$tmin, input$mc,
+                 input$tref  ), {
+                   
+                   plotSettings$A <- input$hr
+                   plotSettings$B <- input$n/2
+                   plotSettings$C <- input$accrual
+                   plotSettings$D <- -log(1-input$mc )/input$tref
+                   plotSettings$E <- input$tmin
+                 
+                 }, ignoreNULL = FALSE)
+  
+  
+  observe({   
+    
+    if(input$resample > -1) {   # if 0 plot only appears after first button hit! 
+      
+      simres<- NULL
+      # p=1 is to stipulate shape =1 so exponential
+      
+      simres <- plyr::raply(input$sims ,simfunfx(p=1, 
+                                                 hr= plotSettings$A,
+                                                 n=  plotSettings$B, 
+                                                 acc=plotSettings$C,
+                                                 fup=plotSettings$E,
+                                                 lambdaC= plotSettings$D , alpha=0.05 ))    # check lambdaC??
+      simres <- as.data.frame(simres)
+      names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events",
+                         "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value",
+                         "SD log HR","Power")
+      
+      r <- apply(simres,2, mean)
+      print(r, digits=6)
+      
+      
+   
+  
+  # my simulation
   output$survplot8a <- renderPrint({
     
         simres<- NULL
         # p=1 is to stipulate shape =1 so exponential
         
-        simres <- plyr::raply(input$sims ,simfunfx(p=1, hr=input$hr, n=input$n/2, acc=input$accrual, fup=input$tmin,
-                                            lambdaC= -log(1-input$mc )/input$tref , alpha=0.05 ))    # check lambdaC??
+        simres <- plyr::raply(input$sims ,simfunfx(p=1, 
+                                                   hr= plotSettings$A,
+                                                   n=  plotSettings$B, 
+                                                   acc=plotSettings$C,
+                                                   fup=plotSettings$E,
+                                                   lambdaC= plotSettings$D , alpha=0.05  ))    # check lambdaC??
         simres <- as.data.frame(simres)
         names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events",
                            "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value",
@@ -115,10 +170,11 @@ mod_survplot8_server <- function(input, output, session){
   
   })
   
- 
+    
+}
+  })
   
 }
-
     #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   
         
          
