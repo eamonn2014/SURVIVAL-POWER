@@ -64,6 +64,7 @@ tabItem("survplot8",
  
   mainPanel(
    
+   
     h4(paste("Frank Harrell's Hmisc::cpower")),
     verbatimTextOutput(ns("survplot8")),
     h4(paste("My simulation to approximate cpower (although does not accommodate non compliance).")),
@@ -84,7 +85,7 @@ tabItem("survplot8",
     h4(paste("stpower exponential 0.11552453, hratio(.6666667) n(352) aperiod(18.5) fperiod(9.75)  loghazard detail")),
    ),
   #~~~~~~~~~~~~~~~~
-  
+   
  # tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))  # is this needed?
 )
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -20,7 +20,7 @@
     tabItem("wiki",
             
      # we can type directly here!   
-     h4(paste("This app helps plan time to event studies assuming exponentially distributed events:")),       
+     h4(paste("This app helps understand an plan time to event studies assuming exponentially distributed event times:")),       
      h4(paste("Using the exponential distribution we present survival curves and 
               hypothesised changes due to an intervention. Much like the survival converter linked to below we show how to convert
               hazard rates to any survival probability at time t, or alternatively, convert survival probability at time t to a hazard rate. 
@@ -41,16 +41,21 @@
      
      tags$hr(),
      
+     h1(strong("Title"), style = "font-size:50px;colour:blue"),
+  
+     span(textOutput(ns("warning")), style="color:blue;font-size:50px"), 
      
-     # or create objects in the server and output here:        
-     span(textOutput(ns("warning")), style="color:blue"),
+   # textOutput("text4"),
+   p("A new p() command starts a new paragraph. Supply a style attribute to change the format of the entire paragraph.", 
+     style = "font-family: 'times'; font-si16pt; font-size:50px; colour:blue"),
+     
      br(),
 
      uiOutput(ns("text1")),
      
     # uiOutput(ns("text2")),
      
-     uiOutput(ns("text3")),
+     #uiOutput(ns("text4")),
      br(),
      
      div(h4("References:")),  
@@ -99,6 +104,9 @@
                     "blah" ))
       })
         
+      
+      output$text4 <- renderText({  ("hello input is" ) })
+      
       #@@@@@@@@@@@@@@@@ 3
       output$text2 <- renderUI({ 
  
