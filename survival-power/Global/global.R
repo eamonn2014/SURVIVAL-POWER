@@ -554,7 +554,9 @@ survplot6 <- function( CSurvProp=.4, time1=1, HR=2 ) {  #
 #@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #@@@@@@@@@@@@@@@@@@@@@@@@END@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-# plot many studies 
+# plot many studies at once
+# function to plot weibull distribution
+
 weibSurv <- function(x, shape, scale)
   pweibull(x, shape=shape, scale=scale,lower.tail=F)
 
@@ -636,8 +638,13 @@ curve(weibSurv(x, shape=1, scale=1/h2), from=0, to=end, n=length(T1),
 
 }
 
-survplot7()
+#survplot7()
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@end
+
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 # This function is useful for creating d1 an input to Hmisc cpower to find the intervention mortality at same time
@@ -655,7 +662,7 @@ morti <- function ( d0=.5, hr=2/3, time=6){
 # r is the % reduction ctrl to intervention
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# my function to match Hmisc::cpower
+# my function to approximate Hmisc::cpower
 
 simfunfx <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)/6 , alpha=0.05 ) { # , seed=NULL ) {
   
@@ -744,7 +751,7 @@ simfunfx <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)
   
   pow <- o<=alpha
   
-  u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority
+  u <- exp(confint(l, level = .9))  [2][[1]]  # use for upper 90% conf interval for non inferiority?
   
   n <- 100*(l$nevent)/l$n  
   
@@ -760,7 +767,5 @@ simfunfx <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)
   
   c(h1,h2,ev,n,p,u,o, sd. , pow)
 }
-
-
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
