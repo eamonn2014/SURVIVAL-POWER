@@ -26,7 +26,7 @@ mod_survplot8_ui <- function(id){
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tabItem("survplot8",
         
-       
+      
         ##~~~~~~~~~~~~~~
         column(width=3,
                tagList(
@@ -40,13 +40,21 @@ tabItem("survplot8",
                numericInput(inputId=ns("accrual"), label = c("Length of accrual"),                    value = 74/4, min=0,max=100, step=1),
                numericInput(inputId=ns("noncomp.c"), label = c("Non compliance control"),             value = 0, min=0,max=1, step=.1),
                numericInput(inputId=ns("noncomp.i"), label = c("Non compliance intervention"),        value = 0, min=0,max=1, step=.1),
+               numericInput(inputId=ns("alpha"), label = c("alpha"),                                  value = 0.05, min=0.01,max=.5, step=.01),
                br(),
                numericInput(inputId=ns("sims"), label = c("Simulations (not needed in cpower function)"), value = 100, min=10,max=100000, step=1),
                
                
                br(),
-               actionButton(ns("resample"),label=" Hit to run another simulation", icon = icon("th"),  width =300  )
-               ,
+            #   actionButton(ns("resample"),label=" Hit to run another simulation", icon = icon("th"),  width =300  )
+             #  ,
+                
+             
+               #  https://stackoverflow.com/questions/47512205/change-color-of-action-button
+               actionButton(ns("resample"),"Hit to run another simulation",icon=icon("bell"), width =300 ,
+                            class = "btn action-button",
+                            style = "color: white;
+                           background-color: blue")
                
                
                
@@ -77,7 +85,7 @@ tabItem("survplot8",
    ),
   #~~~~~~~~~~~~~~~~
   
-  tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))
+ # tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))  # is this needed?
 )
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
@@ -92,6 +100,7 @@ mod_survplot8_server <- function(input, output, session){
   
   ns <- session$ns
   
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Hmisc::cpower
   output$survplot8 <- renderPrint({
 
@@ -100,32 +109,33 @@ mod_survplot8_server <- function(input, output, session){
         d0 <- input$mc
         # this function is from HMisc package
         cpower(tref=input$tref, n=input$n, mc=input$mc, r= 100*(d0 - d1)/d0, tmin=input$tmin,  #mc is  tref-year mortality, control
-               accrual=input$accrual, alpha=.05, pr=TRUE,
+               accrual=input$accrual, alpha=input$alpha, pr=TRUE,
                noncomp.c = input$noncomp.c, noncomp.i = input$noncomp.i)
   
     })
-   
   
-  # do the same approach as module 7 add a button to simulate again
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # do the same approach as module 7 add a button to re simulate if input or button is pressed
   
   plotSettings <- reactiveValues()
   
   observeEvent(c(input$hr, 
                  input$n, input$accrual, 
                  input$tmin, input$mc,
-                 input$tref  ), {
+                 input$tref, input$alpha  ), {
                    
                    plotSettings$A <- input$hr
                    plotSettings$B <- input$n/2
                    plotSettings$C <- input$accrual
                    plotSettings$D <- -log(1-input$mc )/input$tref
                    plotSettings$E <- input$tmin
+                   plotSettings$FF <- input$alpha
                  
                  }, ignoreNULL = FALSE)
   
-  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   observe({   
-    
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if(input$resample > -1) {   # if 0 plot only appears after first button hit! 
       
       simres<- NULL
@@ -136,43 +146,42 @@ mod_survplot8_server <- function(input, output, session){
                                                  n=  plotSettings$B, 
                                                  acc=plotSettings$C,
                                                  fup=plotSettings$E,
-                                                 lambdaC= plotSettings$D , alpha=0.05 ))    # check lambdaC??
+                                                 lambdaC= plotSettings$D ,
+                                                 alpha=plotSettings$FF ))    # check lambdaC??
       simres <- as.data.frame(simres)
       names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events",
-                         "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value",
+                         "Proportion of events","Mean HR", "HR Upper 90%CI","Mean P-value",
                          "SD log HR","Power")
       
       r <- apply(simres,2, mean)
       print(r, digits=6)
-      
-      
-   
-  
+    
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # my simulation
   output$survplot8a <- renderPrint({
     
         simres<- NULL
-        # p=1 is to stipulate shape =1 so exponential
         
         simres <- plyr::raply(input$sims ,simfunfx(p=1, 
                                                    hr= plotSettings$A,
                                                    n=  plotSettings$B, 
                                                    acc=plotSettings$C,
                                                    fup=plotSettings$E,
-                                                   lambdaC= plotSettings$D , alpha=0.05  ))    # check lambdaC??
+                                                   lambdaC= plotSettings$D , 
+                                                   alpha=plotSettings$FF  ))    # check lambdaC??
         simres <- as.data.frame(simres)
         names(simres) <- c("hazard rate ctrl","hazard rate trt","No of events",
-                           "Proportion of events","Mean HR", "HR Upper 90CI","Mean P-value",
+                           "Proportion of events","Mean HR", "HR Upper 90%CI","Mean P-value",
                            "SD log HR","Power")
         
         r <- apply(simres,2, mean)
         print(r, digits=6)
   
+     })
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
   })
-  
-    
-}
-  })
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
 }
     #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   

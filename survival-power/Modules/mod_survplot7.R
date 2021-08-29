@@ -49,9 +49,18 @@ tabItem("survplot7",
                         just an exercise in programming whereby the plot is updated by either the inputs or the button. 
                         See the module mod_survplot7.R code which has some references that were helpful.")),
                br(),
-               actionButton(ns("resample"),label=" Hit to run another simulation", icon = icon("th"),  width =300  )
-                          )
+               # actionButton(ns("resample"),label=" Hit to run another simulation", icon = icon("th"),  width =300  )
+               #            )
               
+               #  https://stackoverflow.com/questions/47512205/change-color-of-action-button
+               actionButton(ns("resample"),"Hit to run another simulation",icon=icon("bell"), width =300 ,
+                            class = "btn action-button",
+                            style = "color: white;
+                           background-color: blue")
+               )
+               
+               
+               
         ),
         ##~~~~~~~~~~~~~
  
