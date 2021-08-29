@@ -20,7 +20,7 @@
     tabItem("wiki",
             
      # we can type directly here!   
-     h4(paste("This app helps understand an plan time to event studies assuming exponentially distributed event times:")),       
+     h4(paste("This app helps understand and plan time to event studies assuming exponentially distributed event times:")),       
      h4(paste("Using the exponential distribution we present survival curves and 
               hypothesised changes due to an intervention. Much like the survival converter linked to below we show how to convert
               hazard rates to any survival probability at time t, or alternatively, convert survival probability at time t to a hazard rate. 
@@ -39,38 +39,44 @@
               
               ")),
      
-     tags$hr(),
+     h4(paste("The menu option starting 'C' shows what a large number of studies look like. You can get an idea of whether a real difference
+     in survival (or whatever outcome measure is of interest) between the two groups is detectable. ")),
      
-     h1(strong("Title"), style = "font-size:50px;colour:blue"),
+     h4(paste("The next menu option presents a time to event power calculation as exponential distribution time
+              using the Hmisc::cpower function and also a simulation to approximate cpower.")),
+     
+    # tags$hr(),
+     
+    # h1(strong("Title"), style = "color:blue;font-size:50px"),  # bold 
   
-     span(textOutput(ns("warning")), style="color:blue;font-size:50px"), 
+     span(textOutput(ns("warning")), style="color:black;font-size:18px"),   # changes both font and colour
      
    # textOutput("text4"),
-   p("A new p() command starts a new paragraph. Supply a style attribute to change the format of the entire paragraph.", 
-     style = "font-family: 'times'; font-si16pt; font-size:50px; colour:blue"),
-     
+   # p("A new p() command starts a new paragraph. Supply a style attribute to change the format of the entire paragraph.", 
+   #   style = "font-family: 'times'; font-si16pt; font-size:50px; colour:blue"),
+   #   
      br(),
 
-     uiOutput(ns("text1")),
+    # uiOutput(ns("text1")),
      
-    # uiOutput(ns("text2")),
+     uiOutput(ns("text3")),   # equation
      
      #uiOutput(ns("text4")),
      br(),
      
-     div(h4("References:")),  
-     tags$a(href = "https://pubmed.ncbi.nlm.nih.gov/15724232/", tags$span(style="color:blue", h5("[1] Generating survival times to simulate Cox proportional hazards models - key paper for simulation")),),   
-     div(p(" ")),
-     tags$a(href = "https://github.com/eamonn2014/Survival-power/tree/master/survival-power", tags$span(style="color:blue", h5("[2] Here's the Shiny code")),),   
-     div(p(" ")),
-     tags$a(href = "https://stattools.crab.org/R/Survival_Converter.html", tags$span(style="color:blue", h5("[3] Survival converter")),),   
-     div(p(" ")),
-     tags$a(href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function", tags$span(style="color:blue", h5("[4] How to simulate survival times using true base line hazard function")),),   
-     div(p(" ")),
-     tags$a(href = "https://www.youtube.com/watch?v=inMjG32nzcw&ab_channel=Statsols%28ProviderofnQuery%29", tags$span(style="color:blue", h5("[5] Sample Size For Survival Analysis - A guide to planning successful clinical trials - we duplicate this example")),),   
-     div(p(" ")),
-     tags$a(href = "https://sas-and-r.blogspot.com/2010/03/example-730-simulate-censored-survival.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+SASandR+%28SAS+and+R%29", tags$span(style="color:blue", h5("[6] Simulate censored survival data - useful starting point")),),   
-     div(p(" ")),
+     # div(h4("References:")),  
+     # tags$a(href = "https://pubmed.ncbi.nlm.nih.gov/15724232/", tags$span(style="color:blue", h5("[1] Generating survival times to simulate Cox proportional hazards models - key paper for simulation")),),   
+     # div(p(" ")),
+     # tags$a(href = "https://github.com/eamonn2014/Survival-power/tree/master/survival-power", tags$span(style="color:blue", h5("[2] Here's the Shiny code")),),   
+     # div(p(" ")),
+     # tags$a(href = "https://stattools.crab.org/R/Survival_Converter.html", tags$span(style="color:blue", h5("[3] Survival converter")),),   
+     # div(p(" ")),
+     # tags$a(href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function", tags$span(style="color:blue", h5("[4] How to simulate survival times using true base line hazard function")),),   
+     # div(p(" ")),
+     # tags$a(href = "https://www.youtube.com/watch?v=inMjG32nzcw&ab_channel=Statsols%28ProviderofnQuery%29", tags$span(style="color:blue", h5("[5] Sample Size For Survival Analysis - A guide to planning successful clinical trials - we duplicate this example")),),   
+     # div(p(" ")),
+     # tags$a(href = "https://sas-and-r.blogspot.com/2010/03/example-730-simulate-censored-survival.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+SASandR+%28SAS+and+R%29", tags$span(style="color:blue", h5("[6] Simulate censored survival data - useful starting point")),),   
+     # div(p(" ")),
      
       )
     
@@ -91,8 +97,8 @@
       #@@@@@@@@@@@@@@@@ 1
       output$warning <- renderText({
        paste("The exponential distribution is the simplest parametric distribution for describing survival distributions. 
-              There is a simple relationship between survival probability, time and hazard with the exponential distribution. Knowing 2 of the 3 parameter completely 
-              determines the remaining parameter.")
+              There is a simple relationship between survival probability, time and hazard with the exponential distribution. Knowing 2 of the 3 parameters completely 
+              determines the remaining parameter. See equation 1 below here lambda represents hazard rate and S(t) represents survival proportion at time t.")
       })
 
       #@@@@@@@@@@@@@@@@ 2

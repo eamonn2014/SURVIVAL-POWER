@@ -7,8 +7,8 @@ dashboardSidebar(
     # Setting id makes input$tabs give the tabName of currently-selected tab
     id="tabs",
     
-    menuItem(text="Wiki", 
-             menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")),
+    menuItem(text="Wiki", tabName="wiki" ,  icon = icon("dashboard") ),
+          #   menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")),
               
     
   #  menuItem("Summary Statistics", tabname ="sumstats"),
@@ -20,23 +20,60 @@ dashboardSidebar(
    #          menuSubItem("Boxplot", tabName="Boxplot")),  # must match
     
     # wrap the text
-    menuItem("A. Exponential survival plots, fixed survival time",
-             menuSubItem(h5(HTML("1. Relative risk change: A percentage change in survival probability<br/>at a fixed time is postulated")), tabName="survplot1"),
-             menuSubItem(h5(HTML("2. Absolute risk change: An absolute percentage point change in survival<br/>probability at a fixed time is postulated")), tabName="survplot2"),
-             menuSubItem(h5(HTML("3. A hazard ratio is postulated")), tabName="survplot3")
+    menuItem("A. Exponential survival plots, fixed survival time", icon = icon("cog", class="fa-spin"),
+             menuSubItem(h5(HTML("1. Relative risk change: A percentage change in survival <br/>probability at a fixed time is postulated")), tabName="survplot1", icon = icon("bar-chart-o",lib='glyphicon')),
+             menuSubItem(h5(HTML("2. Absolute risk change: An absolute percentage point change<br/>in survivalprobability at a fixed time is postulated")), tabName="survplot2", icon = icon("bar-chart-o",lib='glyphicon')),
+             menuSubItem(h5(HTML("3. A hazard ratio is postulated")), tabName="survplot3", icon = icon("bar-chart-o",lib='glyphicon'))
              
              ), #, 
-  menuItem("B. Exponential survival plots, fixed survival probability",
-           menuSubItem(h5(HTML("4. A (relative) percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4"),
-           menuSubItem(h5(HTML("5. An absolute change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot5"),
-           menuSubItem(h5(HTML("6. A hazard ratio is postulated")), tabName="survplot6")
+  menuItem("B. Exponential survival plots, fixed survival probability", icon = icon("cog", class="fa-spin"),
+           menuSubItem(h5(HTML("4. A (relative) percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4", icon = icon("bar-chart-o",lib='glyphicon')),
+           menuSubItem(h5(HTML("5. An absolute change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot5", icon = icon("bar-chart-o",lib='glyphicon')),
+           menuSubItem(h5(HTML("6. A hazard ratio is postulated")), tabName="survplot6", icon = icon("bar-chart-o",lib='glyphicon'))
   ), #, 
     
   
-  menuItem("C. Plot simulations of simple study", tabName="survplot7"),
-  menuItem("D. Power", tabName="survplot8")
+  menuItem("C. Plot simulations of simple study", tabName="survplot7",  icon = icon("cog", class="fa-spin")),
+  menuItem("D. Investigate study power", tabName="survplot8",  icon = icon("cog", class="fa-spin")),
    # menuItem("test2",
           #   menuSubItem("yyy", tabName="yyy")) 
+  
+  ##
+  menuItem("References", icon = icon("bar-chart-o"),
+           
+           menuSubItem(h5(HTML( "Generating survival times to simulate Cox proportional<br/>hazards models - key paper for simulation")),  
+                       icon = icon("send",lib='glyphicon'), 
+                       href = "https://pubmed.ncbi.nlm.nih.gov/15724232/"),
+           
+           menuSubItem(h5(HTML( "Here's the Shiny code")),
+                       icon = icon("send",lib='glyphicon'), 
+                       href = "https://github.com/eamonn2014/Survival-power/tree/master/survival-power") ,
+            
+           menuSubItem( h5(HTML("Survival converter")),  
+                        icon = icon("send",lib='glyphicon'), 
+                        href = "https://stattools.crab.org/R/Survival_Converter.html"),
+           
+           menuSubItem( h5(HTML("How to simulate survival times using true base line<br/>hazard function")),  
+                        icon = icon("send",lib='glyphicon'), 
+                        href = "https://stats.stackexchange.com/questions/105881/how-to-simulate-survival-times-using-true-base-line-hazard-function"),
+           
+           menuSubItem( h5(HTML("Sample Size For Survival Analysis - A guide to planning<br/>successful clinical trials - we duplicate this example")),  
+                        icon = icon("send",lib='glyphicon'), 
+                        href = "https://www.youtube.com/watch?v=inMjG32nzcw&ab_channel=Statsols%28ProviderofnQuery%29"),
+           
+           menuSubItem( h5(HTML("Simulate censored survival data - useful starting point")),  
+                        icon = icon("send",lib='glyphicon'), 
+                        href = "https://sas-and-r.blogspot.com/2010/03/example-730-simulate-censored-survival.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+SASandR+%28SAS+and+R%29") 
+           
+            
+           
+           
+           #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           
+  
+  
+)
+  ##
   
   )
 )
