@@ -155,7 +155,7 @@ mod_survplot8_server <- function(input, output, session){
                          "SD log HR","Power")
       
       r <- apply(simres,2, mean)
-      print(r, digits=6)
+      #print(r, digits=6)
     
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # my simulation
