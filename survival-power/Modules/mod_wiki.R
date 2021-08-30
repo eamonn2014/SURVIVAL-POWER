@@ -20,9 +20,17 @@
     tabItem("wiki",
             
      # we can type directly here!   
-     h4(paste("This app helps understand and plan time to event studies assuming exponentially distributed event times:")),       
+     h4(paste("This app helps understand and plan time to event studies assuming exponentially distributed event times.")),  
+     #span(textOutput(ns("warning")), style="color:black;font-size:18px"),   # changes both font and colour
+    
+     h4(paste("The exponential distribution is the simplest parametric distribution for describing survival distributions. 
+              There is a simple relationship between survival probability, time and hazard with the exponential distribution. Knowing 2 of the 3 parameters completely 
+              determines the remaining parameter. See the equation below, lambda represents the hazard rate and S(t) represents the survival proportion at time t.")),
+     br(),
+     uiOutput(ns("text3")),   # equation
+     br(),
      h4(paste("Using the exponential distribution we present survival curves and 
-              hypothesised changes due to an intervention. Much like the survival converter linked to below we show how to convert
+              hypothesised changes due to an intervention. Much like the survival converter linked to in the references we show how to convert
               hazard rates to any survival probability at time t, or alternatively, convert survival probability at time t to a hazard rate. 
               Here though we also plot the survival distibutions.")),     
      h4(paste("We look at the effect of an intervention from two perspectives: A) Changing survival probability, and B) Changing survival time.")),      
@@ -42,24 +50,24 @@
      h4(paste("The menu option starting 'C' shows what a large number of studies look like. You can get an idea of whether a real difference
      in survival (or whatever outcome measure is of interest) between the two groups is detectable. ")),
      
-     h4(paste("The next menu option presents a time to event power calculation as exponential distribution time
+     h4(paste("The next menu option presents a time to event power calculation assuming exponential distribution event times
               using the Hmisc::cpower function and also a simulation to approximate cpower.")),
      
     # tags$hr(),
      
     # h1(strong("Title"), style = "color:blue;font-size:50px"),  # bold 
   
-     span(textOutput(ns("warning")), style="color:black;font-size:18px"),   # changes both font and colour
+  
      
    # textOutput("text4"),
    # p("A new p() command starts a new paragraph. Supply a style attribute to change the format of the entire paragraph.", 
    #   style = "font-family: 'times'; font-si16pt; font-size:50px; colour:blue"),
    #   
-     br(),
+   
 
     # uiOutput(ns("text1")),
      
-     uiOutput(ns("text3")),   # equation
+    
      
      #uiOutput(ns("text4")),
      br(),
@@ -98,7 +106,7 @@
       output$warning <- renderText({
        paste("The exponential distribution is the simplest parametric distribution for describing survival distributions. 
               There is a simple relationship between survival probability, time and hazard with the exponential distribution. Knowing 2 of the 3 parameters completely 
-              determines the remaining parameter. See equation 1 below here lambda represents hazard rate and S(t) represents survival proportion at time t.")
+              determines the remaining parameter. See equation 1 below, lambda represents the hazard rate and S(t) represents the survival proportion at time t.")
       })
 
       #@@@@@@@@@@@@@@@@ 2
@@ -114,25 +122,48 @@
       output$text4 <- renderText({  ("hello input is" ) })
       
       #@@@@@@@@@@@@@@@@ 3
+      # output$text2 <- renderUI({ 
+      # 
+      #   withMathJax(
+      #     helpText(
+      #       tags$span(style="color:black", 
+      #                 ' $$ {  {\\it{s}^2} =  \\frac{     {(\\sigma^2)}   {(\\chi^2}_{(n - 1), (1-\\alpha)}) }  {(n-1)}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$')))
+      #  })  
+      #@@@@@@@@@@@@@@@@ 
       output$text2 <- renderUI({ 
- 
+        
         withMathJax(
           helpText(
             tags$span(style="color:black", 
-                      ' $$ {  {\\it{s}^2} =  \\frac{     {(\\sigma^2)}   {(\\chi^2}_{(n - 1), (1-\\alpha)}) }  {(n-1)}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$')))
-       })  
+                      ' $$ {  {\\it{s}^2} =  \\frac{     {(\\sigma^2)}   {(\\chi^2}_{(n - 1), (1-\\alpha)}) }  {(n-1)}          }    \\!$$')))
+      })  
       #@@@@@@@@@@@@@@@@ 
+      
+      
+      
+      
+      
+      
+      # output$text3 <- renderUI({ 
+      #   
+      #   withMathJax(
+      #     helpText(
+      #       tags$span(style="color:black", h3(
+      #                 ' $$ {  {\\lambda} =  \\frac{        {-\\ln} {(S(t) }) }  {t}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$'))) )
+      # })  
+ 
+      
+    
+      #@@@@@@@@@@@@@@@@
+      
+      
       output$text3 <- renderUI({ 
         
         withMathJax(
           helpText(
             tags$span(style="color:black", h3(
-                      ' $$ {  {\\lambda} =  \\frac{        {-\\ln} {(S(t) }) }  {t}          } \\qquad  \\qquad \\qquad  \\qquad \\left[ 1 \\right]    \\!$$'))) )
+              ' $$ {  {\\lambda} =  \\frac{        {-\\ln} {(S(t) }) }  {t}          }     \\!$$'))) )
       })  
- 
-      
-    
-      #@@@@@@@@@@@@@@@@
       
       
       
