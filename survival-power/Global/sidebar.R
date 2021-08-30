@@ -34,7 +34,9 @@ dashboardSidebar(
     
   
   menuItem("C. Plot simulations of simple study", tabName="survplot7",  icon = icon("cog", class="fa-spin")),
-  menuItem("D. Investigate study power", tabName="survplot8",  icon = icon("cog", class="fa-spin")),
+  menuItem("D. Example study power calculation", tabName="survplot8",  icon = icon("cog", class="fa-spin")),
+  menuItem("E. Example study power calculation", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
+  menuItem("F. Example study power calculation", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
    # menuItem("test2",
           #   menuSubItem("yyy", tabName="yyy")) 
   
