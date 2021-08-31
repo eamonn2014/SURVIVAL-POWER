@@ -7,39 +7,28 @@ dashboardSidebar(
     # Setting id makes input$tabs give the tabName of currently-selected tab
     id="tabs",
     
-    menuItem(text="Wiki", tabName="wiki" ,  icon = icon("dashboard") ),
-          #   menuSubItem(h4(HTML("xxxxxxxxxxx")), tabName="wiki")),
-              
-    
-  #  menuItem("Summary Statistics", tabname ="sumstats"),
-    
-  #  menuItem("test",
-  #           menuSubItem("xxx", tabName="xxx")),
-    
-   # menuItem("charts",
-   #          menuSubItem("Boxplot", tabName="Boxplot")),  # must match
-    
+    menuItem(text="Wiki", tabName="wiki" ,  icon = icon("home") ),
+ 
     # wrap the text
     menuItem("A. Exponential survival plots, fixed survival time", icon = icon("cog", class="fa-spin"),
              menuSubItem(h5(HTML("1. Relative risk change: A percentage change in survival <br/>probability at a fixed time is postulated")), tabName="survplot1", icon = icon("bar-chart-o",lib='glyphicon')),
              menuSubItem(h5(HTML("2. Absolute risk change: An absolute percentage point change<br/>in survivalprobability at a fixed time is postulated")), tabName="survplot2", icon = icon("bar-chart-o",lib='glyphicon')),
              menuSubItem(h5(HTML("3. A hazard ratio is postulated")), tabName="survplot3", icon = icon("bar-chart-o",lib='glyphicon'))
              
-             ), #, 
+             ), 
   menuItem("B. Exponential survival plots, fixed survival probability", icon = icon("cog", class="fa-spin"),
            menuSubItem(h5(HTML("4. A (relative) percentage change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot4", icon = icon("bar-chart-o",lib='glyphicon')),
            menuSubItem(h5(HTML("5. An absolute change in survival time<br/>at a fixed survival probability is postulated")), tabName="survplot5", icon = icon("bar-chart-o",lib='glyphicon')),
            menuSubItem(h5(HTML("6. A hazard ratio is postulated")), tabName="survplot6", icon = icon("bar-chart-o",lib='glyphicon'))
-  ), #, 
+  ), 
     
   
   menuItem("C. Plot simulations of simple study", tabName="survplot7",  icon = icon("cog", class="fa-spin")),
-  menuItem("D. Example study power calculation", tabName="survplot8",  icon = icon("cog", class="fa-spin")),
-  menuItem("E. Example study power calculation", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
-  menuItem("F. Example study power calculation", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
-   # menuItem("test2",
-          #   menuSubItem("yyy", tabName="yyy")) 
-  
+  menuItem("D. Example study power calculation Nquery example", tabName="survplot8",  icon = icon("cog", class="fa-spin")),
+  menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
+ # menuItem("F. Example study power calculation drop", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
+  menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),
+   
   ##
   menuItem("References", icon = icon("bar-chart-o"),
            

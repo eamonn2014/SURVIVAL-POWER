@@ -79,6 +79,10 @@ mod_survplot8_ui <- function(id){
     With an estimated 10% lost to follow up patients, a total sample size of 392 patients should be randomized'. This example is linked to in the references. 
     As censoring is assumed uninformative we simply calculate the desired sample size as 352/0.9 ~ 392.")),
             
+            
+            h4(paste("Power is estimated based on total sample size, mortality for control at reference time, HR, 
+            follow up and accrual time. The problem statement mentions one sided 2.5%, this is equivalent to two sided 5%.")),
+            
             br(),
             h4(paste("STATA code for Nquery example@")),
             h4(paste("stpower exponential 0.11552453 0.0770,  n(352) aperiod(18.5) fperiod(9.75)  loghazard detail")),

@@ -50,8 +50,8 @@
      h4(paste("The menu option starting 'C' shows what a large number of studies look like. You can get an idea of whether a real difference
      in survival (or whatever outcome measure is of interest) between the two groups is detectable. ")),
      
-     h4(paste("The next menu option presents a time to event power calculation assuming exponential distribution event times
-              using the Hmisc::cpower function and also a simulation to approximate cpower.")),
+     h4(paste("The next menu D reproduces a time to event power calculation by Nquery assuming exponential distribution event times
+              using the Hmisc::cpower function and also a simulation to approximate cpower.We use the inputs: ")),
      
     # tags$hr(),
      
