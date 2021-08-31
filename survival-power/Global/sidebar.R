@@ -30,7 +30,7 @@ dashboardSidebar(
   menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),
    
   ##
-  menuItem("References", icon = icon("bar-chart-o"),
+  menuItem("References", icon = icon("users"),
            
            menuSubItem(h5(HTML( "Generating survival times to simulate Cox proportional<br/>hazards models - key paper for simulation")),  
                        icon = icon("send",lib='glyphicon'), 
