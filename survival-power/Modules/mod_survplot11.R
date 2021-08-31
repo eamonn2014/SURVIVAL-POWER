@@ -31,9 +31,9 @@ mod_survplot11_ui <- function(id){
           column(width=3,
                  tagList(
                    # changed labels from h5("Postulated percentage change in survival probability")
-                   numericInput(inputId=ns("tref"),  label = c("Hazard"),                         value = 0.03,  min=0.01 ,max=200, step=.01),
+                   numericInput(inputId=ns("tref"),  label = c("Hazard for control"),                         value = 0.03,  min=0.01 ,max=200, step=.01),
                    numericInput(inputId=ns("n"),     label = c("Total sample size (1:1 randomisation)"),   value = 380, step=1),
-                   numericInput(inputId=ns("mc"), label = c("Mortality control arm at reference time"),   value = .5, min=0,max=1, step=.05),
+                   numericInput(inputId=ns("mc"), label = c("Mortality control arm at calculated reference time"),   value = .5, min=0,max=1, step=.05),
                    #numericInput(inputId=ns("r"), label = c("% reduction in mortality"), value = .5, min=0,max=1, step=.05),
                    numericInput(inputId=ns("hr"), label = c("Hazard Ratio"),                              value = .6, min=0.01,max=10, step=.01),
                    numericInput(inputId=ns("tmin"), label = c("Minimum follow up time"),                  value = 15, min=0,max=100, step=1),
