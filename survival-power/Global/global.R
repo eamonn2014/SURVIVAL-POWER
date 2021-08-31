@@ -577,7 +577,7 @@ myColoursAlpha <- add.alpha(myColours, alpha=0.2)
 
 survplot7 <- function( nsim   =  100 ,
                        npergroup=100,
-                       tSurvNULL=4,
+                       tSurvNULL=4, 
                        tSurvALT =7,
                        SurvProp =0.5 ) {  #
  
