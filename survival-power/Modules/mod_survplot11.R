@@ -104,10 +104,10 @@ mod_survplot11_server <- function(input, output, session){
   output$survplot11 <- renderPrint({
     
     h <- input$tref
-    time <- 1/h*(-log(input$mc))^(1)
+    time <- 1/h*(-log(input$mc))^(1) # time given p(S) and h
     
     # get % reduction in mortality given hr and time
-    d1 <- morti(d0=input$mc, hr=input$hr, time=time)  # see function in global.r
+    d1 <- morti(d0=input$mc, hr=input$hr, time=time)  # see function in global.r , time needed here
     d0 <- input$mc
     # this function is from HMisc package
     cpower(tref=time, n=input$n, mc=input$mc, r= 100*(d0 - d1)/d0, tmin=input$tmin,  #mc is  tref-year mortality, control

@@ -13,7 +13,12 @@
 #' @keywords internal
 #' @export
 #' @importFrom shiny NS
- 
+
+# cpower(tref=6, n=352, mc=d0, r= 100*(d0 - d1)/d0, tmin=39/4,  #mc is  tref-year mortality, control
+#        accrual=74/4, alpha=.05, pr=TRUE,
+#        noncomp.c = 0, noncomp.i = 0)
+
+
 mod_survplot10_ui <- function(id){
   
   ns <- NS(id)
@@ -27,12 +32,12 @@ mod_survplot10_ui <- function(id){
                  tagList(
                    # changed labels from h5("Postulated percentage change in survival probability")
                    numericInput(inputId=ns("tref"),  label = c("Reference time"),                         value = 5,  min=0.5,max=200, step=.5),
-                   numericInput(inputId=ns("n"),     label = c("Total sample size (1:1 randomisation)"),  value = 400, step=1),
-                   numericInput(inputId=ns("mc"), label = c("Mortality control arm at reference time"),   value = .6, min=0,max=1, step=.01),
+                   numericInput(inputId=ns("n"),     label = c("Total sample size (1:1 randomisation)"),   value = 133, step=1),
+                   numericInput(inputId=ns("mc"), label = c("Mortality control arm at reference time"),   value = .59, min=0,max=1, step=.05),
                    #numericInput(inputId=ns("r"), label = c("% reduction in mortality"), value = .5, min=0,max=1, step=.05),
-                   numericInput(inputId=ns("d1"), label = c("Mortality intervention arm at reference time"),  value = .41, min=0,max=1, step=.01),
-                   numericInput(inputId=ns("tmin"), label = c("Minimum follow up time"),                  value = 2, min=0,max=100, step=1),
-                   numericInput(inputId=ns("accrual"), label = c("Length of accrual"),                    value = 1.5, min=0,max=100, step=1),
+                   numericInput(inputId=ns("hr"), label = c("Hazard Ratio"),                              value = .5729, min=0.01,max=10, step=.01),
+                   numericInput(inputId=ns("tmin"), label = c("Minimum follow up time"),                  value = 1000, min=0,max=100, step=1),
+                   numericInput(inputId=ns("accrual"), label = c("Length of accrual"),                    value = 100, min=0,max=100, step=1),
                    numericInput(inputId=ns("noncomp.c"), label = c("Non compliance control"),             value = 0, min=0,max=1, step=.1),
                    numericInput(inputId=ns("noncomp.i"), label = c("Non compliance intervention"),        value = 0, min=0,max=1, step=.1),
                    numericInput(inputId=ns("alpha"), label = c("alpha"),                                  value = 0.05, min=0.01,max=.5, step=.01),
@@ -65,16 +70,17 @@ mod_survplot10_ui <- function(id){
             h4(paste("My simulation to approximate cpower (although does not accommodate non compliance).")),
             verbatimTextOutput(ns("survplot10a")),
             
-            tags$a(href = "https://books.google.ie/books?id=Okf7CAAAQBAJ&printsec=frontcover&dq=David+Collett+Modelling+survival+data+in+medical+research-CRC+Press+(2015)&hl=en&sa=X&redir_esc=y#v=onepage&q=sample%20size&f=false",
-                   tags$span(style="color:blue", "Modelling Survival Data in Medical Research David Collett (2015)"),),   
-            div(p(" ")),
             
-            h4(paste("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'")),
+            h4(paste("Reproduce example in Modelling Survival Data in Medical Research, Third Edition, page 477-478")),
+            
+            h4(paste("Power is estimated based on total sample size, mortality for control at reference time, HR. 
+            We set follow up time to very large value
+            so that all events are observed, so accrual time is not important.")),
             
             br(),
-            h4(paste("STATA code for example@")),
-            h4(paste("stpower exponential xxxxxxxxxxxxx  loghazard detail")),
-            h4(paste("stpower exponential xxxxxxxxxxxxx  loghazard detail")),
+          #  h4(paste("STATA code for Nquery example@")),
+       #     h4(paste("stpower exponential 0.11552453 0.0770,  n(352) aperiod(18.5) fperiod(9.75)  loghazard detail")),
+        #    h4(paste("stpower exponential 0.11552453, hratio(.6666667) n(352) aperiod(18.5) fperiod(9.75)  loghazard detail")),
           ),
           #~~~~~~~~~~~~~~~~
           
@@ -98,8 +104,7 @@ mod_survplot10_server <- function(input, output, session){
   output$survplot10 <- renderPrint({
     
     # get % reduction in mortality given hr and time
-   # d1 <- log(input$mc)/log(input$d1) # see function in global.r
-    d1 <- input$d1
+    d1 <- morti(d0=input$mc, hr=input$hr, time=input$tref)  # see function in global.r
     d0 <- input$mc
     # this function is from HMisc package
     cpower(tref=input$tref, n=input$n, mc=input$mc, r= 100*(d0 - d1)/d0, tmin=input$tmin,  #mc is  tref-year mortality, control
@@ -113,12 +118,12 @@ mod_survplot10_server <- function(input, output, session){
   
   plotSettings <- reactiveValues()
   
-  observeEvent(c(input$d1, 
+  observeEvent(c(input$hr, 
                  input$n, input$accrual, 
                  input$tmin, input$mc,
                  input$tref, input$alpha  ), {
                    
-                   plotSettings$A <- log(1-input$d1)/log(1-input$mc) #hr
+                   plotSettings$A <- input$hr
                    plotSettings$B <- input$n/2
                    plotSettings$C <- input$accrual
                    plotSettings$D <- -log(1-input$mc )/input$tref

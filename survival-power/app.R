@@ -42,8 +42,8 @@
     source("modules/mod_survplot7.R")  # simulate many studies
     source("modules/mod_survplot8.R")  # nquery power
     source("modules/mod_survplot9.R")  # pub paper power
-    #source("modules/mod_survplot10.R")  # pub paper power  <- david collett drop this
-    source("modules/mod_survplot11.R")  # pub paper power  <- david collett drop this
+    source("modules/mod_survplot10.R")  # pub paper power  <- david collett drop this
+    source("modules/mod_survplot11.R")  # 
     source("modules/mod_wiki.R")       # introduction and landing page
     
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +61,7 @@
         mod_survplot7_ui("survplot_7"),
         mod_survplot8_ui("survplot_8"),
         mod_survplot9_ui("survplot_9"),
-     #   mod_survplot10_ui("survplot_10"),
+        mod_survplot10_ui("survplot_10"),
         mod_survplot11_ui("survplot_11")
         )    
     )
@@ -82,7 +82,7 @@
         callModule(mod_survplot7_server, "survplot_7")
         callModule(mod_survplot8_server, "survplot_8")
         callModule(mod_survplot9_server, "survplot_9")
-      #  callModule(mod_survplot10_server, "survplot_10")
+        callModule(mod_survplot10_server, "survplot_10")
         callModule(mod_survplot11_server, "survplot_11")
     }
  

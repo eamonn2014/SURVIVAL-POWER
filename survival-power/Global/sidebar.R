@@ -28,7 +28,8 @@ dashboardSidebar(
   menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
  # menuItem("F. Example study power calculation drop", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
   menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),
-   
+  menuItem("G. Example study power calculation David Collett", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
+ 
   ##
   menuItem("References", icon = icon("users"),
            

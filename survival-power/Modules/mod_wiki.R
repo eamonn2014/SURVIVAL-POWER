@@ -64,7 +64,11 @@
      h4(paste("The next menu option F reproduces a time to event power calculation from the Stata survival reference book assuming exponential distribution event times
               using the Hmisc::cpower function and also a simulation to approximate cpower. ")),
      
-     h4(paste("The final menu option presents a list of useful options including a link to Rshiny code. ")),
+     h4(paste("The next menu option G reproduces a time to event power calculation from David Collett's 
+     Modelling Survival Data in Medical Research, Third Edition, page 477-478 assuming exponential distribution event times
+              using the Hmisc::cpower function and also a simulation to approximate cpower. ")),
+     
+     h4(paste("The final menu option presents a list of useful references including a link to Rshiny code. ")),
      
      
      
