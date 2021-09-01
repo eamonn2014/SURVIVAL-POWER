@@ -26,7 +26,7 @@
      h4(paste("The exponential distribution is the simplest parametric distribution for describing survival distributions. 
               There is a simple relationship between survival probability, time and hazard with the exponential distribution. Knowing 2 of the 3 parameters completely 
               determines the remaining parameter. See the equation below, lambda represents the hazard rate and S(t) represents the survival proportion at time t.")),
-     h4(paste("Conventionally, for HRs (and ORs), the treatment group (T) is used in the numerator and the control group (C) in the denominator.") ),
+     h4(paste("Conventionally, for HRs (and ORs), the treatment group is used in the numerator and the control group in the denominator.") ),
      
      br(),
      uiOutput(ns("text3")),   # equation
