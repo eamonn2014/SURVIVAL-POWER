@@ -24,11 +24,19 @@ dashboardSidebar(
     
   
   menuItem("C. Plot simulations of simple study", tabName="survplot7",  icon = icon("cog", class="fa-spin")),
-  menuItem("D. Example study power calculation Nquery example", tabName="survplot8",  icon = icon("cog", class="fa-spin")),
+  
+  menuItem("D. Example study power calculation Nquery example",  icon = icon("cog", class="fa-spin"),
+  menuSubItem(h5(HTML("test")), tabName="survplot8", icon = icon("bar-chart-o",lib='glyphicon') ),
+  menuSubItem(h5(HTML("test")), tabName="survplot12", icon = icon("bar-chart-o",lib='glyphicon') )
+  
+  ),
+  
+  
   menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
  # menuItem("F. Example study power calculation drop", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
   menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),
   menuItem("G. Example study power calculation David Collett", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
+  #menuItem("Testing", tabName="survplot12",  icon = icon("cog", class="fa-spin")),
  
   ##
   menuItem("References", icon = icon("users"),

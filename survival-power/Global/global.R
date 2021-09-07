@@ -769,3 +769,131 @@ simfunfx <- function(p=1, hr=2/3, n=352/2, acc=74/4, fup=39/4, lambdaC= -log(.5)
 }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# 2 functions to plot exponential distributions needing 2 hazards and a survival prop 
+
+# functions  to get means and SDs, not used
+# mymean <- function(x) {mean(x, na.rm=T)}
+# mysd <- function(x) {sd(x, na.rm=T)}
+
+zp <- function(x, shape, scale)
+  pweibull(x, shape=shape, scale=scale,lower.tail=F)
+
+# draw curves using hazards and surv prop of control
+# I wrote the code in lower chunks but
+    survP <- function(Ihaz= runif(1,1,1.5), Chaz=runif(1,2,2.5), CSurvProp=runif(1) ) {
+      
+      lambda  <- Ihaz            # numerator
+      lambda2 <- Chaz            # denominator
+      hr <- lambda/lambda2
+      
+      # for plotting 
+      end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
+      s <- seq(0,end, length.out = end+1)          # reasonable x axis
+      
+      p <- CSurvProp                                # random survival prop
+      time <-ms <- -log(1-p)/lambda                # survival time  for survival prop p
+      
+      # (time1 <- ms )
+      mort1 <-  exp(-lambda2* time )  # e^-lambda*t
+      
+      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Survival function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      zp <- function(x, shape, scale)
+        pweibull(x, shape=shape, scale=scale,lower.tail=F)
+      #~~~~~~~~~~~~~~~~~~
+      curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+            main=paste0("A change in survival probability at fixed time\n Exponential rates ",
+                        formatz2(lambda),         " (intervention blue) and ",
+                        formatz2(lambda2),        " (control red): HR= ",
+                        formatz2(hr), " (blue/red) \nMortalities (1-S(t)) at time ",
+                        formatz4(time),             ": ",
+                        formatz2(p*100),          "% (blue) and ", 
+                        formatz2((1-mort1)*100 ), "% (red)" ), 
+            cex.main = .8,
+            ylab='Survival probability', xlab='', col="blue", 
+            sub= "Time" ,  cex.sub=.8)
+      #~~~~~~~~~~~~~~~~~~
+      abline(h=1-p , col='blue' , lty=2)
+      abline(h=mort1 , col='red' , lty=2)     
+      lines(c(time ,time), c(0 , 1-p) , col='black')
+      #~~~~~~~~~~~~~~~~~~
+      curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,     
+            ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+      #~~~~~~~~~~~~~~~~~~
+      text(x = end*.6, y = .95,  
+           paste0("HR = log(Survival)[blue] / log(Survival)[red] = log(",
+                  formatz2(1-p),                   ") / log(",
+                  formatz2(mort1),                 ") = ", 
+                  formatz2( log(1-p)/log(mort1) ), ""),
+           col = "black", 
+           cex = .8)
+      #~~~~~~~~~~~~~~~~~~
+      text(x = end*.537, y = .875,  
+           paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+                  formatz2(lambda),         " / ",
+                  formatz2(lambda2),        " = ",
+                  formatz2(hr), ""
+           ),
+           col = "black", 
+           cex = .8)
+    }
+
+
+SurvP2 <- function( lambda=0.07701635, lambda2=0.11552453,  p=.5) {
+  
+  # worst survival blue curve
+  hr <- lambda/lambda2
+  
+  # for plotting 
+  end <- ceiling(-(log(1-.999)/ lambda))       # for plotting 99th percentile
+  s <- seq(0,end, length.out = end+1)          # reasonable x axis
+  
+  time <-ms <- -log(1-p)/lambda                # survival time  for survival prop p
+  mort1 <-  exp(-lambda2* time )               # e^-lambda*t
+  
+  p          <- mort1  
+  ref.time   <- time 
+  trt.time   <- -log(p)/lambda
+  fact.      <- (-log(p)/lambda)  / (-log(p)/lambda2) -1
+  #~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
+        main=paste0(  "A change in survival time S(t) at fixed survival probability:\nA survival probability of ",
+                      formatz4(p),         " for the red control curve has survival time ",
+                      formatz2( ref.time), ". \nA ",
+                      formatz2(fact.*100), "% increase in the survival time results in a survival time of ",
+                      formatz2(trt.time),  " (intervention red)\nExponential rates ",
+                      formatz2(lambda),    " (blue) and ",
+                      formatz2(lambda2),   " (red). HR= ",
+                      formatz2(hr),        " (blue/red)"
+        ),  
+        cex.main = .8,
+        ylab='Survival probability',xlab='', 
+        col="blue",
+        sub= "Time\nIn the case of exponential distributions, the reciprocal of the ratio of medians (or any other quantile) gives e(b). \nFor example, if we want to detect a 50% increase in median survival time, we would set e(Beta) = 2/3" , cex.sub=.8)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.5, y = .95,  
+       paste0("HR at survival quantile ",
+              formatz4(p),                     ", ratio of survival times: red / blue = ",
+              formatz2(ref.time),              " / ",
+              formatz2(trt.time),              " = ", 
+              formatz2( ref.time/trt.time ),   ""),
+       col = "black",
+       cex = .8)
+  #~~~~~~~~~~~~~~~~~~
+  text(x = end*.52, y = .875,  
+       paste0(expression("HR = hazard rate[blue] / hazard rate[red] = "),
+              formatz2(lambda)," / ",formatz2(lambda2)," = ",
+              formatz2(lambda/lambda2),""
+       ),
+       col = "black",
+       cex = .8)
+  #~~~~~~~~~~~~~~~~~~~
+  abline(h=p , col='black' , lty=2)
+  lines(c(-log(p)/lambda2 , -log(p)/lambda2), c(0 , p) , col='red')
+  lines(c(-log(p)/lambda  , -log(p)/lambda),  c(0 , p) , col='blue')
+  #~~~~~~~~~~~~~~~~~~~
+  curve(zp(x, shape=1, scale=1/lambda2), from=0, to=end,  
+        ylab='Survival probability', xlab='Time', col="red", add=TRUE)
+}
+
+# survP( 0.07701635,0.11552453,0.5)
+# SurvP2()

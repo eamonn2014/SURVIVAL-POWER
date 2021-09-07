@@ -23,6 +23,7 @@ mod_survplot8_ui <- function(id){
   
   ns <- NS(id)
   
+  #tabItems(
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
   tabItem("survplot8",
           
@@ -58,13 +59,29 @@ mod_survplot8_ui <- function(id){
                    
                    
                    
-                 )
+                 )#,
+                 #("tab1.2")
+         # )
           ),
+          ##---------------
+          # 
+          # module1 <- function(input, output, session) {
+          #   dataone <- reactive({
+          #     req(!is.null(input$cars))
+          #     return(input$cars)
+          #   })
+          #   
+          #   # return dataone so that it is visible in the app
+          #   return(dataone)
+          # }
+          # 
+     
+         
           ##~~~~~~~~~~~~~
           
           mainPanel(
-            
-            
+             
+         #   plotOutput(ns("survplot8b")), #new
             h4(paste("Frank Harrell's Hmisc::cpower")),
             verbatimTextOutput(ns("survplot8")),
             h4(paste("My simulation to approximate cpower (although does not accommodate non compliance).")),
@@ -90,6 +107,7 @@ mod_survplot8_ui <- function(id){
           ),
           #~~~~~~~~~~~~~~~~
           
+         
           # tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))  # is this needed?
   )
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,6 +123,23 @@ mod_survplot8_server <- function(input, output, session){
   
   ns <- session$ns
   
+  # dataone <- reactive({
+  #   # req(!is.null(input$cars))
+  #   return(
+  #     list(
+  #   hr=  input$hr,
+  #   tref=  input$tref,
+  #   n==  input$n,
+  #   mc=   input$mc,
+  #   tmin=  input$tmin,
+  #   accrual=  input$accrual ,
+  #   alpha=  input$alpha,
+  #   noncomp.c=  input$noncomp.c,
+  #   noncomp.i=  input$noncomp.i
+  #     )
+  #   )
+  # })
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Hmisc::cpower
   output$survplot8 <- renderPrint({
@@ -116,6 +151,31 @@ mod_survplot8_server <- function(input, output, session){
     cpower(tref=input$tref, n=input$n, mc=input$mc, r= 100*(d0 - d1)/d0, tmin=input$tmin,  #mc is  tref-year mortality, control
            accrual=input$accrual, alpha=input$alpha, pr=TRUE,
            noncomp.c = input$noncomp.c, noncomp.i = input$noncomp.i)
+    
+    # starting to apply this
+    # https://stackoverflow.com/questions/46167693/how-to-call-a-shiny-module-in-another-shiny-module-reactive-function-from-one-m
+    # dataone <- reactive({
+    #   # req(!is.null(input$cars))
+    #   return(
+    #     
+    #     input$hr,
+    #     input$tref, 
+    #     input$n, 
+    #     input$mc, 
+    #     input$tmin,  
+    #     input$accrual ,
+    #     input$alpha,
+    #     input$noncomp.c,
+    #     input$noncomp.i
+    #     
+    #   )
+    #   return(dataone)# end new
+    #   
+    # })
+    
+    # return dataone so that it is visible in the app
+    
+    
     
   })
   
@@ -185,8 +245,35 @@ mod_survplot8_server <- function(input, output, session){
       })
       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }
+    
+    ##new
+    
+    # output$survplot8b <- renderPlot({
+    #   
+    #   # this function id in the global.R file
+    #   survP( 0.07701635,0.11552453,0.5)
+    #   
+    #   
+    # }, height=700, width=1000)
+    #end new
+    
   })
+  
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+   
+     
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 }
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   
