@@ -31,6 +31,10 @@ dashboardSidebar(
   
   ),
   
+  menuItem("test", tabName="testing",  icon = icon("cog", class="fa-spin")),
+  
+  
+  
   
   menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
  # menuItem("F. Example study power calculation drop", tabName="survplot10",  icon = icon("cog", class="fa-spin")),

@@ -44,8 +44,9 @@
     source("modules/mod_survplot9.R")  # pub paper power
     source("modules/mod_survplot10.R")  # pub paper power  <- david collett drop this
     source("modules/mod_survplot11.R")  # 
+    source("modules/mod_survplot12.R")  # test
     source("modules/mod_wiki.R")       # introduction and landing page
-    
+    source("modules/mod_testing.R")  # test
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     body <- dashboardBody(
         
@@ -62,7 +63,9 @@
         mod_survplot8_ui("survplot_8"),
         mod_survplot9_ui("survplot_9"),
         mod_survplot10_ui("survplot_10"),
-        mod_survplot11_ui("survplot_11")
+        mod_survplot11_ui("survplot_11"),
+        mod_survplot12_ui("survplot_12"),
+        mod_testing_ui("testing")
         )    
     )
 
@@ -84,6 +87,19 @@
         callModule(mod_survplot9_server, "survplot_9")
         callModule(mod_survplot10_server, "survplot_10")
         callModule(mod_survplot11_server, "survplot_11")
+       # callModule(mod_survplot12_server, "survplot_12")
+        
+        callModule(mod_survplot12_server, "survplot_12",
+                   A         = input$mc ,
+                   B         = input$hr,
+                   C         = input$tref)
+
+        # callModule(mod_survplot12_server, "survplot_12",
+        #            A         = input$mc ,
+        #            B         = input$hr,
+        #            C         = input$tref)
+        callModule(mod_testing_server, "testing")
+        
     }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
