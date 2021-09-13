@@ -127,12 +127,13 @@ mod_survplot12_ui <- function(id){
 }
 
 # Module Server ------------------------------------------------------------------
+# https://stackoverflow.com/questions/61074543/communication-between-shiny-modules  <- idea from here
 
 #' @rdname mod_sidebar
 #' @export
 #' @keywords internal
 #' 
-mod_survplot12_server <- function(input, output, session, A, B , C
+mod_survplot12_server <- function(input, output, session, A, B , C  # note A B C, also see app.R
                                    ) {
   
   ns <- session$ns
@@ -143,8 +144,16 @@ mod_survplot12_server <- function(input, output, session, A, B , C
     
     output$survplot12b <- renderPlot({
    
-      survP( A, B, C)
+      # actually A B C are these see
+      # A         = input$mc 
+      # B         = input$hr
+      # C         = input$tref
       
+      lambdaC <- -log(1-A)/C   # control hazard
+      lambdaT <- B*lambdaC     # intervention hazard
+      
+      #survP( Ihaz=lambdaT, Chaz=lambdaC, CSurvProp=.5 )  # Ihaz= runif(1,1,1.5), Chaz=runif(1,2,2.5), CSurvProp=runif(1) ) {
+      survP(  )
     }, height=900, width=1450)
     
   }
