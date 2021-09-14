@@ -31,7 +31,7 @@ dashboardSidebar(
   
   ),
   
-  menuItem("test", tabName="testing",  icon = icon("cog", class="fa-spin")),
+  menuItem("test", tabName="testing",  icon = icon("cog", class="fa-spin")),  # new test
   
   
   
