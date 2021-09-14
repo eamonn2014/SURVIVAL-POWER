@@ -142,6 +142,7 @@ mod_testing_server <- function(input, output, session){
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
     
   })
+ 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # new
   
   setupInput<-function(id){
@@ -173,6 +174,9 @@ mod_testing_server <- function(input, output, session){
            border = 'white')
     })
   }
+ 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+ 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 }
 
