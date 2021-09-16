@@ -57,7 +57,10 @@ mod_testing_ui <- function(id){
                    br(),
                    h4(paste("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.")),
                    br(),
+                   
+                   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                    setupInput("basic"),
+                   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                    
                    actionButton(ns("resample"),"Hit to run another simulation",icon=icon("bell"), width =300 ,
                                 class = "btn action-button",
@@ -80,7 +83,6 @@ mod_testing_ui <- function(id){
            
             
             #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          #  setupInput("basic"),  # new
             chartUI("first"),     #  new
             chartUI("second")     #  new
             #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
