@@ -29,15 +29,15 @@ mod_testing_ui <- function(id){
     )                                                         
   }
   
-  setup<-function(input,output,session){          # here the values can be exported
-    # How to display all input values in a table
-    output$inputs<-renderTable({
-      reactiveValuesToList(input)
-      
-    })
-    
-    return(input)
-  }
+  # setup<-function(input,output,session){          # here the values can be exported
+  #   # How to display all input values in a table
+  #   output$inputs<-renderTable({
+  #     reactiveValuesToList(input)
+  #     
+  #   })
+  #   
+  #   return(input)
+  # }
   # end new
   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   
