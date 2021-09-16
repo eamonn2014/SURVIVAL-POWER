@@ -100,6 +100,10 @@
         #            C         = input$tref)
         callModule(mod_testing_server, "testing")
         
+        bins <- callModule(setup,"basic")
+        callModule(chart, "first", bins)
+        callModule(chart, "second", bins)
+        
     }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -19,6 +19,27 @@ mod_testing_ui <- function(id){
   
   ns <- NS(id)
   
+  setupInput<-function(id){
+    ns<-NS(id)
+    tagList(
+      sliderInput(ns("bins"), "Number of bins:",
+                  min = 1,  max = 50, value = 30),
+      
+    )                                                          # done
+  }
+  
+  
+  
+  setup<-function(input,output,session){       # hmm
+    # How to display all input values in a table
+    output$inputs<-renderTable({
+      reactiveValuesToList(input)
+      
+    })
+    
+    return(input)
+  }
+  
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
   tabItem("testing",
           ##~~~~~~~~~~~~~~
@@ -48,12 +69,23 @@ mod_testing_ui <- function(id){
           ),
           ##~~~~~~~~~~~~~
           
+       
+          
+         
+          
+          
           mainPanel(
             
             plotOutput(ns("survplot7")),
             
            
-              plotOutput(ns("distPlot"))
+        
+            
+            
+            setupInput("basic"),
+          
+            chartUI("first"),
+            chartUI("second")
             
             
           ),
@@ -72,8 +104,33 @@ mod_testing_ui <- function(id){
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+setup<-function(input,output,session){       # hmm
+  # How to display all input values in a table
+  output$inputs<-renderTable({
+    reactiveValuesToList(input)
+    
+  })
+  
+  return(input)
+}
 
 
+chartUI <- function(id) ({   # this allows multiple plots?
+  ns <- NS(id)
+  plotOutput(ns("distPlot"))
+})#
+
+
+chart <- function(input, output, session, setup) {
+  output$distPlot <- renderPlot({
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = setup$bins + 1)
+    hist(x,
+         breaks = bins,
+         col = 'darkgray',
+         border = 'white')
+  })
+}
 #https://stackoverflow.com/questions/52898292/r-shiny-refreshing-plot-when-entering-input-or-pressing-an-action-button
 
 mod_testing_server <- function(input, output, session){
@@ -124,42 +181,15 @@ mod_testing_server <- function(input, output, session){
       
     }
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  #new
-    
-    setup<-function(input,output,session){
-      # How to display all input values in a table
-      output$inputs<-renderTable({
-        as.data.frame(
-          reactiveValuesToList(input)
-        )
-      })
-      output$binprint<-renderText({
-        req(input$print)
-        paste0("Number of bins: ",input$bins)
-      })
-      return(input)
-    }
-    
-    
-    
-    chart <- function(input, output, session, setup) {
-      output$distPlot <- renderPlot({
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = setup$bins + 1)
-        hist(x,
-             breaks = bins,
-             col = 'darkgray',
-             border = 'white')
-      })
-    }
-    
-    
-    
-    
+ 
+   
+ 
     
     
     
   })
   
+ 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # new !!!!!!!!!!!!!!!!!!!!
   #https://github.com/stephlocke/shinymodulesdesignpatterns/blob/57ae3d3903a31db445f23bd5f7b99641ef643bb2/input_to_multiplemodules/04_allinputsmodule.R
   
@@ -211,6 +241,8 @@ mod_testing_server <- function(input, output, session){
   #          border = 'white')
   #   })
   # }
+  
+  
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
   
