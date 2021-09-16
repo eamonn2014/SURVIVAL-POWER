@@ -100,9 +100,9 @@
         #            C         = input$tref)
         callModule(mod_testing_server, "testing")
         
-        bins <- callModule(setup,"basic")
-        callModule(chart, "first", bins)
-        callModule(chart, "second", bins)
+        bins <- callModule(setup,"basic")  # new
+        callModule(chart, "first", bins)   # new
+        callModule(chart, "second", bins)  # new
         
     }
  

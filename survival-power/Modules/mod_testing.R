@@ -19,18 +19,17 @@ mod_testing_ui <- function(id){
   
   ns <- NS(id)
   
+  #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  # the values are created here
   setupInput<-function(id){
     ns<-NS(id)
     tagList(
       sliderInput(ns("bins"), "Number of bins:",
                   min = 1,  max = 50, value = 30),
-      
-    )                                                          # done
+    )                                                         
   }
   
-  
-  
-  setup<-function(input,output,session){       # hmm
+  setup<-function(input,output,session){          # here the values can be exported
     # How to display all input values in a table
     output$inputs<-renderTable({
       reactiveValuesToList(input)
@@ -39,6 +38,9 @@ mod_testing_ui <- function(id){
     
     return(input)
   }
+  # end new
+  #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  
   
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
   tabItem("testing",
@@ -55,8 +57,7 @@ mod_testing_ui <- function(id){
                    br(),
                    h4(paste("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.")),
                    br(),
-                   sliderInput(ns("bins"), "Number of bins:",
-                               min = 1,  max = 50, value = 30),
+                   setupInput("basic"),
                    
                    actionButton(ns("resample"),"Hit to run another simulation",icon=icon("bell"), width =300 ,
                                 class = "btn action-button",
@@ -68,27 +69,23 @@ mod_testing_ui <- function(id){
                  
           ),
           ##~~~~~~~~~~~~~
-          
-       
-          
-         
-          
-          
-          mainPanel(
-            
-            plotOutput(ns("survplot7")),
-            
-           
+        #
         
-            
-            
-            setupInput("basic"),
+        sidebarLayout(sidebarPanel(
           
-            chartUI("first"),
-            chartUI("second")
+        ),
+        
+          mainPanel(
+            plotOutput(ns("survplot7")),
+           
             
+            #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          #  setupInput("basic"),  # new
+            chartUI("first"),     #  new
+            chartUI("second")     #  new
+            #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             
-          ),
+          )),
           #~~~~~~~~~~~~~~~~
           
           tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))
@@ -103,35 +100,34 @@ mod_testing_ui <- function(id){
 #' @keywords internal
 
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-setup<-function(input,output,session){       # hmm
-  # How to display all input values in a table
-  output$inputs<-renderTable({
-    reactiveValuesToList(input)
-    
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@NEW
+
+  setup<-function(input,output,session){       # hmm
+    # How to display all input values in a table
+    output$inputs<-renderTable({
+      reactiveValuesToList(input)
+     })
+     return(input)
+  }
+   
+  chartUI <- function(id) ({   # this allows multiple plots?
+    ns <- NS(id)
+    plotOutput(ns("distPlot"))
   })
   
-  return(input)
-}
-
-
-chartUI <- function(id) ({   # this allows multiple plots?
-  ns <- NS(id)
-  plotOutput(ns("distPlot"))
-})#
-
-
-chart <- function(input, output, session, setup) {
-  output$distPlot <- renderPlot({
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = setup$bins + 1)
-    hist(x,
-         breaks = bins,
-         col = 'darkgray',
-         border = 'white')
-  })
-}
+  chart <- function(input, output, session, setup) {  # construct plot takes input from 'setup'
+    output$distPlot <- renderPlot({
+      x    <- faithful[, 2]
+      bins <- seq(min(x), max(x), length.out = setup$bins + 1)
+      hist(x,
+           breaks = bins,
+           col = 'darkgray',
+           border = 'white')
+    })
+  }
 #https://stackoverflow.com/questions/52898292/r-shiny-refreshing-plot-when-entering-input-or-pressing-an-action-button
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@END NEW
+
 
 mod_testing_server <- function(input, output, session){
   ns <- session$ns
@@ -189,62 +185,6 @@ mod_testing_server <- function(input, output, session){
     
   })
   
- 
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # new !!!!!!!!!!!!!!!!!!!!
-  #https://github.com/stephlocke/shinymodulesdesignpatterns/blob/57ae3d3903a31db445f23bd5f7b99641ef643bb2/input_to_multiplemodules/04_allinputsmodule.R
-  
-  # setupInput<-function(id){
-  #   ns<-NS(id)
-  #   tagList(
-  #     sliderInput(ns("bins"), "Number of bins:",
-  #                 min = 1,  max = 50, value = 30),
-  #     checkboxInput(ns("print"),"Bin Print")
-  #   )
-  # }
-  # 
-  # 
-  # setupUI<-function(id){
-  #   ns<-NS(id)
-  #   tagList(tableOutput(ns("inputs")))
-  # }
-  # 
-  # 
-  # 
-  # setup<-function(input,output,session){
-  #   # How to display all input values in a table
-  #   output$inputs<-renderTable({
-  #     as.data.frame(
-  #       reactiveValuesToList(input)
-  #     )
-  #   })
-  #   
-  #   output$binprint<-renderText({
-  #     req(input$print)
-  #     paste0("Number of bins: ",input$bins)
-  #   })
-  #   return(input)
-  # }
-  # 
-  # 
-  # chartUI <- function(id) {
-  #   ns <- NS(id)
-  #   plotOutput(ns("distPlot"))
-  # }
-  # 
-  # chart <- function(input, output, session, setup) {
-  #   output$distPlot <- renderPlot({
-  #     x    <- faithful[, 2]
-  #     bins <- seq(min(x), max(x), length.out = setup$bins + 1)
-  #     hist(x,
-  #          breaks = bins,
-  #          col = 'darkgray',
-  #          border = 'white')
-  #   })
-  # }
-  
-  
-  
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 }
