@@ -26,18 +26,17 @@ mod_testing_ui <- function(id){
     tagList(
       sliderInput(ns("bins"), "Number of bins:",
                   min = 1,  max = 50, value = 30),
+      # numericInput(inputId=ns("nsim_input"),                    label = c("No. of simulated studies"),                         value = 30, min=1,  max=1000, step=5),
+      # numericInput(inputId=ns("npergrp_input"),                 label = c("No. of patients per group"),                        value = 100, min=10,  max=1000, step=1),
+      # numericInput(inputId=ns("SurvProp_input"),                label = c("Survival probability"),                            value = 0.5, min=0.01,max=.95,  step=.01),
+      # numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control survival time (green)"),                           value = 4,   min=1,   max=100,  step=1),
+      # numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention survival time (blue)"),                      value = 7,   min=1,   max=100,  step=1),      
+      # 
+      
     )                                                         
   }
   
-  # setup<-function(input,output,session){          # here the values can be exported
-  #   # How to display all input values in a table
-  #   output$inputs<-renderTable({
-  #     reactiveValuesToList(input)
-  #     
-  #   })
-  #   
-  #   return(input)
-  # }
+ 
   # end new
   #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   

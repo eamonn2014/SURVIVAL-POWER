@@ -47,6 +47,7 @@
     source("modules/mod_survplot12.R")  # test
     source("modules/mod_wiki.R")       # introduction and landing page
     source("modules/mod_testing.R")  # test
+   source("modules/mod_testing2.R")  # test
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     body <- dashboardBody(
         
@@ -65,7 +66,8 @@
         mod_survplot10_ui("survplot_10"),
         mod_survplot11_ui("survplot_11"),
         mod_survplot12_ui("survplot_12"),
-        mod_testing_ui("testing")
+        mod_testing_ui("testing"),
+      mod_testing2_ui("testing2")
         )    
     )
 
@@ -104,6 +106,7 @@
         callModule(chart, "first", bins)   # new
         callModule(chart, "second", bins)  # new
         
+      callModule(mod_testing2_server, "testing2")
     }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
