@@ -36,7 +36,13 @@ dashboardSidebar(
  menuSubItem(h5(HTML("test2")), tabName="testing2", icon = icon("bar-chart-o",lib='glyphicon') )
   ),
   
-  
+ menuItem("experiment",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
+          menuSubItem(h5(HTML("exp1")), tabName="exp1", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
+          menuSubItem(h5(HTML("exp2")), tabName="exp2", icon = icon("bar-chart-o",lib='glyphicon') )
+ ), 
+ 
+ 
+ 
   menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
  # menuItem("F. Example study power calculation drop", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
   menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),

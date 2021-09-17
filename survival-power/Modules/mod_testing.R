@@ -83,7 +83,7 @@ mod_testing_ui <- function(id){
             
             #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             chartUI("first"),     #  new
-           # chartUI("second")     #  new
+           # chartUI("second")     #  new removed here and added to mod_testing_2.R, so it appear on another app page
             #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             
           )),
