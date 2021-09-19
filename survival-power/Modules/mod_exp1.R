@@ -61,7 +61,7 @@ mod_exp1_ui <- function(id){
                    
                  )#,
                  #("tab1.2")
-         # )
+                 # )
           ),
           ##---------------
           # 
@@ -75,13 +75,13 @@ mod_exp1_ui <- function(id){
           #   return(dataone)
           # }
           # 
-     
-         
+          
+          
           ##~~~~~~~~~~~~~
           
           mainPanel(
-             
-         #   plotOutput(ns("survplot8b")), #new
+            
+            #   plotOutput(ns("survplot8b")), #new
             h4(paste("Frank Harrell's Hmisc::cpower")),
             verbatimTextOutput(ns("survplot8")),
             h4(paste("My simulation to approximate cpower (although does not accommodate non compliance).")),
@@ -107,7 +107,7 @@ mod_exp1_ui <- function(id){
           ),
           #~~~~~~~~~~~~~~~~
           
-         
+          
           # tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))  # is this needed?
   )
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -261,8 +261,8 @@ mod_exp1_server <- function(input, output, session){
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-   
-     
+  
+  
   
   
   

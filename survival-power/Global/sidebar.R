@@ -31,16 +31,16 @@ dashboardSidebar(
   
   ),
   
-  menuItem("testing xxxx",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
-  menuSubItem(h5(HTML("test")), tabName="testing", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
- menuSubItem(h5(HTML("test2")), tabName="testing2", icon = icon("bar-chart-o",lib='glyphicon') )
+  menuItem("testing",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
+  menuSubItem(h5(HTML("testing (many trials and boxlpot example)")), tabName="testing", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
+ menuSubItem(h5(HTML("testing2 repeat of boxplot")), tabName="testing2", icon = icon("bar-chart-o",lib='glyphicon') )
   ),
   
- menuItem("experiment",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
-          menuSubItem(h5(HTML("exp1")), tabName="exp1", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
-          menuSubItem(h5(HTML("exp2")), tabName="exp2", icon = icon("bar-chart-o",lib='glyphicon') )
+  menuItem("exp",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
+         menuSubItem(h5(HTML("exp1 cpower and simulation")), tabName="exp1", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
+           menuSubItem(h5(HTML("exp2 survival plot not linked to above")), tabName="exp2", icon = icon("bar-chart-o",lib='glyphicon') )
  ), 
- 
+ # 
  
  
   menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
