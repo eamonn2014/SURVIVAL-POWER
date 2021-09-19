@@ -114,9 +114,9 @@
       
       callModule(mod_exp1_server, "exp1")
       callModule(mod_exp2_server, "exp2",
-                 A         = input$mc ,
-                 B         = input$hr,
-                 C         = input$tref)
+                 A         = as.numeric(input$mc) ,
+                 B         = as.numeric(input$hr),
+                 C         = as.numeric(input$tref))
     }
  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
