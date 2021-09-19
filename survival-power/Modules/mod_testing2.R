@@ -102,30 +102,7 @@ mod_testing2_ui <- function(id){
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@NEW
-
-  # setup2<-function(input,output,session){       # hmm
-  #   # How to display all input values in a table
-  #   output$inputs<-renderTable({
-  #     reactiveValuesToList(input)
-  #    })
-  #    return(input)
-  # }
-   
-  # chartUI2 <- function(id) ({   # this allows multiple plots?
-  #   ns <- NS(id)
-  #   plotOutput(ns("distPlot"))
-  # })
-  # 
-  # chart2 <- function(input, output, session, setup2) {  # construct plot takes input from 'setup'
-  #   output$distPlot <- renderPlot({
-  #     x    <- faithful[, 2]
-  #     bins <- seq(min(x), max(x), length.out = setup2$bins + 1)
-  #     hist(x,
-  #          breaks = bins,
-  #          col = 'darkgray',
-  #          border = 'white')
-  #   })
-  # }
+ 
 #https://stackoverflow.com/questions/52898292/r-shiny-refreshing-plot-when-entering-input-or-pressing-an-action-button
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@END NEW
 
@@ -133,59 +110,6 @@ mod_testing2_ui <- function(id){
 mod_testing2_server <- function(input, output, session){
   ns <- session$ns
   
-  # plotSettings <- reactiveValues()
-  # 
-  # observeEvent(c(input$resample, 
-  #                input$nsim_input, input$npergrp_input, 
-  #                input$tSurvNULL_input, input$tSurvALT_input,
-  #                input$SurvProp_input  ), {
-  #                  
-  #                  plotSettings$A <- input$nsim_input
-  #                  plotSettings$B <- input$npergrp_input
-  #                  plotSettings$C <- input$tSurvNULL_input
-  #                  plotSettings$D <- input$tSurvALT_input
-  #                  plotSettings$E <- input$SurvProp_input 
-  #                  
-  #                }, ignoreNULL = FALSE)
-  # 
-  
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-  # https://stackoverflow.com/questions/29496921/how-to-make-shiny-button-re-call-function-for-plot-with-no-input?rq=1
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # observe({   
-  #   
-  #   if(input$resample > -1) {   # if 0 plot only appears after first button hit! 
-  #     
-  #     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-  #     survplot7(  nsim     =plotSettings$A, 
-  #                 npergroup=plotSettings$B,
-  #                 tSurvNULL=plotSettings$C,
-  #                 tSurvALT =plotSettings$D,
-  #                 SurvProp =plotSettings$E) 
-  #     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-  #     
-  #     output$survplot7 <- renderPlot({
-  #       
-  #       
-  #       survplot7(  nsim     =plotSettings$A, 
-  #                   npergroup=plotSettings$B,
-  #                   tSurvNULL=plotSettings$C,
-  #                   tSurvALT =plotSettings$D,
-  #                   SurvProp =plotSettings$E) 
-  #       
-  #     }, height=700, width=1000)
-  #     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-  #     
-  #   }
-  #   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  #new
-  # 
-  #  
-  # 
-  #   
-  #   
-  #   
-  # })
-  # 
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 }

@@ -110,7 +110,7 @@
         callModule(chart, "first", bins)   # new
         callModule(chart, "second", bins)  # new
         
-      callModule(mod_testing2_server, "testing2")
+    #  callModule(mod_testing2_server, "testing2")
       
       callModule(mod_exp1_server, "exp1")
       callModule(mod_exp2_server, "exp2",
