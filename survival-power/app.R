@@ -107,6 +107,7 @@
         callModule(chart, "first", bins)   # new
         callModule(chart, "second", bins)  # new
         
+ 
         
         callModule(mod_exp1_server, "exp1")
         callModule(mod_exp2_server, "exp2",  # inputs A B C not working
@@ -115,6 +116,7 @@
                    C         = input$tref)
      }
  
+  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     shinyApp(ui = ui, server = server)
