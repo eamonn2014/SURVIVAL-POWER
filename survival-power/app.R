@@ -21,7 +21,7 @@
     
 # run global file, mostly R code~~~~~~~~~~~~~~~~~~~
 
-    source("global/global.R")  # generate data here
+    source("global/global.R")  #
  
 # set header~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -31,7 +31,7 @@
 
     sidebar <- source("global/sidebar.R")$value
 
-# import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources here:
+# import modules~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ a list here of sources:
 
     source("modules/mod_survplot1.R")  # do something here
     source("modules/mod_survplot2.R")  # do something here
@@ -68,7 +68,6 @@
         mod_survplot12_ui("survplot_12"),
         mod_survplot13_ui("survplot_13")
         
-     
         )    
     )
 

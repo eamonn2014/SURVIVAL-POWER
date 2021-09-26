@@ -68,6 +68,10 @@
      Modelling Survival Data in Medical Research, Third Edition, page 477-478 assuming exponential distribution event times
               using the Hmisc::cpower function and also a simulation to approximate cpower. ")),
      
+     h4(paste("The next menu option H produces a time to event power calculation 
+              using the Hmisc::cpower function and also a visualisation of the survival function. The sub menu presents the same plot
+              as in the main tab but additionally another plot showing a different perspective.")),
+     
      h4(paste("The final menu option presents a list of useful references including a link to Rshiny code. ")),
      
      
