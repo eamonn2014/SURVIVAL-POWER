@@ -10,7 +10,7 @@ dashboardSidebar(
     menuItem(text="Wiki", tabName="wiki" ,  icon = icon("home") ),
  
     # wrap the text
-    menuItem("A. Exponential survival plots, fixed survival time", icon = icon("cog", class="fa-spin"),
+  menuItem("A. Exponential survival plots, fixed survival time", icon = icon("cog", class="fa-spin"),
              menuSubItem(h5(HTML("1. Relative risk change: A percentage change in survival <br/>probability at a fixed time is postulated")), tabName="survplot1", icon = icon("bar-chart-o",lib='glyphicon')),
              menuSubItem(h5(HTML("2. Absolute risk change: An absolute percentage point change<br/>in survivalprobability at a fixed time is postulated")), tabName="survplot2", icon = icon("bar-chart-o",lib='glyphicon')),
              menuSubItem(h5(HTML("3. A hazard ratio is postulated")), tabName="survplot3", icon = icon("bar-chart-o",lib='glyphicon'))
@@ -22,34 +22,22 @@ dashboardSidebar(
            menuSubItem(h5(HTML("6. A hazard ratio is postulated")), tabName="survplot6", icon = icon("bar-chart-o",lib='glyphicon'))
   ), 
     
-  
   menuItem("C. Plot simulations of simple study", tabName="survplot7",  icon = icon("cog", class="fa-spin")),
   
   menuItem("D. Example study power calculation Nquery example",tabName="survplot8",  icon = icon("cog", class="fa-spin")),
-  # menuSubItem(h5(HTML("test")), tabName="survplot8", icon = icon("bar-chart-o",lib='glyphicon') ),
-  # menuSubItem(h5(HTML("test")), tabName="survplot12", icon = icon("bar-chart-o",lib='glyphicon') )
-  # 
-  # ),
-  
- #  menuItem("testing",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
- #  menuSubItem(h5(HTML("testing (many trials and boxlpot example)")), tabName="testing", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
- # menuSubItem(h5(HTML("testing2 repeat of boxplot")), tabName="testing2", icon = icon("bar-chart-o",lib='glyphicon') )
- #  ),
- #  
- #  menuItem("exp",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
- #         menuSubItem(h5(HTML("exp1 cpower and simulation")), tabName="exp1", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
- #           menuSubItem(h5(HTML("exp2 survival plot not linked to above")), tabName="exp2", icon = icon("bar-chart-o",lib='glyphicon') )
- # ), 
- # 
- 
  
   menuItem("E. Example power calculation published paper", tabName="survplot9",  icon = icon("cog", class="fa-spin")),
- # menuItem("F. Example study power calculation drop", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
-  menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),
-  menuItem("G. Example study power calculation David Collett", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
-  #menuItem("Testing", tabName="survplot12",  icon = icon("cog", class="fa-spin")),
  
-  ##
+  menuItem("F. Example power calculation Stata", tabName="survplot11",  icon = icon("cog", class="fa-spin")),
+  
+  menuItem("G. Example study power calculation David Collett", tabName="survplot10",  icon = icon("cog", class="fa-spin")),
+  
+  menuItem("H: Example power calculation + plots",   icon = icon("cog", class="fa-spin"),   
+          menuSubItem(h5(HTML("Hmisc::cpower + plot")), tabName="survplot12", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
+          menuSubItem(h5(HTML("Plots from two perspectives!")), tabName="survplot13", icon = icon("bar-chart-o",lib='glyphicon') )
+ ),
+
+ 
   menuItem("References", icon = icon("users"),
            
            menuSubItem(h5(HTML( "Generating survival times to simulate Cox proportional<br/>hazards models - key paper for simulation")),  

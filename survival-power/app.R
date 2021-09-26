@@ -44,6 +44,8 @@
     source("modules/mod_survplot9.R")  # pub paper power
     source("modules/mod_survplot10.R")  # pub paper power  <- david collett drop this
     source("modules/mod_survplot11.R")  # 
+    source("modules/mod_survplot12.R")  # 
+    source("modules/mod_survplot13.R")  # 
      source("modules/mod_wiki.R")       # introduction and landing page
  
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,7 +64,10 @@
         mod_survplot8_ui("survplot_8"),
         mod_survplot9_ui("survplot_9"),
         mod_survplot10_ui("survplot_10"),
-        mod_survplot11_ui("survplot_11")
+        mod_survplot11_ui("survplot_11"),
+        mod_survplot12_ui("survplot_12"),
+        mod_survplot13_ui("survplot_13")
+        
      
         )    
     )
@@ -85,7 +90,20 @@
         callModule(mod_survplot9_server, "survplot_9")
         callModule(mod_survplot10_server, "survplot_10")
         callModule(mod_survplot11_server, "survplot_11")
-    #  
+         
+        #---------------------------------------------
+        
+        zz <- callModule(setup,"basic")  # use more than once
+        
+        callModule(chart, "first", zz)   #  
+        callModule(chart, "second", zz)  #  
+        
+        callModule(chartx, "first", zz)  #  
+        #---------------------------------------------
+        
+        callModule(chart2, "first", zz)   # 
+        callModule(chart2, "second", zz)  # 
+  
      }
  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
