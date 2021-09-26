@@ -47,6 +47,12 @@ dashboardSidebar(
            menuSubItem(h5(HTML( "Here's the Shiny code")),
                        icon = icon("send",lib='glyphicon'), 
                        href = "https://github.com/eamonn2014/Survival-power/tree/master/survival-power") ,
+           
+           
+           menuSubItem(h5(HTML( "Here's some R code")),
+                       icon = icon("send",lib='glyphicon'), 
+                       href = "https://raw.githubusercontent.com/eamonn2014/Survival-power/master/survival-power-exploration.R") ,
+           
             
            menuSubItem( h5(HTML("Survival converter")),  
                         icon = icon("send",lib='glyphicon'), 
