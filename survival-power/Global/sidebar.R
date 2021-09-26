@@ -25,21 +25,21 @@ dashboardSidebar(
   
   menuItem("C. Plot simulations of simple study", tabName="survplot7",  icon = icon("cog", class="fa-spin")),
   
-  menuItem("D. Example study power calculation Nquery example",  icon = icon("cog", class="fa-spin"),
-  menuSubItem(h5(HTML("test")), tabName="survplot8", icon = icon("bar-chart-o",lib='glyphicon') ),
-  menuSubItem(h5(HTML("test")), tabName="survplot12", icon = icon("bar-chart-o",lib='glyphicon') )
+  menuItem("D. Example study power calculation Nquery example",tabName="survplot8",  icon = icon("cog", class="fa-spin")),
+  # menuSubItem(h5(HTML("test")), tabName="survplot8", icon = icon("bar-chart-o",lib='glyphicon') ),
+  # menuSubItem(h5(HTML("test")), tabName="survplot12", icon = icon("bar-chart-o",lib='glyphicon') )
+  # 
+  # ),
   
-  ),
-  
-  menuItem("testing",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
-  menuSubItem(h5(HTML("testing (many trials and boxlpot example)")), tabName="testing", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
- menuSubItem(h5(HTML("testing2 repeat of boxplot")), tabName="testing2", icon = icon("bar-chart-o",lib='glyphicon') )
-  ),
-  
-  menuItem("exp",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
-         menuSubItem(h5(HTML("exp1 cpower and simulation")), tabName="exp1", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
-           menuSubItem(h5(HTML("exp2 survival plot not linked to above")), tabName="exp2", icon = icon("bar-chart-o",lib='glyphicon') )
- ), 
+ #  menuItem("testing",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
+ #  menuSubItem(h5(HTML("testing (many trials and boxlpot example)")), tabName="testing", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
+ # menuSubItem(h5(HTML("testing2 repeat of boxplot")), tabName="testing2", icon = icon("bar-chart-o",lib='glyphicon') )
+ #  ),
+ #  
+ #  menuItem("exp",   icon = icon("cog", class="fa-spin"),  # new test #tabName="testing",
+ #         menuSubItem(h5(HTML("exp1 cpower and simulation")), tabName="exp1", icon = icon("bar-chart-o",lib='glyphicon') ),    # tab name must match! ...tabItem("testing",...
+ #           menuSubItem(h5(HTML("exp2 survival plot not linked to above")), tabName="exp2", icon = icon("bar-chart-o",lib='glyphicon') )
+ # ), 
  # 
  
  
