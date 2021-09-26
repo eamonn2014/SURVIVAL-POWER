@@ -507,7 +507,7 @@ survplot6 <- function( CSurvProp=.4, time1=1, HR=2 ) {  #
                     formatz4(hr), " (red/blue). Time at survival quantile ",
                     formatz2(p*100),             "%:\n ",
                     formatz2(time1),          " (blue) and ", 
-                    formatz2(time2 ), " (red) the effect of HR of a", HR, " on survival time with reference to control (blue)"), 
+                    formatz2(time2 ), " (red) the effect of HR of a ", HR, " on survival time with reference to control (blue)"), 
         cex.main = 1.4,
         # ylab='Survival probability', xlab='', 
         col="blue", 

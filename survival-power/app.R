@@ -42,11 +42,11 @@
     source("modules/mod_survplot7.R")  # simulate many studies
     source("modules/mod_survplot8.R")  # nquery power
     source("modules/mod_survplot9.R")  # pub paper power
-    source("modules/mod_survplot10.R")  # pub paper power  <- david collett drop this
-    source("modules/mod_survplot11.R")  # 
-    source("modules/mod_survplot12.R")  # 
-    source("modules/mod_survplot13.R")  # 
-     source("modules/mod_wiki.R")       # introduction and landing page
+    source("modules/mod_survplot10.R") # pub paper power  <- david collett drop this
+    source("modules/mod_survplot11.R") # 
+    source("modules/mod_survplot12.R") # cpower and plot
+    source("modules/mod_survplot13.R") # two plots one a repeat plot
+    source("modules/mod_wiki.R")       # introduction and landing page
  
 #set body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     body <- dashboardBody(
@@ -91,7 +91,7 @@
         callModule(mod_survplot10_server, "survplot_10")
         callModule(mod_survplot11_server, "survplot_11")
          
-        #---------------------------------------------
+        #---------------------------------------------module 12 and 13
         
         zz <- callModule(setup,"basic")  # use more than once
         
@@ -107,8 +107,6 @@
      }
  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    
-  
 # Run the application~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     shinyApp(ui = ui, server = server)
