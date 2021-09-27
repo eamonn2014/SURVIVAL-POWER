@@ -85,13 +85,19 @@ dashboardSidebar(
              
              menuSubItem(h5(HTML( "Html from the above Rmarkdown code,<br/> producing similar output")),
                          icon = icon("send",lib='glyphicon'), 
-                         href = "https://github.com/eamonn2014/Survival-power/blob/master/survival-power-exploration.html")
+                         href = "https://github.com/eamonn2014/Survival-power/blob/master/survival-power-exploration.html"),
+             
+             menuSubItem(h5(HTML( "Presentation covering topics in this app")),
+                         icon = icon("send",lib='glyphicon'), 
+                         href = "https://github.com/eamonn2014/Survival-power/blob/master/Survival%20Sample%20Size%20Presentation%20July%202021.odp")
              
              )
     ##
     
   )
 )
+
+
 
 
 # menuItem(tabName = 'homepage', text = 'Homepage',icon = icon('home')),
