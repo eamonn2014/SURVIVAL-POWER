@@ -507,7 +507,7 @@ survplot6 <- function( CSurvProp=.4, time1=1, HR=2 ) {  #
                     formatz4(hr), " (red/blue). Time at survival quantile ",
                     formatz2(p*100),             "%:\n ",
                     formatz2(time1),          " (blue) and ", 
-                    formatz2(time2 ), " (red) the effect of HR of a ", HR, " on survival time with reference to control (blue)"), 
+                    formatz2(time2 ), " (red) the effect of HR of a", HR, " on survival time with reference to control (blue)"), 
         cex.main = 1.4,
         # ylab='Survival probability', xlab='', 
         col="blue", 
@@ -584,7 +584,7 @@ survplot7 <- function( nsim   =  100 ,
   ms2 <-tSurvALT
   ms1 <-tSurvNULL
   fact. <- (ms2-ms1)/ms1                   # % increase in time for survival of this means
-  h     <- lambda   <-  -log(1-SurvProp)/ms1         # baseline hazard (reference)
+  h     <- lambda   <-  -log(SurvProp)/ms1         # baseline hazard (reference)
   h2    <- lambda2  <-  lambda/(1+fact.)   # alternate hazard
   hr    <- lambda/lambda2                  # hr compares to alternate/longer survival
   n <- npergroup
@@ -603,7 +603,7 @@ T2 <- 1/h2*(-log(runif(n)))^(1)      # 1 in brackets dictates exponential dist
 survfit1 <- survfit(Surv(T1) ~ 1)
 plot(survfit1, ylab="Survival probability", xlab="Time", col='white', conf.int=FALSE,  # white so invisible
      main=paste0("Plotting ",N," studies, ",n," subjects per group, exponential rate ctrl (green) = ",formatz4(h),", rate intervention (blue) = ",formatz4(h2), "\nHR = ",formatz2(h2/h),
-                 ", ",100*SurvProp, " percentile survival ",formatz2(log(2)/lambda)," control in green and ",formatz2(log(2)/lambda2)," intervention in blue"), 
+                 ", ",100*SurvProp, " percentile survival ",formatz2(-log(SurvProp)/lambda)," control in green and ",formatz2(-log(SurvProp)/lambda2)," intervention in blue"), 
      xlim=c(0,end), cex.main = 1.4)
 
 survfit2 <- survfit(Surv(T2) ~ 1)
@@ -625,16 +625,31 @@ for ( i in 1:(N)) {
   
 }
 
-# plot true survival curve, constant hazard h
-curve(weibSurv(x, shape=1, scale=1/h), from=0, to=end, n=length(T1), 
-      col='black', lwd=2, lty=2,
-      ylim=c(0,1), add=TRUE)
+  x1 <- -log(SurvProp)/lambda
+  x2 <- -log(SurvProp)/lambda2
+  
+  # plot true survival curve, constant hazard h
+  curve(weibSurv(x, shape=1, scale=1/h), from=0, to=end, n=length(T1), 
+        col='black', lwd=2, lty=2,
+        ylim=c(0,1), add=TRUE)
+  
+  lines(c( x1,x1), c(0 , SurvProp) , col='red', lty=3)
+  
+ 
+  
+  # plot true survival curve, constant hazard h2
+  curve(weibSurv(x, shape=1, scale=1/h2), from=0, to=end, n=length(T1), 
+        col='black', lwd=2, lty=2,
+        ylim=c(0,1), add=TRUE)
+ # abline(v=x2 , col='purple' , lty=2)  
+  lines(c(x2 ,x2), c(0 , SurvProp) , col='red', lty=3)
 
-# plot true survival curve, constant hazard h2
-curve(weibSurv(x, shape=1, scale=1/h2), from=0, to=end, n=length(T1), 
-      col='black', lwd=2, lty=2,
-      ylim=c(0,1), add=TRUE)
-
+  
+  # abline(h=.5 , col='grey' , lty=4)  
+  # lines(c(tSurvNULL ,tSurvNULL), c(0 , .5) , col='grey', lty=4)
+  # lines(c(tSurvALT  ,tSurvALT),  c(0 , .5) , col='grey', lty=4)
+ 
+  
 
 }
 
