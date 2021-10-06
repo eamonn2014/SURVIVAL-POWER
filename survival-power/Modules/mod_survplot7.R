@@ -43,9 +43,9 @@ tabItem("survplot7",
                numericInput(inputId=ns("npergrp_input"),                 label = c("No. of patients per group"),                        value = 100, min=10,  max=1000, step=1),
                h4(paste("Change the survival probability to get a read out on figure of the associated survival time.")),
                numericInput(inputId=ns("SurvProp_input"),                label = c("Survival probability"),                            value = 0.5, min=0.01,max=.95,  step=.01),
-               h4(paste("Define the population parameters for times at which median survival occurs.")),
-               numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control median survival time (green)"),                           value = 4,   min=1,   max=100,  step=1),
-               numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention median survival time (blue)"),                      value = 7,   min=1,   max=100,  step=1),
+               h4(paste("Define the population parameters for survival times for the above survival probability.")),
+               numericInput(inputId=ns("tSurvNULL_input"),               label = c("Control survival time (green)"),                           value = 4,   min=1,   max=100,  step=1),
+               numericInput(inputId=ns("tSurvALT_input"),                label = c("Intervention survival time (blue)"),                      value = 7,   min=1,   max=100,  step=1),
                br(),
                h4(paste("The button below refreshes and repeats the simulation. There is no practical need for this but is
                         just an exercise in programming whereby the plot is updated by either the inputs or the button. 
