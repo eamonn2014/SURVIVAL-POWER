@@ -19,6 +19,8 @@ mod_survplot7_ui <- function(id){
   
   ns <- NS(id)
 
+ 
+  
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
 tabItem("survplot7",
         ##~~~~~~~~~~~~~~
@@ -65,15 +67,18 @@ tabItem("survplot7",
                
         ),
         ##~~~~~~~~~~~~~
- 
+     # fluidRow(
+     #   tabBox(width = 12, height = 12,
   mainPanel(
    
      plotOutput(ns("survplot7"))
+  # ))
   ),
-  #~~~~~~~~~~~~~~~~
-  
+  #~~~~~~~~~~~~~~~~12
+ 
   tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))
 )
+
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
