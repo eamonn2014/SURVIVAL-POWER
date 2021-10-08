@@ -226,7 +226,7 @@ survplot3<- function( CSurvProp=.4, time1=1, HR=2 ) {  #
   end <- ceiling(-(log(1-.999)/ lambda))               # for plotting out to 999th percentile
   
   curve(zp(x, shape=1, scale=1/lambda), from=0, to=end, 
-        main=paste0("Effect of hazard ratio (HR) of " ,HR," on control in blue, given control survival probability of ",CSurvProp," at time ",time1, "\n Calculated exponential rates ",
+        main=paste0("Effect of hazard ratio (HR) of " ,formatz2(HR)," on control in blue, given control survival probability of ",CSurvProp," at time ",time1, "\n Calculated exponential rates ",
                     formatz4(lambda),         " (blue) and ",
                     formatz4(lambda2),        " (red): Hazard Ratio = ",
                     formatz2(hr), " (red/blue) \nSurvival S(t) at time ",
@@ -507,7 +507,7 @@ survplot6 <- function( CSurvProp=.4, time1=1, HR=2 ) {  #
                     formatz4(hr), " (red/blue). Time at survival quantile ",
                     formatz2(p*100),             "%:\n ",
                     formatz2(time1),          " (blue) and ", 
-                    formatz2(time2 ), " (red) the effect of HR of a", HR, " on survival time with reference to control (blue)"), 
+                    formatz2(time2 ), " (red) the effect of HR of a ", formatz4(HR), " on survival time with reference to control (blue)"), 
         cex.main = 1.4,
         # ylab='Survival probability', xlab='', 
         col="blue", 

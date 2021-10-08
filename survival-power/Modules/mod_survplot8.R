@@ -25,8 +25,9 @@ mod_survplot8_ui <- function(id){
   
   #tabItems(
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  tabItem("survplot8",
+  tabItem("survplot8", 
           
+      
           
           ##~~~~~~~~~~~~~~
           column(width=3,
@@ -107,9 +108,10 @@ mod_survplot8_ui <- function(id){
           ),
           #~~~~~~~~~~~~~~~~
           
+         tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))  # is this needed?
          
-          # tags$head(tags$style(HTML('content-wrapper { overflow: auto; }')))  # is this needed?
-  )
+     
+  ) 
   ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 

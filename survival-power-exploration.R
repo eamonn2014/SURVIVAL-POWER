@@ -2,7 +2,7 @@
 
 #/***************************************************************************#
 #Filename           :      xxxxxxxxxxxxxxxxxxxxx
-#Author             :      obrieea1
+#Author             :      xxx
 #Date               :      xx-May-2021
 #R                  :      xxxxxxxxxxxxx
 #Platform           :      xxxxxxxxxxxxx 
@@ -12,11 +12,8 @@
 #Input              :       
 #Output             :      An .R, .Rmd and .html file is output to xxx
 #                          An .R file is output to the dir where original .Rmd file is located
-#Macros used        :      none
 #---------------------------------------------------------------------------
-#MODIFICATION HISTORY: 
-#    <DD-MON-YYYY>,
-#    <Description> 
+
 #    
 #***************************************************************************/
 
