@@ -928,7 +928,7 @@ simfunf <- function(p=1, hr=.6, n=30, acc=20, fup=5, lambdaC=.018, alpha=0.05, s
     file.copy(rcode, path.script,  overwrite=TRUE)           # make a copy of the rcode in a folder of choice
     
     
-    # saving the html to GPS!
+    # saving the html 
     # https://stackoverflow.com/questions/28894515/rmarkdown-directing-output-file-into-a-directory
     # x1 <- gsub('\\.Rmd','\\.html', trimws(x)) 
     # rcode <-  gsub(' ','_', trimws(x1))   
