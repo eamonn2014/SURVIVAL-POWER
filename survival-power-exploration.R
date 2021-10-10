@@ -917,7 +917,7 @@ simfunf <- function(p=1, hr=.6, n=30, acc=20, fup=5, lambdaC=.018, alpha=0.05, s
 
 ## ----knitr purl code, results='hide'--------------------------------
 
-    # move stangle R file to a folder in GPS
+    # move stangle R file to a folder 
     # put this at bottom and give it the same name as the RMD file , replace any blanks with underscore
     # https://amywhiteheadresearch.wordpress.com/2014/11/12/copying-files-with-r/
 
