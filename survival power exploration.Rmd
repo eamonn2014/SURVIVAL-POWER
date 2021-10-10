@@ -42,21 +42,7 @@ header-includes:
 
 ```{r set-options, echo=FALSE, cache=FALSE, warning = FALSE}
 
-#/***************************************************************************#
-#Filename           :      xxxxxxxxxxxxxxxxxxxxx
-#Author             :      zzzz
-#Date               :      xx-May-2021
-#R                  :      xxxxxxxxxxxxx
-#Platform           :      xxxxxxxxxxxxx 
-#Project/Study      :      xxxxxxxxxxxxx
-#Description        :      xxxxxxxxxxxxx   
-#Assumptions:   
-#Input              :       
-#Output             :      An .R, .Rmd and .html file is output to xxx
-#                          An .R file is output to the dir where original .Rmd file is located
-#---------------------------------------------------------------------------
 
-#***************************************************************************/
 
 # knit: (function(inputFile, encoding) { 
 #               out_dir <- '~/Survival-power';   
